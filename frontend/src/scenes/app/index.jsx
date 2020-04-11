@@ -10,7 +10,7 @@ import {
 import LoginUser from "../../scenes/loginUser/index.jsx";
 import LoginDriver from "../../scenes/loginDriver/index.jsx";
 import Home from "../../scenes/home/index.jsx";
-import homeUser from "../../scenes/homeUser/homeUser.jsx";
+import homeUser from "../../scenes/homeUser/index.jsx";
 
 
 

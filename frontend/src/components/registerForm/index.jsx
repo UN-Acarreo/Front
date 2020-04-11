@@ -135,6 +135,20 @@ constructor(props){
             />
           </div>
 
+          {isDriver ? <div class="form-group" >
+            <label  className = {styles.input}>Cedula:</label>
+            <input  type="text"
+                    name="cedula"
+                    class="form-control"
+                    placeholder = "CEDULA"
+                    //value={this.state.apellido}
+                    id='cedula'
+                    onChange={this.handleChange}
+
+            />
+          </div> : null}
+          
+
           <div class="form-group">
             <label  className = {styles.input}>E-Mail:</label>
             <input  type="text"
@@ -157,18 +171,6 @@ constructor(props){
                     id='direccion'
                     onChange={this.handleChange}
             />
-          </div>
-
-          <div class="form-group">
-          <label  className = {styles.input}>Ciudad:</label>
-          <input  type="text"
-                  name="city"
-                  class="form-control"
-                  placeholder = "CIUDAD"
-                  value={this.state.ciudad}
-                  id='ciudad'
-                  onChange={this.handleChange}
-          />
           </div>
 
           <div class="form-group">
