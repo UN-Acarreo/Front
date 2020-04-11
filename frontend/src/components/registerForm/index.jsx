@@ -70,8 +70,9 @@ constructor(props){
     var url;
     this.props.isDriver ? url = URL+'driver-signup' : url = URL+'/api/client-signup';
     
-    var request = {nombre: this.state.nombre, apellido: this.state.apelido, email: this.state.email,
-                   direccion: this.state.direccion, ciudad: this.state.ciudad, contraseña: this.state.contraseña}
+    console.log(this.state)
+    var request = {name: this.state.nombre, lastname: this.state.apellido, password: this.state.contraseña, 
+      address: this.state.direccion,  email: this.state.email }
     axios.post(url, { request })
         .then(res => {
           if(res.data.status == 'added'){
