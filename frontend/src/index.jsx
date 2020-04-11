@@ -13,16 +13,8 @@ import LoginUser from './scenes/loginUser/index.jsx';
 
 
 ReactDOM.render(
-
-   
       <BrowserRouter>
         <App />
-      </BrowserRouter>
-       
-
-
-      
-
-    
+      </BrowserRouter>   
   , document.getElementById('root')
 );

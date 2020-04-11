@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import styles from './styles.module.scss';
+import styles from './styles.module.css';
 import axios from 'axios';
+
+import classNames from "classnames";
+
 const URL = 'http://localhost:3001'
 
 interface Props{
@@ -10,6 +13,17 @@ interface Props{
 }
 
 interface State {
+
+    nombre: string,
+    apellido: string,
+    email: string,
+    direccion: string,
+    ciudad: string,
+    contraseña: string,
+    confirmar_contraseña: string,
+    
+    goToDriver :boolean,
+    goToUser : boolean
 
 }
 
@@ -24,10 +38,22 @@ constructor(props){
       direccion: '',
       ciudad: '',
       contraseña: '',
-      confirmar_contraseña: ''
-
+      confirmar_contraseña: '',
+      
+      goToDriver :true,
+      goToUser :false
+      
       //
     }
+  }
+
+  changeForm(){
+
+    this.setState({goToDriver : !this.state.goToDriver});
+    this.setState({goToUser : !this.state.goToUser});
+
+    
+    
   }
 
   handleChange = (e) =>{
@@ -43,7 +69,7 @@ constructor(props){
     }
     var url;
     this.props.isDriver ? url = URL+'driver-signup' : url = URL+'/api/client-signup';
-    console.log(this.state)
+    
     var request = {nombre: this.state.nombre, apellido: this.state.apelido, email: this.state.email,
                    direccion: this.state.direccion, ciudad: this.state.ciudad, contraseña: this.state.contraseña}
     axios.post(url, { request })
@@ -59,20 +85,23 @@ constructor(props){
         })
   }
 
-
   render() {
 
     const {isDriver, isHome} = this.props;
+    const {goToDriver, goToUser} = this.state;
+
     return (
 
       <div className={styles.container}>
 
+        {console.log(this.state.goToDriver, "Driver")}
+        {console.log(this.state.goToUser, "User")}
        {isHome ?
        <div className = {styles.container_options}>
-          <button className = {styles.container_buttondriver}>
+          <button className = {goToDriver ?  classNames(styles.button_driver) : classNames(styles.button_driver_active)} onClick = {() => this.changeForm()}>
             CONDUCTOR
           </button>
-          <button className = {styles.container_buttonuser}>
+          <button className = {goToUser ?  classNames(styles.button_user) : classNames(styles.button_user_active)} onClick = {() => this.changeForm()}>
             USUARIO
         </button>
       </div> : null}
@@ -198,7 +227,22 @@ constructor(props){
           />
           </div>
 
-          <button type="button" class="btn btn-dark">REGISTRARSE</button> {/*Poner el boton de  Ingresar :v */}
+          <div class="col-md-12 text-center">
+            
+            <a href="/homeUser" className={classNames("btn btn-dark")} > INGRESAR</a>
+          </div>
+
+          <label className = {styles.label}>
+
+            No tienes cuenta ? Registrate! : 
+
+          </label>
+  
+          <div class="col-md-12 text-center">
+          
+            <a {...goToDriver ? {href:"/loginDriver"} : {href:"/login"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
+          </div>
+          
       </form>
         }
       </div>
