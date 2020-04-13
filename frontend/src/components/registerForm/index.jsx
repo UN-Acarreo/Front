@@ -92,7 +92,7 @@ constructor(props){
 
     }
     var url;
-    this.props.isDriver ? url = URL+'driver-signup' : url = URL+'/api/client-signup';
+    this.props.isDriver ? url = URL+'driver/signup' : url = URL+'/api/client/signup';
     
     console.log(this.state)
     var request = {name: this.state.nombre, lastname: this.state.apellido, password: this.state.contraseña, 
