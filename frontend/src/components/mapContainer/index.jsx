@@ -3,22 +3,37 @@ import { Map, GoogleApiWrapper } from 'google-maps-react';
 
 
 const mapStyles = {
+  width: '100%',
+  height: '100%',
+ 
+};
+
+const containerStyle = {
+  position: 'absolute',  
   width: '50%',
-  height: '100%'
+  height: '100%',
+  right: '0'
+  
 };
 
 export class MapContaier extends Component {
   render() {
     return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        style={mapStyles}
-        initialCenter={{
-         lat: -1.2884,
-         lng: 36.8233
+
+      
+        <Map
+          containerStyle={containerStyle}
+          google={this.props.google}
+          zoom={15}
+          style={mapStyles}
+          initialCenter={{
+          lat: 4.624335,
+          lng: -74.063644
         }}
       />
+      
+      
+      
     );
   }
 }

@@ -232,7 +232,7 @@ constructor(props){
 
           <div class="col-md-12 text-center">
             
-            <a href="/homeUser" className={classNames("btn btn-dark")} > INGRESAR</a>
+            <a {...goToDriver ? {href:"/api/driver/home"} : {href:"/api/user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
           </div>
 
           <label className = {styles.label}>
@@ -243,7 +243,7 @@ constructor(props){
   
           <div class="col-md-12 text-center">
           
-            <a {...goToDriver ? {href:"/loginDriver"} : {href:"/login"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
+            <a {...goToDriver ? {href:"/api/driver/register"} : {href:"/api/user/register"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
           </div>
           
       </form>
