@@ -13,7 +13,6 @@ import Home from "../../scenes/home/index.jsx";
 import homeUser from "../../scenes/homeUser/index.jsx";
 
 
-
 class App extends Component {
   render() {
     return (

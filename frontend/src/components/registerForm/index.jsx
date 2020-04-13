@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 import styles from './styles.module.css';
 import axios from 'axios';
 
 import classNames from "classnames";
-
 const URL = 'http://localhost:3001'
 
 interface Props{
-  isDriver : boolean;
-  isHome : boolean;
-
+  isDriver :  boolean;
+  isHome :    boolean;
 }
 
 interface State {
 
-    nombre: string,
-    apellido: string,
-    email: string,
-    direccion: string,
-    ciudad: string,
-    contraseña: string,
+    nombre:               string,
+    apellido:             string,
+    email:                string,
+    direccion:            string,
+    cedula:               string,
+    ciudad:               string,
+    contraseña:           string,
     confirmar_contraseña: string,
-    
-    goToDriver :boolean,
-    goToUser : boolean
+    placa:                string,
+    marca:                string,
+    modelo:               string,
+    capacidad:            string,
+    foto:                 string,
+    goToDriver:           boolean,
+    vehicle:              boolean,
+    goToUser:             boolean
 
 }
 
@@ -36,32 +41,51 @@ constructor(props){
       apellido: '',
       email: '',
       direccion: '',
+      cedula: '',
       ciudad: '',
       contraseña: '',
       confirmar_contraseña: '',
-      
-      goToDriver :true,
-      goToUser :false
+      placa: '',
+      marca: '',
+      modelo: '',
+      capacidad: '',
+      foto: '',
+      goToDriver: true,
+      vehicle: false,
+      goToUser: false
       
       //
     }
   }
 
   changeForm(){
-
     this.setState({goToDriver : !this.state.goToDriver});
     this.setState({goToUser : !this.state.goToUser});
-
-    
-    
   }
-
+  changeToVehicle(){
+    if(this.state.goToDriver){
+      this.setState({vehicle : true});
+    }
+  }
   handleChange = (e) =>{
     this.setState({ [e.target.id] : e.target.value});
-
   }
-
+  registerVehicle(){
+    var url;
+    var request = { placa: this.state.placa, marca: this.state.marca, modelo: this.state.modelo,
+                    year: this.state.year, capacidad: this.state.capacidad}
+    axios.post(url, {request})
+        .then(res =>{
+            if(res.data.status == 'added'){
+                //vehicle registered
+                console.log("Registro Exitoso")
+            }else{
+                // error management
+            }
+        })
+  }
   sign_up(){
+    //this.changeToVehicle();
     if(this.state.contraseña != this.state.confirmar_contraseña){
       //show passwords dont match error
       return;
@@ -76,20 +100,18 @@ constructor(props){
     axios.post(url, { request })
         .then(res => {
           if(res.data.status == 'added'){
-             //user has been added
-             console.log('User successfuly added');
-          }
-
-          else{
+            //user has been added
+            console.log('User successfuly added');
+            this.changeToVehicle();
+          }else{
             //show an error
           }
         })
   }
 
   render() {
-
     const {isDriver, isHome} = this.props;
-    const {goToDriver, goToUser} = this.state;
+    const {goToDriver, vehicle, goToUser} = this.state;
 
     return (
 
@@ -109,7 +131,72 @@ constructor(props){
 
       {!isHome?
         <form>
-
+          {vehicle?
+          <div>
+          <div class="form-group">
+              <label  className = {styles.input}>Marca:</label>
+              <input  type="text"
+                      name="marca"
+                      class="form-control"
+                      placeholder = "MARCA"
+                      value={this.state.marca}
+                      id='marca'
+                      onChange={this.handleChange}        
+              />
+          </div>
+          <div class="form-group">
+                <label  className = {styles.input}>Modelo:</label>
+                <input  type="text"
+                        name="modelo"
+                        class="form-control"
+                        placeholder = "MODELO"
+                        value={this.state.modelo}
+                        id='modelo'
+                        onChange={this.handleChange}        
+                />
+            </div>
+            <div class="form-group">
+                <label  className = {styles.input}>Placa:</label>
+                <input  type="text"
+                        name="placa"
+                        class="form-control"
+                        placeholder = "PLACA"
+                        value={this.state.placa}
+                        id='placa'
+                        onChange={this.handleChange}        
+                />
+            </div>
+            <div class="form-group">
+                <label  className = {styles.input}>Capacidad:</label>
+                <input  type="text"
+                        name="capacidad"
+                        class="form-control"
+                        placeholder = "CAPACIDAD"
+                        value={this.state.capacidad}
+                        id='capacidad'
+                        onChange={this.handleChange}        
+                />
+            </div>
+            <div class="form-group">
+                <label  className = {styles.input}>Foto:</label>
+                <input  type="text"
+                        name="foto"
+                        class="form-control"
+                        placeholder = "FOTO"
+                        value={this.state.foto}
+                        id='foto'
+                        onChange={this.handleChange}        
+                />
+            </div> 
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
+                <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
+            </div>
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-dark" onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
+            </div>
+          </div> :
+          <div>
           <div class="form-group" >
             <label  className = {styles.input}>Nombre:</label>
             <input  type="text"
@@ -132,11 +219,11 @@ constructor(props){
                     value={this.state.apellido}
                     id='apellido'
                     onChange={this.handleChange}
-
             />
           </div>
 
-          {isDriver ? <div class="form-group" >
+          {isDriver ? 
+          <div class="form-group" >
             <label  className = {styles.input}>Cedula:</label>
             <input  type="text"
                     name="cedula"
@@ -202,10 +289,9 @@ constructor(props){
             <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
             <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
           </div>
-
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-
-          <button  type="button" class="btn btn-dark">CONTINUAR REGISTRO</button> }
+            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
+            </div>}
       </form> :
 
         <form>
@@ -237,7 +323,7 @@ constructor(props){
 
           <label className = {styles.label}>
 
-            No tienes cuenta ? Registrate! : 
+            No tienes una cuenta? Registrate! : 
 
           </label>
   
