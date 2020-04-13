@@ -92,19 +92,25 @@ constructor(props){
 
     }
     var url;
-    this.props.isDriver ? url = URL+'driver-signup' : url = URL+'/api/client-signup';
+    this.props.isDriver ? url = URL+'driver/signup' : url = URL+'/api/client/signup';
     
     console.log(this.state)
     var request = {name: this.state.nombre, lastname: this.state.apellido, password: this.state.contraseña, 
       address: this.state.direccion,  email: this.state.email }
     axios.post(url, { request })
         .then(res => {
-          if(res.data.status == 'added'){
+          if(res.status == 201){
             //user has been added
             console.log('User successfuly added');
-            this.changeToVehicle();
+            if(this.props.isDriver)
+            {
+              this.changeToVehicle();
+            }
+            
           }else{
             //show an error
+            console.log(res.data.error);
+
           }
         })
   }
