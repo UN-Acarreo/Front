@@ -99,12 +99,18 @@ constructor(props){
       address: this.state.direccion,  email: this.state.email }
     axios.post(url, { request })
         .then(res => {
-          if(res.data.status == 'added'){
+          if(res.status == 201){
             //user has been added
             console.log('User successfuly added');
-            this.changeToVehicle();
+            if(this.props.isDriver)
+            {
+              this.changeToVehicle();
+            }
+            
           }else{
             //show an error
+            console.log(res.data.error);
+
           }
         })
   }
