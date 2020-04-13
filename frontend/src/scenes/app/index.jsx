@@ -7,24 +7,24 @@ import {
   Redirect
 } from 'react-router-dom'
 
-import Top from '../../components/top/index.jsx';
-import RegisterForm from '../../components/registerForm/index.jsx';
-
-import LoginUser from "../../scenes/loginUser/index.jsx";
-import LoginDriver from "../../scenes/loginDriver/index.jsx";
+import RegisterUser from "../../scenes/registerUser/index.jsx";
+import RegisterDriver from "../../scenes/registerDriver/index.jsx";
 import Home from "../../scenes/home/index.jsx";
+import HomeUser from "../../scenes/homeUser/index.jsx";
+import HomeDriver from "../../scenes/homeDriver/index.jsx";
 
 
 class App extends Component {
   render() {
     return (
       <div>
-
           <Switch>
-          <Route exact path="/" component={Home}/>
-          <Route exact path="/login" component={LoginUser}/>
-          <Route exact path="/loginDriver" component={LoginDriver}/>
-      </Switch>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/api/user/register" component={RegisterUser}/>
+            <Route exact path="/api/driver/register" component={RegisterDriver}/>
+            <Route exact path="/api/user/home" component={HomeUser}/>
+            <Route exact path="/api/driver/home" component={HomeDriver}/>
+          </Switch>
 
        </div>
     )

@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 
 interface Props{
   message : string;
+  userName : string;
 }
 
 interface State {
@@ -28,7 +29,10 @@ class Top extends Component<Props, State> {
 
     return (
       <div className={styles.header}>
-        <h1 className={styles.header_h1}>{message}</h1>
+        <a href="/" className={styles.header_button}>{message}</a>
+        <div className={styles.text}>
+          Bienvenido usuario
+        </div>
       </div>
     )
   }

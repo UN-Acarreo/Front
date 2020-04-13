@@ -9,20 +9,10 @@ import Top from '../src/components/top/index.jsx';
 import RegisterForm from '../src/components/registerForm/index.jsx';
 
 import App from './scenes/app/index.jsx';
-import LoginUser from './scenes/loginUser/index.jsx';
-
 
 ReactDOM.render(
-
-   
       <BrowserRouter>
         <App />
-      </BrowserRouter>
-       
-
-
-      
-
-    
+      </BrowserRouter>   
   , document.getElementById('root')
 );
