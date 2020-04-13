@@ -14,7 +14,6 @@ import HomeUser from "../../scenes/homeUser/index.jsx";
 import HomeDriver from "../../scenes/homeDriver/index.jsx";
 
 
-
 class App extends Component {
   render() {
     return (
