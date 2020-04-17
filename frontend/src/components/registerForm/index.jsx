@@ -95,8 +95,8 @@ constructor(props){
     this.props.isDriver ? url = URL+'driver/signup' : url = URL+'/api/client/signup';
     
     console.log(this.state)
-    var request = {name: this.state.nombre, lastname: this.state.apellido, password: this.state.contraseña, 
-      address: this.state.direccion,  email: this.state.email }
+    var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña, 
+      User_address: this.state.direccion,  User_Email: this.state.email }
     axios.post(url, { request })
         .then(res => {
           if(res.status == 201){
