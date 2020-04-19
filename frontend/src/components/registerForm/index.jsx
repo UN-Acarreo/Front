@@ -53,7 +53,7 @@ constructor(props){
       goToDriver: true,
       vehicle: false,
       goToUser: false
-      
+
       //
     }
   }
@@ -92,10 +92,10 @@ constructor(props){
 
     }
     var url;
-    this.props.isDriver ? url = URL+'driver/signup' : url = URL+'/api/client/signup';
-    
+    this.props.isDriver ? url = URL+'/api/driver/signup' : url = URL+'/api/client/signup';
+
     console.log(this.state)
-    var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña, 
+    var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
       User_address: this.state.direccion,  User_Email: this.state.email }
     axios.post(url, { request })
         .then(res => {
@@ -106,7 +106,7 @@ constructor(props){
             {
               this.changeToVehicle();
             }
-            
+
           }else{
             //show an error
             console.log(res.data.error);
@@ -147,7 +147,7 @@ constructor(props){
                       placeholder = "MARCA"
                       value={this.state.marca}
                       id='marca'
-                      onChange={this.handleChange}        
+                      onChange={this.handleChange}
               />
           </div>
           <div class="form-group">
@@ -158,7 +158,7 @@ constructor(props){
                         placeholder = "MODELO"
                         value={this.state.modelo}
                         id='modelo'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -169,7 +169,7 @@ constructor(props){
                         placeholder = "PLACA"
                         value={this.state.placa}
                         id='placa'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -180,7 +180,7 @@ constructor(props){
                         placeholder = "CAPACIDAD"
                         value={this.state.capacidad}
                         id='capacidad'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -191,9 +191,9 @@ constructor(props){
                         placeholder = "FOTO"
                         value={this.state.foto}
                         id='foto'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
-            </div> 
+            </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
                 <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
@@ -228,7 +228,7 @@ constructor(props){
             />
           </div>
 
-          {isDriver ? 
+          {isDriver ?
           <div class="form-group" >
             <label  className = {styles.input}>Cedula:</label>
             <input  type="text"
@@ -241,7 +241,7 @@ constructor(props){
 
             />
           </div> : null}
-          
+
 
           <div class="form-group">
             <label  className = {styles.input}>E-Mail:</label>
@@ -323,21 +323,21 @@ constructor(props){
           </div>
 
           <div class="col-md-12 text-center">
-            
+
             <a {...goToDriver ? {href:"/api/driver/home"} : {href:"/api/user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
           </div>
 
           <label className = {styles.label}>
 
-            No tienes una cuenta? Registrate! : 
+            No tienes una cuenta? Registrate! :
 
           </label>
-  
+
           <div class="col-md-12 text-center">
-          
+
             <a {...goToDriver ? {href:"/api/driver/register"} : {href:"/api/user/register"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
           </div>
-          
+
       </form>
         }
       </div>
