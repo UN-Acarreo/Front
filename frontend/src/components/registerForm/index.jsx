@@ -67,9 +67,26 @@ constructor(props){
       this.setState({vehicle : true});
     }
   }
-  handleChange = (e) =>{
+  getBase64(file) {
+   return new Promise(function(resolve) {
+     var reader = new FileReader();
+     reader.onloadend = function() {
+       resolve(reader.result)
+     }
+     reader.readAsDataURL(file);
+   })
+ }
+
+  handleChange = async(e) =>{
     this.setState({ [e.target.id] : e.target.value});
   }
+
+  selectPhoto = (e)=> {
+      console.log(e.target.files[0])
+      this.setState({foto:e.target.files[0]});
+    }
+
+
   registerVehicle(){
     var url;
     var request = { placa: this.state.placa, marca: this.state.marca, modelo: this.state.modelo,
@@ -84,7 +101,7 @@ constructor(props){
             }
         })
   }
-  sign_up(){
+  async sign_up(){
     //this.changeToVehicle();
     if(this.state.contraseña != this.state.confirmar_contraseña){
       //show passwords dont match error
@@ -92,11 +109,29 @@ constructor(props){
 
     }
     var url;
-    this.props.isDriver ? url = URL+'/api/driver/signup' : url = URL+'/api/client/signup';
+    if(this.props.isDriver){
+      try{
+        url = URL+'/api/driver/signup'
+        var encoded = await this.getBase64(this.state.foto);
+        console.log(encoded)
+      }
+      catch(err){
+        return console.log(err)
+      }
 
-    console.log(this.state)
-    var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
-      User_address: this.state.direccion,  User_Email: this.state.email }
+
+      var request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Driver_password: this.state.contraseña,
+                     Driver_address: this.state.direccion,  Driver_Email: this.state.email, Identity_card: this.state.cedula,
+                     Driver_photo: this.state.cedula, foto_data: encoded,
+                     Driver_phone: 1000 } //!!!change this to be the value of the state
+    }
+    else{
+      url = URL+'/api/client/signup';
+      var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
+                     User_address: this.state.direccion,  User_Email: this.state.email }
+    }
+    //console.log(this.state)
+
     axios.post(url, { request })
         .then(res => {
           if(res.status == 201){
@@ -296,7 +331,10 @@ constructor(props){
             <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
           </div>
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
+            <div>
+            <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
+            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>
+            </div>}
             </div>}
       </form> :
 
