@@ -20,10 +20,10 @@ class App extends Component {
       <div>
           <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/api/user/register" component={RegisterUser}/>
-            <Route exact path="/api/driver/register" component={RegisterDriver}/>
-            <Route exact path="/api/user/home" component={HomeUser}/>
-            <Route exact path="/api/driver/home" component={HomeDriver}/>
+            <Route exact path="/user/signup" component={RegisterUser}/>
+            <Route exact path="/driver/signup" component={RegisterDriver}/>
+            <Route exact path="/user/home" component={HomeUser}/>
+            <Route exact path="/driver/home" component={HomeDriver}/>
           </Switch>
 
        </div>

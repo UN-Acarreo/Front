@@ -275,9 +275,23 @@ constructor(props){
                     onChange={this.handleChange}
 
             />
-          </div> : null}
+          </div>  : null}
 
+          {isDriver ? 
+          <div class="form-group" >
+            <label  className = {styles.input}>Telefono:</label>
+            <input  type="text"
+                    name="phone"
+                    class="form-control"
+                    placeholder = "TELEFONO"
+                    //value={this.state.apellido}
+                    id='telefono'
+                    onChange={this.handleChange}
 
+            />
+          </div>: null}
+          
+          
           <div class="form-group">
             <label  className = {styles.input}>E-Mail:</label>
             <input  type="text"
@@ -361,8 +375,8 @@ constructor(props){
           </div>
 
           <div class="col-md-12 text-center">
-
-            <a {...goToDriver ? {href:"/api/driver/home"} : {href:"/api/user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
+            
+            <a {...goToDriver ? {href:"/driver/home"} : {href:"user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
           </div>
 
           <label className = {styles.label}>
@@ -372,8 +386,8 @@ constructor(props){
           </label>
 
           <div class="col-md-12 text-center">
-
-            <a {...goToDriver ? {href:"/api/driver/register"} : {href:"/api/user/register"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
+          
+            <a {...goToDriver ? {href:"driver/signup"} : {href:"/user/signup"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
           </div>
 
       </form>
