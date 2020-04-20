@@ -18,7 +18,7 @@ interface State {
     email:                string,
     direccion:            string,
     cedula:               string,
-    phone:                number,
+    phone:                string,
     ciudad:               string,
     contraseña:           string,
     confirmar_contraseña: string,
@@ -41,6 +41,7 @@ constructor(props){
       nombre: '',
       apellido: '',
       email: '',
+      phone:'',
       direccion: '',
       cedula: '',
       ciudad: '',
@@ -124,7 +125,7 @@ constructor(props){
       var request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Driver_password: this.state.contraseña,
                      Driver_address: this.state.direccion,  Driver_Email: this.state.email, Identity_card: this.state.cedula,
                      Driver_photo: this.state.cedula, foto_data: encoded,
-                     Driver_phone: this.state.phone } //!!!change this to be the value of the state
+                     Driver_phone: this.state.phone } 
     }
     else{
       url = URL+'/api/client/signup';
