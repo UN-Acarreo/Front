@@ -42,7 +42,6 @@ constructor(props){
       apellido: '',
       email: '',
       direccion: '',
-      phone : 0,
       cedula: '',
       ciudad: '',
       contraseña: '',
