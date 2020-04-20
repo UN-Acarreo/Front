@@ -18,6 +18,7 @@ interface State {
     email:                string,
     direccion:            string,
     cedula:               string,
+    phone:                number,
     ciudad:               string,
     contraseña:           string,
     confirmar_contraseña: string,
@@ -41,6 +42,7 @@ constructor(props){
       apellido: '',
       email: '',
       direccion: '',
+      phone : 0,
       cedula: '',
       ciudad: '',
       contraseña: '',
@@ -123,7 +125,7 @@ constructor(props){
       var request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Driver_password: this.state.contraseña,
                      Driver_address: this.state.direccion,  Driver_Email: this.state.email, Identity_card: this.state.cedula,
                      Driver_photo: this.state.cedula, foto_data: encoded,
-                     Driver_phone: 1000 } //!!!change this to be the value of the state
+                     Driver_phone: this.state.phone } //!!!change this to be the value of the state
     }
     else{
       url = URL+'/api/client/signup';
@@ -270,7 +272,7 @@ constructor(props){
                     name="cedula"
                     class="form-control"
                     placeholder = "CEDULA"
-                    //value={this.state.apellido}
+                    value={this.state.cedula}
                     id='cedula'
                     onChange={this.handleChange}
 
@@ -284,7 +286,7 @@ constructor(props){
                     name="phone"
                     class="form-control"
                     placeholder = "TELEFONO"
-                    //value={this.state.apellido}
+                    value={this.state.phone}
                     id='telefono'
                     onChange={this.handleChange}
 
