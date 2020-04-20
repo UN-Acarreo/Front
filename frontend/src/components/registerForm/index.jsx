@@ -199,7 +199,7 @@ constructor(props){
                 <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
             </div>
             <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-dark" onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
+                <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
             </div>
           </div> :
           <div>
@@ -296,7 +296,7 @@ constructor(props){
             <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
           </div>
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
+            <button type="button" className= {classNames("btn btn-dark", styles.test)} onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
             </div>}
       </form> :
 
