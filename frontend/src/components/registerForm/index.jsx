@@ -53,7 +53,7 @@ constructor(props){
       goToDriver: true,
       vehicle: false,
       goToUser: false
-      
+
       //
     }
   }
@@ -67,9 +67,26 @@ constructor(props){
       this.setState({vehicle : true});
     }
   }
-  handleChange = (e) =>{
+  getBase64(file) {
+   return new Promise(function(resolve) {
+     var reader = new FileReader();
+     reader.onloadend = function() {
+       resolve(reader.result)
+     }
+     reader.readAsDataURL(file);
+   })
+ }
+
+  handleChange = async(e) =>{
     this.setState({ [e.target.id] : e.target.value});
   }
+
+  selectPhoto = (e)=> {
+      console.log(e.target.files[0])
+      this.setState({foto:e.target.files[0]});
+    }
+
+
   registerVehicle(){
     var url;
     var request = { placa: this.state.placa, marca: this.state.marca, modelo: this.state.modelo,
@@ -84,7 +101,7 @@ constructor(props){
             }
         })
   }
-  sign_up(){
+  async sign_up(){
     //this.changeToVehicle();
     if(this.state.contraseña != this.state.confirmar_contraseña){
       //show passwords dont match error
@@ -92,11 +109,29 @@ constructor(props){
 
     }
     var url;
-    this.props.isDriver ? url = URL+'driver/signup' : url = URL+'/api/client/signup';
-    
-    console.log(this.state)
-    var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña, 
-      User_address: this.state.direccion,  User_Email: this.state.email }
+    if(this.props.isDriver){
+      try{
+        url = URL+'/api/driver/signup'
+        var encoded = await this.getBase64(this.state.foto);
+        console.log(encoded)
+      }
+      catch(err){
+        return console.log(err)
+      }
+
+
+      var request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Driver_password: this.state.contraseña,
+                     Driver_address: this.state.direccion,  Driver_Email: this.state.email, Identity_card: this.state.cedula,
+                     Driver_photo: this.state.cedula, foto_data: encoded,
+                     Driver_phone: 1000 } //!!!change this to be the value of the state
+    }
+    else{
+      url = URL+'/api/client/signup';
+      var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
+                     User_address: this.state.direccion,  User_Email: this.state.email }
+    }
+    //console.log(this.state)
+
     axios.post(url, { request })
         .then(res => {
           if(res.status == 201){
@@ -106,7 +141,7 @@ constructor(props){
             {
               this.changeToVehicle();
             }
-            
+
           }else{
             //show an error
             console.log(res.data.error);
@@ -147,7 +182,7 @@ constructor(props){
                       placeholder = "MARCA"
                       value={this.state.marca}
                       id='marca'
-                      onChange={this.handleChange}        
+                      onChange={this.handleChange}
               />
           </div>
           <div class="form-group">
@@ -158,7 +193,7 @@ constructor(props){
                         placeholder = "MODELO"
                         value={this.state.modelo}
                         id='modelo'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -169,7 +204,7 @@ constructor(props){
                         placeholder = "PLACA"
                         value={this.state.placa}
                         id='placa'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -180,7 +215,7 @@ constructor(props){
                         placeholder = "CAPACIDAD"
                         value={this.state.capacidad}
                         id='capacidad'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
             </div>
             <div class="form-group">
@@ -191,9 +226,9 @@ constructor(props){
                         placeholder = "FOTO"
                         value={this.state.foto}
                         id='foto'
-                        onChange={this.handleChange}        
+                        onChange={this.handleChange}
                 />
-            </div> 
+            </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
                 <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
@@ -228,7 +263,7 @@ constructor(props){
             />
           </div>
 
-          {isDriver ? 
+          {isDriver ?
           <div class="form-group" >
             <label  className = {styles.input}>Cedula:</label>
             <input  type="text"
@@ -241,7 +276,7 @@ constructor(props){
 
             />
           </div> : null}
-          
+
 
           <div class="form-group">
             <label  className = {styles.input}>E-Mail:</label>
@@ -296,7 +331,10 @@ constructor(props){
             <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
           </div>
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
+            <div>
+            <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
+            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>
+            </div>}
             </div>}
       </form> :
 
@@ -323,21 +361,21 @@ constructor(props){
           </div>
 
           <div class="col-md-12 text-center">
-            
+
             <a {...goToDriver ? {href:"/api/driver/home"} : {href:"/api/user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
           </div>
 
           <label className = {styles.label}>
 
-            No tienes una cuenta? Registrate! : 
+            No tienes una cuenta? Registrate! :
 
           </label>
-  
+
           <div class="col-md-12 text-center">
-          
+
             <a {...goToDriver ? {href:"/api/driver/register"} : {href:"/api/user/register"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
           </div>
-          
+
       </form>
         }
       </div>
