@@ -264,6 +264,7 @@ constructor(props){
                     onChange={this.handleChange}
             />
           </div>
+          
 
           {isDriver ?
           <div class="form-group" >
@@ -279,7 +280,7 @@ constructor(props){
             />
           </div>  : null}
 
-          {isDriver ? 
+          {isDriver ?
           <div class="form-group" >
             <label  className = {styles.input}>Telefono:</label>
             <input  type="text"
@@ -287,11 +288,11 @@ constructor(props){
                     class="form-control"
                     placeholder = "TELEFONO"
                     value={this.state.phone}
-                    id='telefono'
+                    id='phone'
                     onChange={this.handleChange}
 
             />
-          </div>: null}
+          </div>  : null}
           
           
           <div class="form-group">
