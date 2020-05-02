@@ -242,7 +242,7 @@ constructor(props){
                 <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
             </div>
             <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-dark" onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
+                <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
             </div>
           </div> :
           <div>
@@ -354,10 +354,7 @@ constructor(props){
             <label className = {styles.input_check} for="exampleCheck1"> Acepto los terminos y condiciones</label>
           </div>
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <div>
-            <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
-            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>
-            </div>}
+            <button type="button" className= {classNames("btn btn-dark", styles.test)} onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
             </div>}
       </form> :
 
@@ -384,8 +381,8 @@ constructor(props){
           </div>
 
           <div class="col-md-12 text-center">
-
-            <a {...goToDriver ? {href:"/driver/home"} : {href:"user/home"}} className={classNames("btn btn-dark")} > INGRESAR</a>
+            
+            <a {...goToDriver ? {href:"/driver/start"} : {href:"user/start"}} className={classNames("btn btn-dark")} > INGRESAR</a>
           </div>
 
           <label className = {styles.label}>
