@@ -12,7 +12,7 @@ class RegisterUser extends Component {
       <Top message = {"UNAcarreo"}/>
       
       <RegisterForm isDriver = {false}
-                    isUser ={false}/>
+                    isUser ={true}/>
       
       </div>
 

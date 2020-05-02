@@ -364,7 +364,10 @@ constructor(props){
             <label className = {styles.input_check} for="exampleCheck1"> Acepto los terminos y condiciones</label>
           </div>
           {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <button type="button" className= {classNames("btn btn-dark", styles.test)} onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>}
+            <div>
+            <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
+            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>
+            </div>}
             </div>}
       </form> :
 
