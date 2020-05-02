@@ -24,7 +24,9 @@ class HomeDriver extends Component {
                   <button type="button" class="btn btn-secondary" style={{  background: 'black' }}>SERVICIO 6</button>
                 </div>
 
+                <div style={{ height: '100%', width: '50%' }}>
                 <MapContainer />
+                </div>
             
         </div> 
             
