@@ -114,6 +114,11 @@ constructor(props){
                 // error management
                 this.notifyError('Se ha producido un error al registrar el vehículo.')
             }
+        }).catch((error) => {
+          if (error.response) {
+            this.notifyError(error.response.data.error)
+            console.log(error.response.data.error);	
+            }
         })
   }
   async sign_up(){
@@ -165,6 +170,11 @@ constructor(props){
             console.log(res.data.error);
 
           }
+        }).catch((error) => {
+          if (error.response) {
+            this.notifyError(error.response.data.error)
+            console.log(error.response.data.error);	
+            }
         })
   }
 
