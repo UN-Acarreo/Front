@@ -11,7 +11,7 @@ class RegisterDriver extends Component {
         <Top message = {"UNAcarreo"}/>
         
         <RegisterForm isDriver = {true}
-                      isUser ={false}/>
+                      isHome ={false}/>
       
       </div>
 
