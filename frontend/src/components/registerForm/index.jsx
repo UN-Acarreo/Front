@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import validator from 'validator';
 
 import classNames from "classnames";
 
@@ -107,15 +108,76 @@ constructor(props){
       this.setState({foto:e.target.files[0]});
     }
 
+//Function used to check the request fields (valid emails, valid field lengths and valid text fields)
+check_fields = async (data) => {
+    for (const key of Object.keys(data)) {
+      var field = data[key]
+      if((key == 'User_name' || key == 'Driver_name')
+          && !validator.isAlpha(validator.blacklist(field, ' '))){
+          return "El Nombre no es válido"
+      }
+      if((key == 'User_last_name' || key == 'Driver_last_name')
+          && !validator.isAlpha(validator.blacklist(field, ' '))){
+          return "El Apellido no es válido"
+      }
+      if((key == 'Identity_card') && !validator.isNumeric(field)){
+        return "La Cédula no es válida"
+      }
+      if((key == 'Driver_phone') && !validator.isNumeric(field)){
+        return "El Teléfono no es válido"
+      }
+      if((key == 'User_Email' || key == 'Driver_Email') && !validator.isEmail(field)){
+        return "El E-Mail no es válido"
+      }
+      if((key == 'Payload_capacity') && !validator.isNumeric(field)){
+        return "La capacidad de carga no es válida"
+      }
+      //length validation
+      if(field.length == 0){
+        if((key == 'Driver_password' || key == 'User_password')){
+          return "La Contraseña no es válida"
+        }
+        if((key == 'Driver_address' || key == 'User_address')){
+            return "La Dirección no es válida"
+        }
+        if((key == 'Plate')){
+          return "La Placa no es válida"
+        }
+        if((key == 'Brand')){
+          return "La Marca no es válida"
+        }
+        if((key == 'Model')){
+          return "El Modelo no es válido"
+        }
+      }
+    }
+    return true;
+  }
+
 
   async registerVehicle(){
     url = URL+'/api/vehicle/signup'
-    var encoded = await this.getBase64(this.state.foto);
+    var encoded;
+    try{
+      var encoded = await this.getBase64(this.state.foto);
+      console.log(encoded)
+    }
+    catch(err){
+      this.notifyWarning('No se puede guardar la foto.')
+      return ;
+    }
 
     var url;
-    var request = { Plate: this.state.placa, Brand: this.state.marca, Model: this.state.modelo, Payload_capacity: this.state.capacidad, Identity_card: this.state.cedula,
+    var request = { Brand: this.state.marca, Model: this.state.modelo, Plate: this.state.placa, Payload_capacity: this.state.capacidad, Identity_card: this.state.cedula,
                     Photo: this.state.cedula, foto_data: encoded, db_driver_id: this.state.db_driver_id, Is_owner: true //change this if is owner or not!!!
                   }
+
+    const valid_fields = await this.check_fields(request);
+    if(valid_fields !== true){
+      this.notifyWarning(valid_fields)
+      return;
+    }
+
     axios.post(url, {request})
         .then(res =>{
             if(res.data.status == 1){
@@ -159,36 +221,44 @@ constructor(props){
       })
   }
   async sign_up(){
-    //this.changeToVehicle();
-    if(this.state.contraseña != this.state.confirmar_contraseña){
-      //show passwords dont match error
-      this.notifyWarning('Las contraseñas no coinciden.')
-      return;
-    }
+
     var url;
+    var request;
     if(this.props.isDriver){
+      
       try{
         url = URL+'/api/driver/signup'
         var encoded = await this.getBase64(this.state.foto);
         
       }
       catch(err){
-        return console.log(err)
+        this.notifyWarning('No se puede guardar la foto.')
+        return ;
       }
 
+      request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Identity_card: this.state.cedula,
+                    Driver_phone: this.state.phone, Driver_Email: this.state.email, Driver_address: this.state.direccion,  
+                    Driver_password: this.state.contraseña, Driver_photo: this.state.cedula, foto_data: encoded }
+    } else {
 
-    var request = {Driver_name: this.state.nombre, Driver_last_name: this.state.apellido, Driver_password: this.state.contraseña,
-                   Driver_address: this.state.direccion,  Driver_Email: this.state.email, Identity_card: this.state.cedula,
-                   Driver_photo: this.state.cedula, foto_data: encoded,
-                   Driver_phone: this.state.phone }
-    }
-    else{
       url = URL+'/api/client/signup';
-      var request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
-                     User_address: this.state.direccion,  User_Email: this.state.email }
-    }
-    //console.log(this.state)
+      request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_Email: this.state.email, 
+                  User_address: this.state.direccion, User_password: this.state.contraseña}
 
+    }
+
+    const valid_fields = await this.check_fields(request);
+    if(valid_fields !== true){
+      this.notifyWarning(valid_fields)
+      return;
+    }
+
+    if(this.state.contraseña != this.state.confirmar_contraseña){
+      //show passwords dont match error
+      this.notifyWarning('Las contraseñas no coinciden.')
+      return;
+    }
+ 
     axios.post(url, { request })
         .then(res => {
           if(res.data.status == 1){
