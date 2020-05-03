@@ -16,7 +16,9 @@ class HomeContainer extends Component {
   }
 
   render() {
-
+    console.log("HI")
+    console.log(localStorage.getItem('user_id'))
+    console.log("BYE")
     const {isDriver, isUser} = this.props;
 
     return(
