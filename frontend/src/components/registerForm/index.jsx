@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import styles from './styles.module.css';
 import axios from 'axios';
@@ -6,6 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import classNames from "classnames";
+
+// Import Logger
 const URL = 'http://localhost:3001'
 
 interface Props{
@@ -31,7 +34,8 @@ interface State {
     foto:                 string,
     goToDriver:           boolean,
     vehicle:              boolean,
-    goToUser:             boolean
+    goToUser:             boolean,
+    url:                  string
 
 }
 
@@ -57,8 +61,8 @@ constructor(props){
       goToDriver: true,
       vehicle: false,
       goToUser: false,
-      db_driver_id: null
-
+      db_driver_id: null,
+      url: "/api/driver/login"
       //
     }
   }
@@ -70,6 +74,14 @@ constructor(props){
   changeForm(){
     this.setState({goToDriver : !this.state.goToDriver});
     this.setState({goToUser : !this.state.goToUser});
+  }
+  clientLogin(){
+    this.setState({url : "/api/client/login"})
+    this.changeForm()
+  }
+  driverLogin(){
+    this.setState({url : "/api/driver/login"})
+    this.changeForm()
   }
   changeToVehicle(){
     if(this.state.goToDriver){
@@ -112,6 +124,7 @@ constructor(props){
                 this.notifySuccess('Se ha registrado el vehículo correctamente.')
             }else{
                 // error management
+                console.error("Se produjo un error al registrar el vehiculo")
                 this.notifyError('Se ha producido un error al registrar el vehículo.')
             }
         }).catch((error) => {
@@ -120,6 +133,30 @@ constructor(props){
             console.log(error.response.data.error);	
             }
         })
+  }
+  async login(){
+    var request = { User_Email : this.state.email, User_password : this.state.contraseña}
+    axios.post(URL+this.state.url, {request})
+      .then(res=>{
+        console.log(res)
+        if(res.data.status == 1){
+          localStorage.setItem('user_id', res.data.db_user_id)
+          console.log("Login Succesful")
+          this.notifySuccess('Inicio de Sesion Exitoso.')
+          if(this.props.isDriver){
+            this.props.history.push("/driver/start")
+          }else{
+            this.props.history.push("/user/start")
+          }
+        }else{
+          this.notifyError('Credenciales Invalidas.')
+        }
+      }).catch((error) => {
+        if (error.response) {
+          this.notifyError(error.response.data.error)
+          console.log(error.response.data.error);
+        }
+      })
   }
   async sign_up(){
     //this.changeToVehicle();
@@ -133,7 +170,7 @@ constructor(props){
       try{
         url = URL+'/api/driver/signup'
         var encoded = await this.getBase64(this.state.foto);
-        console.log(encoded)
+        
       }
       catch(err){
         return console.log(err)
@@ -190,10 +227,10 @@ constructor(props){
         {console.log(this.state.goToUser, "User")}
        {isHome ?
        <div className = {styles.container_options}>
-          <button className = {goToDriver ?  classNames(styles.button_driver) : classNames(styles.button_driver_active)} onClick = {() => this.changeForm()}>
+          <button className = {goToDriver ?  classNames(styles.button_driver) : classNames(styles.button_driver_active)} onClick = {() => this.driverLogin()}>
             CONDUCTOR
           </button>
-          <button className = {goToUser ?  classNames(styles.button_user) : classNames(styles.button_user_active)} onClick = {() => this.changeForm()}>
+          <button className = {goToUser ?  classNames(styles.button_user) : classNames(styles.button_user_active)} onClick = {() => this.clientLogin()}>
             USUARIO
         </button>
       </div> : null}
@@ -379,7 +416,9 @@ constructor(props){
                     name="e-mail"
                     class="form-control"
                     placeholder = "E-MAIL"
+                    value = {this.state.email}
                     id='email'
+                    onChange={this.handleChange}
             />
           </div>
 
@@ -389,13 +428,14 @@ constructor(props){
                   name="password"
                   class="form-control"
                   placeholder = "CONTRASEÑA"
+                  value={this.state.contraseña}
                   id='contraseña'
+                  onChange={this.handleChange}
           />
           </div>
 
           <div class="col-md-12 text-center">
-            
-            <a {...goToDriver ? {href:"/driver/start"} : {href:"user/start"}} className={classNames("btn btn-dark")} > INGRESAR</a>
+            <button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button>
           </div>
 
           <label className = {styles.label}>
@@ -415,5 +455,4 @@ constructor(props){
     )
   }
 }
-
-export default RegisterForm;
+export default withRouter(RegisterForm);
