@@ -100,51 +100,43 @@ constructor(props){
 check_fields = async (data) => {
     for (const key of Object.keys(data)) {
       var field = data[key]
-      var fieldName = ""
       if((key == 'User_name' || key == 'Driver_name')
           && !validator.isAlpha(validator.blacklist(field, ' '))){
-          fieldName = "Nombre"
           return "El Nombre no es válido"
       }
       if((key == 'User_last_name' || key == 'Driver_last_name')
           && !validator.isAlpha(validator.blacklist(field, ' '))){
-          fieldName = "Apellido"
           return "El Apellido no es válido"
       }
-      if((key == 'Driver_password' || key == 'User_password')){
-          fieldName = "Contraseña"
-      }
-      if((key == 'Driver_address' || key == 'User_address')){
-          fieldName = "Dirección"
-      }
       if((key == 'Identity_card') && !validator.isNumeric(field)){
-        fieldName = "Cédula"
         return "La Cédula no es válida"
       }
       if((key == 'Driver_phone') && !validator.isNumeric(field)){
-        fieldName = "Teléfono"
         return "El Teléfono no es válido"
       }
       if((key == 'User_Email' || key == 'Driver_Email') && !validator.isEmail(field)){
-        fieldName = "E-Mail"
         return "El E-Mail no es válido"
       }
-      if((key == 'Plate')){
-        fieldName = "Placa"
-      }
-      if((key == 'Brand')){
-        fieldName = "Marca"
-      }
-      if((key == 'Model')){
-        fieldName = "Modelo"
-      }
       if((key == 'Payload_capacity') && !validator.isNumeric(field)){
-        fieldName = "La capacidad de carga"
         return "La capacidad de carga no es válida"
       }
       //length validation
       if(field.length == 0){
-        return "El campo '" + fieldName + "' no puede estar vacio"
+        if((key == 'Driver_password' || key == 'User_password')){
+          return "La Contraseña no es válida"
+        }
+        if((key == 'Driver_address' || key == 'User_address')){
+            return "La Dirección no es válida"
+        }
+        if((key == 'Plate')){
+          return "La Placa no es válida"
+        }
+        if((key == 'Brand')){
+          return "La Marca no es válida"
+        }
+        if((key == 'Model')){
+          return "El Modelo no es válido"
+        }
       }
     }
     return true;
@@ -153,12 +145,27 @@ check_fields = async (data) => {
 
   async registerVehicle(){
     url = URL+'/api/vehicle/signup'
-    var encoded = await this.getBase64(this.state.foto);
+    var encoded;
+    try{
+      var encoded = await this.getBase64(this.state.foto);
+      console.log(encoded)
+    }
+    catch(err){
+      this.notifyWarning('No se puede guardar la foto.')
+      return ;
+    }
 
     var url;
-    var request = { Plate: this.state.placa, Brand: this.state.marca, Model: this.state.modelo, Payload_capacity: this.state.capacidad, Identity_card: this.state.cedula,
+    var request = { Brand: this.state.marca, Model: this.state.modelo, Plate: this.state.placa, Payload_capacity: this.state.capacidad, Identity_card: this.state.cedula,
                     Photo: this.state.cedula, foto_data: encoded, db_driver_id: this.state.db_driver_id, Is_owner: true //change this if is owner or not!!!
                   }
+
+    const valid_fields = await this.check_fields(request);
+    if(valid_fields !== true){
+      this.notifyWarning(valid_fields)
+      return;
+    }
+
     axios.post(url, {request})
         .then(res =>{
             if(res.data.status == 1){
@@ -198,8 +205,8 @@ check_fields = async (data) => {
     } else {
 
       url = URL+'/api/client/signup';
-      request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_password: this.state.contraseña,
-                     User_address: this.state.direccion,  User_Email: this.state.email }
+      request = {User_name: this.state.nombre, User_last_name: this.state.apellido, User_Email: this.state.email, 
+                  User_address: this.state.direccion, User_password: this.state.contraseña}
 
     }
 
