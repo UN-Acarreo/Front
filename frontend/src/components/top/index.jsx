@@ -53,7 +53,7 @@ class Top extends Component<Props, State> {
 
     return (
       <div className={classNames("row", styles.header)}>
-        <a {...isUser ? {href:"/user/profile"} : {href:"/driver/profile"}} className={classNames("col-1",styles.header_button)}>
+        <a {...isUser ? {href:"/user/profile"} : isDriver ? {href:"/driver/profile"} : {href:""} } className={classNames("col-1",styles.header_button)}>
 
             {isUser || isDriver ? 
                 <img src="/user.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
