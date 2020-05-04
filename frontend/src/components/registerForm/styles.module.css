@@ -1,0 +1,59 @@
+.container {
+    border : 1px solid black;
+    width: 30%;
+    margin: auto;
+    padding: 2%;
+}
+
+.container_options{
+    display: inline-block;
+    width: 100%;
+    
+}
+
+.button_driver ,.button_user, .button_driver_active, .button_user_active{
+    background-color: black;
+    width: 50%;
+    color: white;
+    border: none;
+    outline: 0;
+}
+
+.button_driver{
+    float: left;
+}
+
+.button_driver_active , .button_user_active{
+    background-color:grey;
+}
+
+.button_user{
+    float: right;
+}
+   
+.input ,.input_check {
+    color: black;
+    font-size: 20px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-weight: bold;
+    
+    
+}
+.input_check{
+    font-size: 15px;
+}
+
+.label {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-weight: bold;
+
+}
+
+.test{
+    color: green;
+}
