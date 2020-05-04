@@ -10,7 +10,9 @@ class StartDriver extends Component {
     return (
 
       <div >
-        <Top message = {"UNAcarreo"} style = {{marginBottom :"0px"}}/>
+        <Top message = {"UNAcarreo"}
+             isUser = {false}
+             isDriver = {true}/>
         <HomeContainer  isDriver = {true}
                         isUser ={false}/>
       
