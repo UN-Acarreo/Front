@@ -5,12 +5,15 @@ import RegisterForm from '../../components/registerForm/index.jsx';
 
 
 class RegisterUser extends Component {
+  componentWillMount(){
+    sessionStorage.clear();
+  }
   render() {
     return (
 
       <div>
       <Top message = {"UNAcarreo"}
-             isUser = {true}
+             isUser = {false}
              isDriver = {false}/>
       
       <RegisterForm isDriver = {false}
