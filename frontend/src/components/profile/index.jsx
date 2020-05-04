@@ -13,23 +13,12 @@ interface Props{
 
 interface State {
 
-    nombre:               string,
-    apellido:             string,
+    name:                 string,
+    last_name:            string,
+    address:              string,
     email:                string,
-    direccion:            string,
-    cedula:               string,
-    phone:                number,
-    ciudad:               string,
-    contraseña:           string,
-    confirmar_contraseña: string,
-    placa:                string,
-    marca:                string,
-    modelo:               string,
-    capacidad:            string,
-    foto:                 string,
-    goToDriver:           boolean,
-    vehicle:              boolean,
-    goToUser:             boolean
+    phone:                string,
+    identity_card:        string,
 
 }
 
@@ -38,37 +27,50 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      nombre: '',
-      apellido: '',
+      name: '',
+      last_name: '',
+      address: '',
       email: '',
-      direccion: '',
-      cedula: '',
-      ciudad: '',
-      contraseña: '',
-      confirmar_contraseña: '',
-      placa: '',
-      marca: '',
-      modelo: '',
-      capacidad: '',
-      foto: '',
-      goToDriver: true,
-      vehicle: false,
-      goToUser: false
-
-      //
+      phone: '',
+      identity_card: ''
+      
     }
+  }
+
+  componentWillMount(){
+    
+    var info = JSON.parse(sessionStorage.login_info);
+
+    console.log(this.props.isUser);
+    
+    if(this.props.isUser){
+      this.setState({
+        name: info.User_name,
+        last_name : info.User_last_name,
+        address : info.User_address,
+        email : info.User_Email
+      });
+    } else {
+      this.setState({
+        name: info.Driver_name,
+        last_name : info.Driver_last_name,
+        address : info.Driver_address,
+        email : info.Driver_Email,
+        phone : info.Driver_phone,
+        identity_card : info.Identity_card
+      });
+    }
+
   }
 
   render() {
 
     const {isDriver, isUser} = this.props;
+    const {name, last_name, address, email, phone, identity_card} = this.state;
 
     return (
-     
-    
     <div>
-    {console.log(isDriver)} 
-    {console.log(isUser)} 
+      {console.log(this.state.name)}
       <div class="d-flex flex-row">
         <div class="col-4">
           
@@ -79,30 +81,43 @@ class Profile extends Component {
         
 
         <div class="col-4 justify-content-center">
+
+          <div className= {classNames(styles.title)} >NOMBRE:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>NOMBRE</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{name}</span>
           </div>
 
+          <div className= {classNames(styles.title)} >APELLIDO:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>APELLIDO</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{last_name}</span>
           </div>
 
+          <div className= {classNames(styles.title)} >EMAIL:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>E-MAIL</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}> {email}</span>
           </div>
 
+          <div className= {classNames(styles.title)} >DIRECCIÓN:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>DIRECCION</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{address}</span>
           </div>
 
+          <div className= {classNames(styles.title)} >CIUDAD:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>CIUDAD</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
           </div>
 
           {isDriver?
+          <>
+          <div className= {classNames(styles.title)} >CEDULA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>CEDULA</span>
-          </div> : null}
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
+          </div>
+          
+          <div className= {classNames(styles.title)} >TELEFONO:</div>
+          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
+          </div> </> : null}
         </div>
         
         {isDriver ? 
@@ -110,19 +125,22 @@ class Profile extends Component {
         <div class="col-4 justify-content-center">
 
           
-
+          <div className= {classNames(styles.title)} >PLACA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>PLACA</span>
           </div>
 
+          <div className= {classNames(styles.title)} >MARCA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>MARCA</span>
           </div>
 
+          <div className= {classNames(styles.title)} >MODELO:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>MODELO</span>
           </div>
 
+          <div className= {classNames(styles.title)} >CAPACIDAD DE CARGA(KG):</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>CAPACIDAD DE CARGA(KG)</span>
           </div>
