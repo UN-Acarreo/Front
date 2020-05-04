@@ -5,6 +5,7 @@ import RegisterForm from '../../components/registerForm/index.jsx';
 
 class RegisterDriver extends Component {
   componentWillMount(){
+    localStorage.clear();
     sessionStorage.clear();
   }
   render() {
