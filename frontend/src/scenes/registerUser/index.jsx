@@ -9,7 +9,9 @@ class RegisterUser extends Component {
     return (
 
       <div>
-      <Top message = {"UNAcarreo"}/>
+      <Top message = {"UNAcarreo"}
+             isUser = {true}
+             isDriver = {false}/>
       
       <RegisterForm isDriver = {false}
                     isUser ={true}/>

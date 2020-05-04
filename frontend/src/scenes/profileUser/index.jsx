@@ -9,7 +9,9 @@ class ProfileUser extends Component {
     return (
 
       <div>
-        <Top message = {"USERNAME"}/>
+        <Top message = {"UNAcarreo"}
+             isUser = {true}
+             isDriver = {false}/>
         <Profile  isUser = {true}
                   isDriver = {false}/>
       

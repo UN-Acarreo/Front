@@ -11,7 +11,9 @@ class HomeUser extends Component {
   render() {
      return(
       <div>
-        <Top message = {"UNAcarreo"}/>
+        <Top message = {"UNAcarreo"}
+             isUser = {true}
+             isDriver = {false}/>
 
             <div className = {styles.test}>
 

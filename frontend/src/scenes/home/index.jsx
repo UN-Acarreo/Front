@@ -7,7 +7,9 @@ class Home extends Component {
   render() {
     return(
     <div>
-        <Top message = {"UNAcarreo"}/>
+        <Top message = {"UNAcarreo"}
+             isUser = {false}
+             isDriver = {false}/>
         
         <RegisterForm isDriver = {false}
                       isHome ={true}/>
