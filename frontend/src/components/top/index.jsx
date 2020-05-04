@@ -27,20 +27,20 @@ class Top extends Component<Props, State> {
   }
 
   componentWillMount(){
-    
-    var info = JSON.parse(sessionStorage.login_info);
+    if ( this.props.isDriver|| this.props.isUser){
+       var info = JSON.parse(sessionStorage.login_info);
+  
+      if(this.props.isUser){
+        this.setState({
+          name: info.User_name
+          
+        });
+      } else{
+        this.setState({
+          name: info.Driver_name,
+        });
+      }
 
-    console.log(this.props.isUser);
-    
-    if(this.props.isUser){
-      this.setState({
-        name: info.User_name
-        
-      });
-    } else {
-      this.setState({
-        name: info.Driver_name,
-      });
     }
 
   }
