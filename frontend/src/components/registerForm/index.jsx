@@ -206,7 +206,15 @@ check_fields = async (data) => {
         })
   }
   async login(){
+    
     var request = { User_Email : this.state.email, User_password : this.state.contraseña}
+
+    const valid_fields = await this.check_fields(request);
+    if(valid_fields !== true){
+      this.notifyWarning(valid_fields)
+      return;
+    }
+
     axios.post(URL+this.state.url, {request})
       .then(res=>{
         console.log(res)
