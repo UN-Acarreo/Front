@@ -40,7 +40,6 @@ class Profile extends Component {
   componentWillMount(){
     
     var info = JSON.parse(sessionStorage.login_info);
-    var vehicle_info = JSON.parse(sessionStorage.vehicle_info);
 
     console.log(this.props.isUser);
     
@@ -52,6 +51,9 @@ class Profile extends Component {
         email : info.User_Email
       });
     } else {
+
+      var vehicle_info = JSON.parse(sessionStorage.vehicle_info);
+
       this.setState({
         name: info.Driver_name,
         last_name : info.Driver_last_name,
