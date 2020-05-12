@@ -40,6 +40,7 @@ class Profile extends Component {
   componentWillMount(){
     
     var info = JSON.parse(sessionStorage.login_info);
+    var vehicle_info = JSON.parse(sessionStorage.vehicle_info);
 
     console.log(this.props.isUser);
     
@@ -57,7 +58,11 @@ class Profile extends Component {
         address : info.Driver_address,
         email : info.Driver_Email,
         phone : info.Driver_phone,
-        identity_card : info.Identity_card
+        identity_card : info.Identity_card,
+        Plate: vehicle_info.Vehicles[0].Plate,
+        Brand: vehicle_info.Vehicles[0].Brand,
+        Model: vehicle_info.Vehicles[0].Model,
+        Payload_capacity: vehicle_info.Vehicles[0].Payload_capacity
       });
     }
 
@@ -66,7 +71,7 @@ class Profile extends Component {
   render() {
 
     const {isDriver, isUser} = this.props;
-    const {name, last_name, address, email, phone, identity_card} = this.state;
+    const {name, last_name, address, email, phone, identity_card, Plate, Brand, Model, Payload_capacity} = this.state;
 
     return (
     <div>
@@ -127,22 +132,22 @@ class Profile extends Component {
           
           <div className= {classNames(styles.title)} >PLACA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>PLACA</span>
+          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Plate}</span>
           </div>
 
           <div className= {classNames(styles.title)} >MARCA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>MARCA</span>
+            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Brand}</span>
           </div>
 
           <div className= {classNames(styles.title)} >MODELO:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>MODELO</span>
+          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Model}</span>
           </div>
 
           <div className= {classNames(styles.title)} >CAPACIDAD DE CARGA(KG):</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>CAPACIDAD DE CARGA(KG)</span>
+          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Payload_capacity}</span>
           </div>
 
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>

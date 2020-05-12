@@ -224,6 +224,7 @@ check_fields = async (data) => {
           this.notifySuccess('Inicio de Sesion Exitoso.')
           if(this.state.goToDriver){
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_driver_id))
+            sessionStorage.setItem('vehicle_info', JSON.stringify(res.data.vehicle_data))
             this.props.history.push("/driver/start")
           }else{
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_user_id))
