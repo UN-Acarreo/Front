@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 import axios from 'axios';
 
 import classNames from "classnames";
-
+const URL = 'http://localhost:3001'
 
 interface Props{
   isDriver :  boolean;
@@ -32,17 +32,19 @@ class Profile extends Component {
       address: '',
       email: '',
       phone: '',
-      identity_card: ''
-      
+      identity_card: '',
+      Driver_photo: '',
+      Vehicle_photo: ''
+
     }
   }
 
   componentWillMount(){
-    
+
     var info = JSON.parse(sessionStorage.login_info);
 
     console.log(this.props.isUser);
-    
+
     if(this.props.isUser){
       this.setState({
         name: info.User_name,
@@ -53,7 +55,8 @@ class Profile extends Component {
     } else {
 
       var vehicle_info = JSON.parse(sessionStorage.vehicle_info);
-
+      console.log(vehicle_info)
+      console.log(info)
       this.setState({
         name: info.Driver_name,
         last_name : info.Driver_last_name,
@@ -64,7 +67,9 @@ class Profile extends Component {
         Plate: vehicle_info.Vehicles[0].Plate,
         Brand: vehicle_info.Vehicles[0].Brand,
         Model: vehicle_info.Vehicles[0].Model,
-        Payload_capacity: vehicle_info.Vehicles[0].Payload_capacity
+        Payload_capacity: vehicle_info.Vehicles[0].Payload_capacity,
+        Vehicle_photo:  vehicle_info.Vehicles[0].Photo,
+        Driver_photo: info.Driver_photo
       });
     }
 
@@ -80,12 +85,13 @@ class Profile extends Component {
       {console.log(this.state.name)}
       <div class="d-flex flex-row">
         <div class="col-4">
-          
-            <img src="/mapImg.png" alt="..." class="rounded mx-auto d-block w-25"></img>
-          
-          
+
+            {/* <img src="/mapImg.png" alt="..." class="rounded mx-auto d-block w-25"></img> */}
+            <img src={URL+this.state.Driver_photo} alt="Perfil" class="rounded mx-auto d-block w-25"></img>
+
+
         </div>
-        
+
 
         <div class="col-4 justify-content-center">
 
@@ -120,18 +126,18 @@ class Profile extends Component {
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
           </div>
-          
+
           <div className= {classNames(styles.title)} >TELEFONO:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
             <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
           </div> </> : null}
         </div>
-        
-        {isDriver ? 
+
+        {isDriver ?
 
         <div class="col-4 justify-content-center">
 
-          
+
           <div className= {classNames(styles.title)} >PLACA:</div>
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
           <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Plate}</span>
@@ -153,18 +159,18 @@ class Profile extends Component {
           </div>
 
           <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <img src="/truckImg.png" alt="..." class="img-thumbnail w-75"></img>
+            <img src={URL+this.state.Vehicle_photo} alt="..." class="img-thumbnail w-75"></img>
           </div>
 
         </div> : null}
 
       </div>
 
-      
-    
-    
-    </div> 
-    
+
+
+
+    </div>
+
     );
   }
 }
