@@ -12,6 +12,7 @@ import classNames from "classnames";
 
 // Import Logger
 const URL = 'http://localhost:3001'
+const file = "registerForm"
 
 interface Props{
   isDriver :  boolean;
@@ -173,6 +174,7 @@ check_fields = async (data) => {
       console.log(encoded)
     }
     catch(err){
+      Log.error("No se pudo guardar la foto", file)
       this.notifyWarning('No se puede guardar la foto.')
       return ;
     }
@@ -192,17 +194,16 @@ check_fields = async (data) => {
         .then(res =>{
             if(res.data.status == 1){
                 //vehicle registered
-                console.log("Registro Exitoso")
+                Log.info("Registro de Vehiculo Exitoso", file)
                 this.notifySuccess('Se ha registrado el vehículo correctamente.')
             }else{
-                // error management
-                console.error("Se produjo un error al registrar el vehiculo")
+                Log.error("No se registro el Vehiculo", file)
                 this.notifyError('Se ha producido un error al registrar el vehículo.')
             }
         }).catch((error) => {
           if (error.response) {
+            Log.error(error.response.data.error, file)
             this.notifyError(error.response.data.error)
-            console.log(error.response.data.error);	
             }
         })
   }
@@ -219,10 +220,7 @@ check_fields = async (data) => {
     axios.post(URL+this.state.url, {request})
       .then(res=>{
         if(res.data.status == 1){
-          Log.trace("MENSAJE", "COMPONENTE")
-          Log.info("MENSAJE", "COMPONENTE")
-          Log.warn("MENSAJE", "COMPONENTE")
-          Log.error("MENSAJE", "COMPONENTE")
+          Log.info("Login Exitoso", file)
           this.notifySuccess('Inicio de Sesion Exitoso.')
           if(this.state.goToDriver){
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_driver_id))
@@ -237,8 +235,8 @@ check_fields = async (data) => {
         }
       }).catch((error) => {
         if (error.response) {
+          Log.error(error.response.data.error, file)
           this.notifyError(error.response.data.error)
-          console.log(error.response.data.error);
         }
       })
   }
@@ -256,6 +254,7 @@ check_fields = async (data) => {
         
       }
       catch(err){
+        Log.error("No se pudo guardar la foto", file)
         this.notifyWarning('No se puede guardar la foto.')
         return ;
       }
@@ -287,7 +286,7 @@ check_fields = async (data) => {
         .then(res => {
           if(res.data.status == 1){
             //user has been added
-            console.log('User successfuly added');
+            Log.info("Usuario creado", file)
             this.notifySuccess('Se ha registrado el usuario correctamente.')
             if(this.props.isDriver)
             {
@@ -296,15 +295,13 @@ check_fields = async (data) => {
             }
 
           }else{
-            //show an error
+            Log.error(res.data.error, file)
             this.notifyError('Se ha producido un error con los datos suministrados.')
-            console.log(res.data.error);
-
           }
         }).catch((error) => {
           if (error.response) {
+            Log.error(error.response.data.error, file)
             this.notifyError(error.response.data.error)
-            console.log(error.response.data.error);	
             }
         })
     } else {
