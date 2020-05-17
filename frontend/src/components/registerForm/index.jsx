@@ -6,6 +6,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
+import Log from '../../log.js';
 
 import classNames from "classnames";
 
@@ -217,10 +218,11 @@ check_fields = async (data) => {
 
     axios.post(URL+this.state.url, {request})
       .then(res=>{
-        console.log(res)
         if(res.data.status == 1){
-          
-          console.log("Login Succesful")
+          Log.trace("MENSAJE", "COMPONENTE")
+          Log.info("MENSAJE", "COMPONENTE")
+          Log.warn("MENSAJE", "COMPONENTE")
+          Log.error("MENSAJE", "COMPONENTE")
           this.notifySuccess('Inicio de Sesion Exitoso.')
           if(this.state.goToDriver){
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_driver_id))
