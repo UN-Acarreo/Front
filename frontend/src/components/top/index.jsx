@@ -13,7 +13,7 @@ interface Props{
 
 interface State {
   name : string
-  
+
 }
 
 
@@ -29,11 +29,11 @@ class Top extends Component<Props, State> {
   componentWillMount(){
     if ( this.props.isDriver|| this.props.isUser){
        var info = JSON.parse(sessionStorage.login_info);
-  
+
       if(this.props.isUser){
         this.setState({
           name: info.User_name
-          
+
         });
       } else{
         this.setState({
@@ -47,7 +47,7 @@ class Top extends Component<Props, State> {
 
 
   render() {
-    
+
     const {message, isUser, isDriver} = this.props;
     const {name} = this.state;
 
@@ -55,12 +55,13 @@ class Top extends Component<Props, State> {
       <div className={classNames("row", styles.header)}>
         <a {...isUser ? {href:"/user/profile"} : isDriver ? {href:"/driver/profile"} : {href:""} } className={classNames("col-1",styles.header_button)}>
 
-            {isUser || isDriver ? 
-                <img src="/user.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+            {isUser || isDriver ?
+                <img src="/employee.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)}
+                     style={{maxHeight: '100%', marginTop: '0rem'}} alt="..."></img>
               :
                 null
             }
-            
+
         </a>
         <div className={styles.text}>
 
@@ -75,12 +76,12 @@ class Top extends Component<Props, State> {
 
         <a href = "/" className={classNames("col-1",styles.header_button)}>
 
-            {isUser || isDriver ? 
+            {isUser || isDriver ?
                 <img src="/logout.png" className= {classNames("rounded mx-auto d-block", styles.imgRight)} alt="..."></img>
               :
                 null
             }
-            
+
         </a>
       </div>
     )
