@@ -10,6 +10,11 @@ import RegisterForm from '../src/components/registerForm/index.jsx';
 
 import App from './scenes/app/index.jsx';
 
+
+if (process.env.NODE_ENV !== 'production') {
+  localStorage.setItem('debug', 'UN-Acarreo:*');
+}
+
 ReactDOM.render(
       <BrowserRouter>
         <App />

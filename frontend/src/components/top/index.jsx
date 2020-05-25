@@ -28,6 +28,10 @@ class Top extends Component<Props, State> {
 
   componentWillMount(){
     if ( this.props.isDriver|| this.props.isUser){
+      //Check if session storage info exists
+      if(!sessionStorage.login_info || sessionStorage.login_info == null || sessionStorage.login_info == undefined){
+         return window.location.href = '/';
+       }
        var info = JSON.parse(sessionStorage.login_info);
 
       if(this.props.isUser){
