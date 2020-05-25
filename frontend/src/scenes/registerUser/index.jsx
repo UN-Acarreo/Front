@@ -6,7 +6,6 @@ import RegisterForm from '../../components/registerForm/index.jsx';
 
 class RegisterUser extends Component {
   componentWillMount(){
-    localStorage.clear();
     sessionStorage.clear();
   }
   render() {
