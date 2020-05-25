@@ -128,6 +128,8 @@ class HomeUser extends Component {
 
     url = URL+'/api/haulage/create'
 
+    var info = JSON.parse(sessionStorage.login_info);
+
     var url;
 
     try{
@@ -139,11 +141,10 @@ class HomeUser extends Component {
       return ;
     }
 
-    var request = { Origin_coord: this.state.start.lat, Destination_coord: this.state.end.lat, Weight: this.state.weight, Description: this.state.description, Comments: this.state.description,
-                    Date:{Year:moment(this.state.date).format('YYYY'), Month:moment(this.state.date).format('MMMM'), Day:moment(this.state.date).format('DD'), Hour:moment(this.state.time).format('hh'), Minute:moment(this.state.date).format('mm')}, 
+    var request = { Origin_coord: this.state.start.lat.toString(), Destination_coord: this.state.end.lat.toString(), Weight: this.state.weight, Description: this.state.description, Comments: this.state.description,
+                    Date:{Year:moment(this.state.date).format('YYYY'), Month:moment(this.state.date).month().toString(), Day:moment(this.state.date).format('DD'), Hour:moment(this.state.date).format('hh'), Minute:moment(this.state.date).format('mm')}, 
                     
-                    
-                    Id_user: 1, duration: 2
+                    Id_user: info.Id_user.toString(), duration: "2"
                   } 
     
     console.log(request);
