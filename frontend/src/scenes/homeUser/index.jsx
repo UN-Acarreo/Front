@@ -29,6 +29,8 @@ interface State {
     weight : string;
     start : {};
     end : {};
+    formatedDate : {};
+    formatedTime : {};
 }
 
 class HomeUser extends Component {
@@ -53,6 +55,8 @@ class HomeUser extends Component {
       weight: "",
       start : {},
       end : {},
+      formatedDate : {},
+      formatedTime : {}
       //
     }
 
@@ -84,19 +88,34 @@ class HomeUser extends Component {
 
   setDate = (date) =>{
 
+    var newDate = {
+      day : moment(date).format('DD'),
+      month : (moment(date).month()+1).toString(),
+      year : moment(date).year().toString()  
+    };
+
+
+
     var formatDate = moment(date).format('MMMM DD YYYY'); 
 
     this.setState({date :formatDate})
-    console.log(typeof date);
+    this.setState({formatedDate :newDate})
+    console.log("test" ,  newDate);
     
   }
 
   setTime = (time) =>{
 
+    var newTime = {
+      hour : moment(time).format('hh'),
+      minute : moment(time).format('mm')
+    };
+
     var formatTime = moment(time).format('hh mm'); 
 
     this.setState({time :formatTime})
-    console.log(formatTime);
+    this.setState({formatedTime :newTime})
+    console.log(newTime);
     
   }
 
@@ -126,6 +145,9 @@ class HomeUser extends Component {
 
   async search() {
 
+    const {formatedDate , formatedTime} = this.state
+    console.log(this.state.formatedDate);
+
     url = URL+'/api/haulage/create'
 
     var info = JSON.parse(sessionStorage.login_info);
@@ -142,12 +164,13 @@ class HomeUser extends Component {
     }
 
     var request = { Origin_coord: this.state.start.lat.toString(), Destination_coord: this.state.end.lat.toString(), Weight: this.state.weight, Description: this.state.description, Comments: this.state.description,
-                    Date:{Year:moment(this.state.date).format('YYYY'), Month:moment(this.state.date).month().toString(), Day:moment(this.state.date).format('DD'), Hour:moment(this.state.date).format('hh'), Minute:moment(this.state.date).format('mm')}, 
+                    Date:{Year:formatedDate.year, Month:formatedDate.month, Day:formatedDate.day, Hour:formatedTime.hour, Minute:formatedTime.minute}, 
                     
                     Id_user: info.Id_user.toString(), Duration: "2"
                   } 
     
     console.log(request);
+    
 
 
     axios.post(url, {request})
