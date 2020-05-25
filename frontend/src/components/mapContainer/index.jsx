@@ -109,6 +109,8 @@ class Map extends Component {
     console.log(e.latLng.lat(), e.latLng.lng());
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionStart: newPos})
+    this.props.onStartSelected(newPos)
+
   }
 
   handleEndMarkerChange(e){
@@ -116,16 +118,15 @@ class Map extends Component {
     console.log(e.latLng.lat(), e.latLng.lng());
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionEnd: newPos})
+    this.props.onEndSelected(newPos)
   }
 
   render() {
 
-    console.log('origen: '+ this.state.positionStart)
-    console.log('destino: '+ this.state.positionEnd)
+    
     return (
       <div>
-      {console.log(this.state.showStart)}
-        {console.log(this.state.showEnd)}
+      
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
