@@ -90,7 +90,7 @@ class HomeUser extends Component {
 
     var newDate = {
       day : moment(date).format('DD'),
-      month : (moment(date).month()+1).toString(),
+      month : (moment(date).month()).toString(),
       year : moment(date).year().toString()  
     };
 
