@@ -87,7 +87,7 @@ class HomeUser extends Component {
     var formatDate = moment(date).format('MMMM DD YYYY'); 
 
     this.setState({date :formatDate})
-    console.log(formatDate);
+    console.log(typeof date);
     
   }
 
@@ -144,7 +144,7 @@ class HomeUser extends Component {
     var request = { Origin_coord: this.state.start.lat.toString(), Destination_coord: this.state.end.lat.toString(), Weight: this.state.weight, Description: this.state.description, Comments: this.state.description,
                     Date:{Year:moment(this.state.date).format('YYYY'), Month:moment(this.state.date).month().toString(), Day:moment(this.state.date).format('DD'), Hour:moment(this.state.date).format('hh'), Minute:moment(this.state.date).format('mm')}, 
                     
-                    Id_user: info.Id_user.toString(), duration: "2"
+                    Id_user: info.Id_user.toString(), Duration: "2"
                   } 
     
     console.log(request);
