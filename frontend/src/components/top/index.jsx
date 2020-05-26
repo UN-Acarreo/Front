@@ -60,7 +60,8 @@ class Top extends Component<Props, State> {
         <a {...isUser ? {href:"/user/profile"} : isDriver ? {href:"/driver/profile"} : {href:""} } className={classNames("col-1",styles.header_button)}>
 
             {isUser || isDriver ?
-                <img src="/user.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+                <img src="/employee.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)}
+                     style={{maxHeight: '100%', marginTop: '0rem'}} alt="..."></img>
               :
                 null
             }
