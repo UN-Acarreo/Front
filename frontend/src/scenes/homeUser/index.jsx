@@ -13,7 +13,8 @@ import Modal from "react-bootstrap/Modal";
 
 import axios from 'axios';
 
-
+import { ToastContainer, toast } from 'react-toastify';
+import validator from 'validator';
 
 const URL = 'http://localhost:3001'
 
@@ -63,6 +64,56 @@ class HomeUser extends Component {
     
   }
 
+  //notification functions declaration
+  notifySuccess = (text) => toast.success(text, {containerId: 'notification'});
+  notifyWarning = (text) => toast.warning(text, {containerId: 'notification'});
+  notifyError = (text) => toast.error(text, {containerId: 'notification'});
+  notifyInfo = (text) => toast.info(text, {containerId: 'notification'});
+  
+  //Function used to check the request fields
+  check_fields = async (data) => {
+    for (const key of Object.keys(data)) {
+      var field = data[key]
+      if(key == 'Date') {
+        if (field.Year === undefined) {
+          return "No se ha asignado una fecha"
+        }
+        if (field.Hour === undefined) {
+          return "No se ha asignado una hora de inicio"
+        }
+
+        // Check date after today
+        var today = new Date()
+        today.setSeconds(0)
+        today.setMilliseconds(0)
+        today.setMinutes(today.getMinutes() + 15)
+        var inserted = new Date(parseInt(field.Year),parseInt(field.Month),parseInt(field.Day),parseInt(field.Hour),parseInt(field.Minute))
+        if (inserted <= today) {
+          return "La fecha y hora de la reserva debe ser al menos 15 minutos posterior al tiempo actual"
+        }
+
+      }
+      if(key == 'Origin_coord' && field === undefined) {
+        return "No se ha asignado una coordenada de origen"
+      }
+      if(key == 'Destination_coord' && field === undefined ) {
+        return "No se ha asignado una coordenada de destino"
+      }
+      if(key == 'Description' && validator.isEmpty(field)) {
+        return "La descripción no puede esta vacia"
+      }
+      if(key == 'Weight' && (!validator.isNumeric(field) || parseInt(field) <= 0)) {
+        return "El peso debe ser un número mayor a 0"
+      }
+      if(key == 'Id_user') {
+      }
+      if(key == 'Duration' && !validator.isNumeric(field)) {
+        return "Eddl peso debe ser un valor numerico"
+      }
+    }
+    return true;
+  }
+
   handleDate(){
     this.modalElement.current.openDateModal();
   }
@@ -107,11 +158,11 @@ class HomeUser extends Component {
   setTime = (time) =>{
 
     var newTime = {
-      hour : moment(time).format('hh'),
+      hour : moment(time).format('HH'),
       minute : moment(time).format('mm')
     };
 
-    var formatTime = moment(time).format('hh mm'); 
+    var formatTime = moment(time).format('HH mm'); 
 
     this.setState({time :formatTime})
     this.setState({formatedTime :newTime})
@@ -163,32 +214,53 @@ class HomeUser extends Component {
       return ;
     }
 
-    var request = { Origin_coord: this.state.start.lat.toString(), Destination_coord: this.state.end.lat.toString(), Weight: this.state.weight, Description: this.state.description, Comments: this.state.description,
-                    Date:{Year:formatedDate.year, Month:formatedDate.month, Day:formatedDate.day, Hour:formatedTime.hour, Minute:formatedTime.minute}, 
-                    
-                    Id_user: info.Id_user.toString(), Duration: "2"
+    var request = { Date:{Year:formatedDate.year, Month:formatedDate.month, Day:formatedDate.day, Hour:formatedTime.hour, Minute:formatedTime.minute}, 
+                    Origin_coord: this.state.start.lat ? this.state.start.lat.toString() : undefined , 
+                    Destination_coord: this.state.end.lat? this.state.end.lat.toString(): undefined, 
+                    Description: this.state.description, 
+                    Comments: "",
+                    Weight: this.state.weight, 
+                    Duration: "2",
+                    Id_user: info.Id_user.toString()
                   } 
     
     console.log(request);
     
-
+    const valid_fields = await this.check_fields(request);
+    if(valid_fields !== true){
+      this.notifyWarning(valid_fields)
+      return;
+    }
 
     axios.post(url, {request})
         .then(res =>{
             if(res.data.status == 1){
                 //vehicle registered
                 console.log("Registro Exitoso")
+                this.notifySuccess('Su reserva ha sido asignada con exito')
+                this.notifyInfo(
+                  <div> 
+                    Fecha: <br />{request.Date.Year + "/" + request.Date.Month + "/" + request.Date.Day}<br />
+                    Hora: <br />{request.Date.Hour + ":" + request.Date.Minute}<br />
+                    Coordenadas de origen: <br />{request.Origin_coord}<br />
+                    Coordenadas de destino: <br />{request.Destination_coord}<br />
+                    Descripción: <br />{request.Description}<br />
+                    Peso: <br />{request.Weight}<br />
+                    Duración: <br />{request.Duration}<br />
+                  </div>)
                
             }else{
                 // error management
-                console.error("Se produjo un error al registrar el vehiculo")
+                this.notifyWarning(res.data.error)
                 
             }
         }).catch((error) => {
           if (error.response) {
             
             console.log(error.response.data.error);	
-            }
+            this.notifyError('Ha ocurrido un error en el servidor')
+
+          }
         })
     
   }
@@ -199,6 +271,8 @@ class HomeUser extends Component {
 
      return(
       <div>
+        <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
+        
         <Top message = {"UNAcarreo"}
              isUser = {true}
              isDriver = {false}/>
