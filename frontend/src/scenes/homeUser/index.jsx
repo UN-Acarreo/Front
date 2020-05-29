@@ -238,17 +238,16 @@ class HomeUser extends Component {
                 //vehicle registered
                 console.log("Registro Exitoso")
                 this.notifySuccess('Su reserva ha sido asignada con exito')
-                this.notifyInfo(
-                  <div> 
-                    Fecha: <br />{request.Date.Year + "/" + request.Date.Month + "/" + request.Date.Day}<br />
-                    Hora: <br />{request.Date.Hour + ":" + request.Date.Minute}<br />
-                    Coordenadas de origen: <br />{request.Origin_coord}<br />
-                    Coordenadas de destino: <br />{request.Destination_coord}<br />
-                    Descripción: <br />{request.Description}<br />
-                    Peso: <br />{request.Weight}<br />
-                    Duración: <br />{request.Duration}<br />
-                  </div>)
-               
+                info = ""
+                for (var i in res.data.data) {
+                  info += "Vehiculo " + (parseInt(i)+1) + "\n"
+                  info += "     Placa: " + res.data.data[i].Plate + "\n"
+                  info += "     Marca: " + res.data.data[i].Brand + "\n"
+                  info += "     Modelo: " + res.data.data[i].Model + "\n"
+                  info += "     Conductor: " + res.data.data[i].Driver_name + " " + res.data.data[i].Driver_last_name + "\n"
+                  info += "     Telefono: " + res.data.data[i].Driver_phone + "\n"
+                }   
+                alert(info)
             }else{
                 // error management
                 this.notifyWarning(res.data.error)
