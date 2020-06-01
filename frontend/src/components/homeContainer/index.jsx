@@ -26,7 +26,7 @@ class HomeContainer extends Component {
         
         <div className= {classNames("col-6", styles.leftCon)}>
           
-          <a href="/user/profile">  
+          <a {...isDriver ? {href:"/driver/home"} : {href:"/user/home"}} >  
             <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
 
           </a>
@@ -64,7 +64,7 @@ class HomeContainer extends Component {
         </div>
 
         <div class="col-6">
-          <a {...isDriver ? {href:"/driver/home"} : {href:"/user/home"}}>  
+          <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>  
             <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
           </a>
 
