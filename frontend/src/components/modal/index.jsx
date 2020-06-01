@@ -137,9 +137,24 @@ constructor(props){
             
               <Modal.Title>Elija una Fecha</Modal.Title> : 
 
-              <Modal.Title>Elija una Hora</Modal.Title>
+              null
+          }
+
+          {isTimer ? 
             
-            }
+              <Modal.Title>Elija una Hora</Modal.Title> : 
+
+              null
+            
+          }
+
+          {isDescription ? 
+            
+              <Modal.Title>Informacion General</Modal.Title> : 
+
+              null
+            
+          }
 
           
         </Modal.Header>

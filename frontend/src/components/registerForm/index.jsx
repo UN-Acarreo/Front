@@ -389,10 +389,7 @@ check_fields = async (data) => {
                 />
             </div>
               <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()}/>
-                <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
-            </div>
+            
             <div class="col-md-12 text-center">
                 <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
             </div>
