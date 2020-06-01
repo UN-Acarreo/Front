@@ -43,9 +43,7 @@ class Profile extends Component {
   }
 
   componentWillMount(){
-
     var info = JSON.parse(sessionStorage.login_info);
-
     console.log(this.props.isUser);
 
     if(this.props.isUser){
@@ -155,7 +153,7 @@ class Profile extends Component {
             </Col>
             <Col md={4} lg={4} xl={4}>
               <div style={{paddingTop: '30px'}}>
-                <img src={URL+this.state.Driver_photo} alt="Perfil" class="rounded mx-auto d-block w-25"></img>
+                <img src="/employee.png" alt="..." class="rounded mx-auto d-block w-25"></img>
               </div>
             </Col>
             <Col md={4} lg={4} xl={4} class="justify-content-center">
