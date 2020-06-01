@@ -68,11 +68,20 @@ class UserHaulages extends Component {
     var url = URL+'/api/haulage/user/list/'+ info.Id_user;
     axios.get(url)
       .then( (response) => {
+
+        var initial = response.data.haulages[0];
+        var name = response.data.haulages[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
-                        originLat : response.data.haulages[0].route.Origin_coord.split(',')[0],
-                        originLng : response.data.haulages[0].route.Origin_coord.split(',')[1],
-                        destinationLat : response.data.haulages[0].route.Destination_coord.split(',')[0],
-                        destinationLnt : response.data.haulages[0].route.Destination_coord.split(',')[1]})
+                        originLat : initial.route.Origin_coord.split(',')[0],
+                        originLng : initial.route.Origin_coord.split(',')[1],
+                        destinationLat : initial.route.Destination_coord.split(',')[0],
+                        destinationLnt : initial.route.Destination_coord.split(',')[1],
+                        id_Haulage : 1,
+                        haulage_state : initial.status.Status_description,
+                        description : initial.cargo.Description,
+                        driver :name
+                        
+        })
 
     })
       .catch(function (error) {
@@ -90,7 +99,7 @@ class UserHaulages extends Component {
     var actualHaulage = this.state.haulagesList[index];
 
     this.setState({
-      id_Haulage : index,
+      id_Haulage : index+1,
       haulage_state : actualHaulage.status.Status_description,
       description : actualHaulage.cargo.Description,
       driver : actualHaulage.vehicles[0].driver.Driver_name,
