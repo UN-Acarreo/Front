@@ -20,3 +20,26 @@
     width: 50%;
     box-sizing: border-box;
 }
+
+.profileText {
+    margin-bottom: 5%;
+    
+}
+.textBox{
+    background-color: white;
+}
+.title{
+    padding-left: 12.5%;
+    padding-bottom: 1%;
+    font-weight: bold;
+}
+
+.button_haulage{
+    background-color: black;
+}
+
+.row2{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 1%;
+}
