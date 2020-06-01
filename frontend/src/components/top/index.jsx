@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './styles.module.scss';
 import classNames from "classnames";
 
-import {Container, Row, Col, Nav, Navbar, NavDropdown, Form, FormControl, Button} from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown} from 'react-bootstrap';
 
 interface Props{
   message : string;
@@ -94,21 +94,11 @@ class Top extends Component<Props, State> {
           }
         </div>
         <a href = "/" className={classNames("col-1",styles.header_button)}>
-<<<<<<< HEAD
           {isUser || isDriver ? 
             <img src="/logout.png" className= {classNames("rounded mx-auto d-block", styles.imgRight)} alt="..."></img>
           :
             null
           }
-=======
-
-            {isUser || isDriver ?
-                <img src="/logout.png" className= {classNames("rounded mx-auto d-block", styles.imgRight)} alt="..."></img>
-              :
-                null
-            }
-
->>>>>>> a094809927dc809440e7f7d720002e19d5091a6d
         </a>
       </div> */}
     </>

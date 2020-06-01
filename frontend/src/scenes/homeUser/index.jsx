@@ -16,6 +16,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import validator from 'validator';
 
+// IMPORT STYLES REACT-BOOTSTRAP
+import {Container, Row, Col, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+
 const URL = 'http://localhost:3001'
 
 interface State {
@@ -267,44 +270,48 @@ class HomeUser extends Component {
   render() {
 
     const {show, showStart, showEnd} = this.state;
-
      return(
-      <div>
-        <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
-        
-        <Top message = {"UNAcarreo"}
+      <>
+      <Top message = {"UNAcarreo"}
              isUser = {true}
              isDriver = {false}/>
-        
-        <ModalContainer ref = {this.modalElement}
-                        onDateSelected = {this.setDate}
-                        onTimeSelected = {this.setTime}
-                        onDescriptionSaved = {this.setDescription}
-                        onWeightSaved = {this.setWeight}
-                         />
-
-            <div className = {styles.test}>
-
-                <div class="btn-group-vertical" style={{  width: '50%' }}>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.handleDate()}>FECHA</button>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.handleTimer()}>HORA DE INICIO</button>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.handleStart()}>ORIGEN</button>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.handleEnd()}>DESTINO</button>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.handleDescription()}>DESCRIPCION</button>
-                  <button type="button" class="btn btn-secondary" style={{  background: 'black' }} onClick = {() => this.search()}>BUSCAR</button>
-                </div>
-
-                <MapContainer
-                              ref = {this.mapElement}
-                              showStart = {showStart}
-                              showEnd = {showEnd}
-                              onStartSelected = {this.setStart}
-                              onEndSelected = {this.setEnd}
-                              />
-            
-        </div> 
-            
+      <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
+      <ModalContainer ref = {this.modalElement}
+                      onDateSelected = {this.setDate}
+                      onTimeSelected = {this.setTime}
+                      onDescriptionSaved = {this.setDescription}
+                      onWeightSaved = {this.setWeight}/>
+      <Container fluid>
+        <Row style={{paddingTop: '10px'}}>
+          <Col sm={1} md={2} lg={3} xl={3}>
+          </Col>
+          <Col sm={10} md={8} lg={6} xl={6}>
+            <Navbar bg="lg" variant= "light" expand="sm">
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto" style={{align: 'center'}}>
+                  <Nav.Link onClick = {() => this.handleDate()} style={{color: 'black'}}>FECHA</Nav.Link>
+                  <Nav.Link onClick = {() => this.handleTimer()} style={{color: 'black'}}>HORA</Nav.Link>
+                  <Nav.Link onClick = {() => this.handleStart()} style={{color: 'black'}}>ORIGEN</Nav.Link>
+                  <Nav.Link onClick = {() => this.handleEnd()} style={{color: 'black'}}>DESTINO</Nav.Link>
+                  <Nav.Link onClick = {() => this.handleDescription()} style={{color: 'black'}}>DESCRIPCION</Nav.Link>
+                  <Nav.Link onClick = {() => this.search()} style={{color: 'black'}}>BUSCAR</Nav.Link>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+          </Col>
+        </Row>
+      </Container>
+      <div className = {styles.test}>
+        <MapContainer
+                      ref = {this.mapElement}
+                      showStart = {showStart}
+                      showEnd = {showEnd}
+                      onStartSelected = {this.setStart}
+                      onEndSelected = {this.setEnd}
+        />
       </div>
+      </>
     )
   }
 }

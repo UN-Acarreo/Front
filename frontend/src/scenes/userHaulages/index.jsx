@@ -10,10 +10,12 @@ import {ButtonGroup , Button} from "react-bootstrap";
 import HaulageMap from '../../components/haulageMap/index.jsx';
 
 import axios from 'axios';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton} from 'react-bootstrap';
 
 const URL = 'http://localhost:3001'
 
 const lotList = [{number:1} , {number:2} , {number:3}, {number:4} ];
+
 
 interface Props {
 
@@ -32,7 +34,7 @@ interface State {
     originLng : number;
     destinationLat : number;
     destinationLnt : number;
-    
+
 }
 
 
@@ -58,13 +60,13 @@ class UserHaulages extends Component {
   componentWillMount(){
     this.getHaulages();
 
-    
+
   }
-  
+
   async getHaulages (){
-    
+
     var info = JSON.parse(sessionStorage.login_info);;
-    
+
     var url = URL+'/api/haulage/user/list/'+ info.Id_user;
     axios.get(url)
       .then( (response) => {
@@ -80,7 +82,7 @@ class UserHaulages extends Component {
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name
-                        
+
         })
 
     })
@@ -89,8 +91,8 @@ class UserHaulages extends Component {
     })
       .then(function () {
         // always executed
-    });  
-    
+    });
+
   }
 
   handleClick(index){
@@ -108,31 +110,34 @@ class UserHaulages extends Component {
       destinationLat : actualHaulage.route.Destination_coord.split(',')[0],
       destinationLnt : actualHaulage.route.Destination_coord.split(',')[1]
     })
-     
+
   }
 
   render() {
 
-    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
 
+    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
     return (
       <>
-          <Top message = {"UNAcarreo"}
-             isUser = {true}
-             isDriver = {false}/>
-          
-          
-          <div className = {styles.test}>
-
-            <div class="btn-group-vertical" style={{  width: '50%' }}>
+        <Top message = {"UNAcarreo"}
+          isUser = {true}
+          isDriver = {false}/>
+        <Container fluid>
+          <Row className={styles.row2}>
+            <DropdownButton variant="secondary" title="Reservas" style={{width: '100%'}}>
               {haulagesList.map((row,index) => (
-                                    <button type="button" className= {classNames("btn btn-secondary", styles.button_haulage)}  key = {index} onClick = {() => this.handleClick(index)}>{"RESERVA " + (index+1)}</button>
-                                ))}
-                  
-            </div>
-
-            <div class="col-4 justify-content-center">
-
+                <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
+              ))}
+            </DropdownButton>
+          </Row>
+          <Row>
+            <Col sm={8} md={8} lg={8} xl={8}>
+              <div className = {styles.test}>
+              <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
+                          destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
+              </div>
+            </Col>
+            <Col sm={4} md={4} lg={4} xl={4}>
               <div className= {classNames(styles.title)} >NUMERO DE LA RESERVA:</div>
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{id_Haulage}</span>
@@ -152,15 +157,11 @@ class UserHaulages extends Component {
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{driver}</span>
               </div>
+            </Col>
+          </Row>
 
-              <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
-                          destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
+        </Container>
 
-            </div>
-
-          
-          </div>
-          
       </>
     )
   }

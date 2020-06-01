@@ -121,58 +121,29 @@ constructor(props){
  
 
   render() {
-    
-      const {show, isDate,isTimer, isDescription} = this.state;
-
-      
+    const {show, isDate,isTimer, isDescription} = this.state;
     return (
-      
-     
       <>
-      
         <Modal show={show} onHide={() => this.handleClose()}>
           <Modal.Header closeButton>
-
-          {isDate ? 
-            
-              <Modal.Title>Elija una Fecha</Modal.Title> : 
-
-              null
-          }
-
-          {isTimer ? 
-            
-              <Modal.Title>Elija una Hora</Modal.Title> : 
-
-              null
-            
-          }
-
-          {isDescription ? 
-            
-              <Modal.Title>Informacion General</Modal.Title> : 
-
-              null
-            
-          }
-
-          
-        </Modal.Header>
-          <Modal.Body>
-
             {isDate ? 
-            
-              <DatePicker
-                selected={this.state.startDate}
-                onChange={(value, e) => this.handleDateChange(value, e)}
-              /> : 
-
-              null
-            
-            }
-
+              <Modal.Title>Elija una Fecha</Modal.Title>
+            :null}
+            {isTimer ? 
+              <Modal.Title>Elija una Hora</Modal.Title>
+            :null}
+            {isDescription ? 
+              <Modal.Title>Informacion General</Modal.Title>
+            : null}
+          </Modal.Header>
+          <Modal.Body>
+            {isDate ?
+                <DatePicker
+                  selected={this.state.startDate}
+                  onChange={(value, e) => this.handleDateChange(value, e)}
+                />
+            :null}
             {isTimer ?
-
               <DatePicker
                 selected={this.state.time}
                 onChange={(value, e) => this.handleTimeChange(value, e)}
@@ -181,13 +152,10 @@ constructor(props){
                 timeIntervals={15}
                 timeCaption="Time"
                 dateFormat="h:mm aa"
-              /> : 
-
-              null}
-
+              /> 
+            :null}
             {isDescription ? 
               <>
-              
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Descripcion</Form.Label>
                   <Form.Control as="textarea" rows="3" ref={ref => { this.myDescription = ref; }} type="text" />
@@ -200,18 +168,11 @@ constructor(props){
 
                 <Button variant="primary" onClick = {() => this.save()}>Guardar</Button>
               </>
-              
-
-              :
-              null}
-            
-            
-          
+            : null}
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Modal>
       </>
-      
     );
   }
 }

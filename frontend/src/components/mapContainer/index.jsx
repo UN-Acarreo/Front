@@ -2,6 +2,9 @@
 
 /*global google*/
 import React, { Component } from "react";
+
+import {Container, Row, Col, Nav, Navbar, NavDropdown} from 'react-bootstrap';
+
 import {
   withGoogleMap,
   withScriptjs,
@@ -125,19 +128,17 @@ class Map extends Component {
 
     
     return (
-      <div>
-      
+      <div id="Hello">
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
-          mapElement={ <div style={{ height: '100%', width: '50%' , position : 'absolute' }} /> }
+          mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute' }} /> }
           showStart = {this.props.showStart}
           showEnd = {this.props.showEnd}
           startMarkerPos = {this.state.positionStart}
           endMarkerPos = {this.state.positionEnd}
           onStartMarkerChange={(e)=>this.handleStartMarkerChange(e)}
           onEndMarkerChange={(e)=>this.handleEndMarkerChange(e)}
-
         />
       </div>
     );
