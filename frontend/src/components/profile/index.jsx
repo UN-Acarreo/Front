@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import styles from './styles.module.css';
 import axios from 'axios';
 
+// IMPORT STYLES REACT-BOOTSTRAP
+import {Container, Row, Col, Nav } from 'react-bootstrap';
+
 import classNames from "classnames";
 const URL = 'http://localhost:3001'
 
@@ -79,100 +82,197 @@ class Profile extends Component {
     const {name, last_name, address, email, phone, identity_card, Plate, Brand, Model, Payload_capacity} = this.state;
 
     return (
-    <div>
-      {console.log(this.state.name)}
-      <div class="d-flex flex-row">
-        <div class="col-4">
-
-            {/* <img src="/mapImg.png" alt="..." class="rounded mx-auto d-block w-25"></img> */}
-            {this.state.Driver_photo ?
-                <img src={URL+this.state.Driver_photo} alt="Perfil" class="rounded mx-auto d-block w-25"></img>
-              :
-                <img src="/mapImg.png" alt="..." class="rounded mx-auto d-block w-25"></img>
-            }
-
-
-
-        </div>
-
-
-        <div class="col-4 justify-content-center">
-
-          <div className= {classNames(styles.title)} >NOMBRE:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{name}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >APELLIDO:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{last_name}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >EMAIL:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}> {email}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >DIRECCIÓN:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{address}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >CIUDAD:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
-          </div>
-
+      <Container fluid>
+        <Row style={{paddingTop: '20px'}}>
           {isDriver?
-          <>
-          <div className= {classNames(styles.title)} >CEDULA:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
-          </div>
+            <>
+            <Col md={4} lg={4} xl={4}>
+              <div style={{paddingTop: '30px'}}>
+                <img src={URL+this.state.Driver_photo} alt="Perfil" class="rounded mx-auto d-block w-25"></img>
+              </div>
+            </Col>
+            <Col md={4} lg={4} xl={4} class="justify-content-center">
+              <div className= {classNames(styles.title)} >NOMBRE:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{name}</span>
+              </div>
+              <div className= {classNames(styles.title)} >APELLIDO:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{last_name}</span>
+              </div>
+              <div className= {classNames(styles.title)} >EMAIL:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}> {email}</span>
+              </div>
+              <div className= {classNames(styles.title)} >DIRECCIÓN:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{address}</span>
+              </div>
+              <div className= {classNames(styles.title)} >CIUDAD:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
+              </div>
+                <div className= {classNames(styles.title)} >CEDULA:</div>
+                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                  <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
+                </div>
+                <div className= {classNames(styles.title)} >TELEFONO:</div>
+                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                  <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
+                </div>
+            </Col>
+            <Col md={4} lg={4} xl={4} class="justify-content-center">
+              <div className= {classNames(styles.title)} >PLACA:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Plate}</span>
+              </div>
 
-          <div className= {classNames(styles.title)} >TELEFONO:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
-          </div> </> : null}
-        </div>
+              <div className= {classNames(styles.title)} >MARCA:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Brand}</span>
+              </div>
 
-        {isDriver ?
+              <div className= {classNames(styles.title)} >MODELO:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Model}</span>
+              </div>
 
-        <div class="col-4 justify-content-center">
+              <div className= {classNames(styles.title)} >CAPACIDAD DE CARGA(KG):</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Payload_capacity}</span>
+              </div>
+
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <img src={URL+this.state.Vehicle_photo} alt="..." class="img-thumbnail w-75"></img>
+              </div>
+            </Col>
+            </>
+          :
+            <>
+            <Col md={2} lg={2} xl={2}>
+            </Col>
+            <Col md={4} lg={4} xl={4}>
+              <div style={{paddingTop: '30px'}}>
+                <img src="/employee.png" alt="..." class="rounded mx-auto d-block w-25"></img>
+              </div>
+            </Col>
+            <Col md={4} lg={4} xl={4} class="justify-content-center">
+              <div className= {classNames(styles.title)} >NOMBRE:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{name}</span>
+              </div>
+              <div className= {classNames(styles.title)} >APELLIDO:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{last_name}</span>
+              </div>
+              <div className= {classNames(styles.title)} >EMAIL:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}> {email}</span>
+              </div>
+              <div className= {classNames(styles.title)} >DIRECCIÓN:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{address}</span>
+              </div>
+              <div className= {classNames(styles.title)} >CIUDAD:</div>
+              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
+              </div>
+            </Col>
+            <Col md={2} lg={2} xl={2}>
+            </Col>
+            </>
+          }
+        </Row>
+      </Container>
+    // <div style={{paddingTop: '50px'}}>
+    //   {console.log(this.state.name)}
+    //   <div class="d-flex flex-row">
+        // <div class="col-4">
+
+        //     {/* <img src="/mapImg.png" alt="..." class="rounded mx-auto d-block w-25"></img> */}
+        //     <img src={URL+this.state.Driver_photo} alt="Perfil" class="rounded mx-auto d-block w-25"></img>
 
 
-          <div className= {classNames(styles.title)} >PLACA:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Plate}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >MARCA:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Brand}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >MODELO:</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Model}</span>
-          </div>
-
-          <div className= {classNames(styles.title)} >CAPACIDAD DE CARGA(KG):</div>
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-          <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Payload_capacity}</span>
-          </div>
-
-          <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-            <img src={URL+this.state.Vehicle_photo} alt="..." class="img-thumbnail w-75"></img>
-          </div>
-
-        </div> : null}
-
-      </div>
+        // </div>
 
 
+        // <div class="col-4 justify-content-center">
+
+        //   <div className= {classNames(styles.title)} >NOMBRE:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{name}</span>
+        //   </div>
+
+        //   <div className= {classNames(styles.title)} >APELLIDO:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{last_name}</span>
+        //   </div>
+
+        //   <div className= {classNames(styles.title)} >EMAIL:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}> {email}</span>
+        //   </div>
+
+        //   <div className= {classNames(styles.title)} >DIRECCIÓN:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{address}</span>
+        //   </div>
+
+        //   <div className= {classNames(styles.title)} >CIUDAD:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
+        //   </div>
+
+        //   {isDriver?
+        //   <>
+        //   <div className= {classNames(styles.title)} >CEDULA:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
+        //   </div>
+
+        //   <div className= {classNames(styles.title)} >TELEFONO:</div>
+        //   <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+        //     <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
+        //   </div> </> : null}
+        // </div>
+
+    //     {isDriver ?
+
+    //     <div class="col-4 justify-content-center">
 
 
-    </div>
+          // <div className= {classNames(styles.title)} >PLACA:</div>
+          // <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+          // <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Plate}</span>
+          // </div>
+
+          // <div className= {classNames(styles.title)} >MARCA:</div>
+          // <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+          //   <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Brand}</span>
+          // </div>
+
+          // <div className= {classNames(styles.title)} >MODELO:</div>
+          // <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+          // <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Model}</span>
+          // </div>
+
+          // <div className= {classNames(styles.title)} >CAPACIDAD DE CARGA(KG):</div>
+          // <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+          // <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{Payload_capacity}</span>
+          // </div>
+
+          // <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+          //   <img src={URL+this.state.Vehicle_photo} alt="..." class="img-thumbnail w-75"></img>
+          // </div>
+
+    //     </div> : null}
+
+    //   </div>
+
+
+
+
+    // </div>
 
     );
   }
