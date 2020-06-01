@@ -34,7 +34,7 @@ interface State {
     originLng : number;
     destinationLat : number;
     destinationLnt : number;
-    
+
 }
 
 
@@ -60,13 +60,13 @@ class UserHaulages extends Component {
   componentWillMount(){
     this.getHaulages();
 
-    
+
   }
-  
+
   async getHaulages (){
-    
+
     var info = JSON.parse(sessionStorage.login_info);;
-    
+
     var url = URL+'/api/haulage/user/list/'+ info.Id_user;
     axios.get(url)
       .then( (response) => {
@@ -82,7 +82,7 @@ class UserHaulages extends Component {
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name
-                        
+
         })
 
     })
@@ -91,8 +91,8 @@ class UserHaulages extends Component {
     })
       .then(function () {
         // always executed
-    });  
-    
+    });
+
   }
 
   handleClick(index){
@@ -110,10 +110,11 @@ class UserHaulages extends Component {
       destinationLat : actualHaulage.route.Destination_coord.split(',')[0],
       destinationLnt : actualHaulage.route.Destination_coord.split(',')[1]
     })
-     
+
   }
 
   render() {
+
 
     const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
     return (
@@ -125,7 +126,7 @@ class UserHaulages extends Component {
           <Row className={styles.row2}>
             <DropdownButton variant="secondary" title="Reservas" style={{width: '100%'}}>
               {haulagesList.map((row,index) => (
-                <Dropdown.Item onClick = {() => this.handleClick(index)}>{"RESERVA " + (index+1)}</Dropdown.Item>
+                <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
               ))}
             </DropdownButton>
           </Row>
@@ -158,9 +159,9 @@ class UserHaulages extends Component {
               </div>
             </Col>
           </Row>
-          
+
         </Container>
-          
+
       </>
     )
   }
