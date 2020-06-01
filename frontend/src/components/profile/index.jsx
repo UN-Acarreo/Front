@@ -177,14 +177,6 @@ class Profile extends Component {
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>BOGOTA</span>
               </div>
-                <div className= {classNames(styles.title)} >CEDULA:</div>
-                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                  <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{identity_card}</span>
-                </div>
-                <div className= {classNames(styles.title)} >TELEFONO:</div>
-                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                  <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{phone}</span>
-                </div>
             </Col>
             <Col md={2} lg={2} xl={2}>
             </Col>
