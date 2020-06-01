@@ -215,8 +215,8 @@ class HomeUser extends Component {
     }
 
     var request = { Date:{Year:formatedDate.year, Month:formatedDate.month, Day:formatedDate.day, Hour:formatedTime.hour, Minute:formatedTime.minute}, 
-                    Origin_coord: this.state.start.lat ? this.state.start.lat.toString() : undefined , 
-                    Destination_coord: this.state.end.lat? this.state.end.lat.toString(): undefined, 
+                    Origin_coord: this.state.start.lat ? this.state.start.lat.toString() + "," + this.state.start.lng.toString() : undefined , 
+                    Destination_coord: this.state.end.lat? this.state.end.lat.toString() + "," + this.state.end.lng.toString(): undefined, 
                     Description: this.state.description, 
                     Comments: "",
                     Weight: this.state.weight, 

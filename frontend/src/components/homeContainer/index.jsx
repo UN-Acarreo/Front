@@ -31,11 +31,11 @@ class HomeContainer extends Component {
       <Container fluid>
         <Row style={row_style}>
           <Col md={6}>
-            <a href="/user/profile">  
-              <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
-            </a>
             {isUser ? 
               <>
+                <a href="/user/home">  
+                  <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+                </a>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                   PROGRAMAR
                 </div>
@@ -48,6 +48,9 @@ class HomeContainer extends Component {
               </>
             : 
               <>
+                <a href="/driver/home">  
+                  <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+                </a>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                   CONSULTAR
                 </div>
@@ -61,7 +64,7 @@ class HomeContainer extends Component {
             }
           </Col>
           <Col md={6}>
-            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/home"}}>  
+            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>  
               <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
             </a>
             {isUser ?
