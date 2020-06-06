@@ -128,6 +128,8 @@ class HaulageMap extends Component {
   }
 
   componentDidUpdate(prevProps) {
+
+
     //check if the new props are the same current coords
     if(this.props.origin.lat == prevProps.origin.lat && this.props.origin.lng == prevProps.origin.lng &&
        this.props.destination.lat == prevProps.destination.lat && this.props.destination.lng == prevProps.destination.lng){
@@ -195,12 +197,13 @@ class HaulageMap extends Component {
     this.props.onEndSelected(newPos)
   }
 
+
+
   render() {
 
 
     return (
       <div>
-
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
