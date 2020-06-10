@@ -31,9 +31,9 @@ class HomeContainer extends Component {
       <Container fluid>
         <Row style={row_style}>
           <Col md={6}>
-            {isUser ? 
+            {isUser ?
               <>
-                <a href="/user/home">  
+                <a href="/user/home">
                   <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
                 </a>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
@@ -46,9 +46,9 @@ class HomeContainer extends Component {
                   RESERVA
                 </div>
               </>
-            : 
+            :
               <>
-                <a href="/driver/home">  
+                <a href="/driver/home">
                   <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
                 </a>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
@@ -60,12 +60,13 @@ class HomeContainer extends Component {
                 <div className= {classNames("d-flex justify-content-center ", styles.text)}>
                   DISPONIBLES
                 </div>
-              </> 
+              </>
             }
           </Col>
           <Col md={6}>
-            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>  
-              <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>
+            {/*  <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img> */}
+             <img src="/trucks.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} style={{maxHeight: '14em'}} alt="..."></img> 
             </a>
             {isUser ?
               <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
@@ -74,7 +75,7 @@ class HomeContainer extends Component {
             :
               <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                 MIS SERVICIOS
-              </div> 
+              </div>
             }
           </Col>
         </Row>
@@ -82,10 +83,10 @@ class HomeContainer extends Component {
       {/* <div className= {classNames("container-fluid d-flex h-100 flex-column", styles.home)}>
         <div class="row h-100">
           <div className= {classNames("col-6", styles.leftCon)}>
-            <a href="/user/profile">  
+            <a href="/user/profile">
               <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
             </a>
-            {isUser ? 
+            {isUser ?
               <>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                   PROGRAMAR
@@ -97,7 +98,7 @@ class HomeContainer extends Component {
                   RESERVA
                 </div>
               </>
-            : 
+            :
               <>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                   CONSULTAR
@@ -108,11 +109,11 @@ class HomeContainer extends Component {
                 <div className= {classNames("d-flex justify-content-center ", styles.text)}>
                   DISPONIBLES
                 </div>
-              </> 
+              </>
             }
           </div>
           <div class="col-6">
-            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/home"}}>  
+            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/home"}}>
               <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
             </a>
             {isUser ?
@@ -122,7 +123,7 @@ class HomeContainer extends Component {
             :
               <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                 MIS SERVICIOS
-              </div> 
+              </div>
             }
           </div>
         </div>
