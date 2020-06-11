@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import {ButtonGroup , Button} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 
