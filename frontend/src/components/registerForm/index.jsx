@@ -199,9 +199,22 @@ check_fields = async (data) => {
                   }
 
     const valid_fields = await this.check_fields(request);
+    
     if(valid_fields !== true){
       this.notifyWarning(valid_fields)
       return;
+    }
+
+    if ("Identity_card" in request) {
+      request.Identity_card = parseInt(request.Identity_card)
+    }
+
+    if ("Payload_capacity" in request) {
+      request.Payload_capacity = parseInt(request.Payload_capacity)
+    }
+
+    if ("db_driver_id" in request) {
+      request.db_driver_id = parseInt(request.db_driver_id)
     }
 
     axios.post(url, {request})
@@ -291,9 +304,18 @@ check_fields = async (data) => {
     }
 
     const valid_fields = await this.check_fields(request);
+    
     if(valid_fields !== true){
       this.notifyWarning(valid_fields)
       return;
+    }
+
+    if ("Identity_card" in request) {
+      request.Identity_card = parseInt(request.Identity_card)
+    }
+
+    if ("Driver_phone" in request) {
+      request.Driver_phone = parseInt(request.Driver_phone)
     }
 
     if(this.state.contraseña != this.state.confirmar_contraseña){
