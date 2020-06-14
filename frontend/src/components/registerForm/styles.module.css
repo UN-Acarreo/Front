@@ -1,8 +1,12 @@
 .container {
     border : 1px solid black;
-    width: 30%;
     margin: auto;
     padding: 2%;
+    text-align: center;
+}
+
+.marginauto {
+    margin: auto;
 }
 
 .container_options{
@@ -11,9 +15,13 @@
     
 }
 
+.test{
+    background-color: #cccccc;
+    width: 100%;
+}
+
 .button_driver ,.button_user, .button_driver_active, .button_user_active{
     background-color: black;
-    width: 50%;
     color: white;
     border: none;
     outline: 0;

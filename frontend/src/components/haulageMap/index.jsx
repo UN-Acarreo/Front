@@ -1,10 +1,6 @@
 
-
 /*global google*/
 import React, { Component } from "react";
-
-import {Container, Row, Col, Nav, Navbar, NavDropdown} from 'react-bootstrap';
-
 import {
   withGoogleMap,
   withScriptjs,
@@ -24,11 +20,16 @@ interface State {
     positionStart: {};
     positionEnd : {};
 
+    routeStart: {};
+    routeEnd : {};
+
     latStart : string;
     lngStart : string;
 
     showStart : boolean;
     showEnd : boolean;
+
+    directions : Array;
 
 }
 
@@ -70,11 +71,15 @@ interface State {
             /> :
             null
           }
+
+          <DirectionsRenderer
+          directions={props.direction}
+        />
       </GoogleMap>
     ));
 
 
-class Map extends Component {
+class HaulageMap extends Component {
 
   constructor(props){
     super(props);
@@ -82,8 +87,12 @@ class Map extends Component {
     this.state = {
       positionStart: {lat: 4.626820403668342, lng: -74.08089169311525},
       positionEnd : {lat: 4.642561609861135 ,  lng: -74.07883175659181},
+      routeStart: {lat: 4.626820403668342, lng: -74.08089169311525},
+      routeEnd : {lat: 4.642561609861135 ,  lng: -74.07883175659181},
       showStart : false,
       showEnd : false,
+      directions : null,
+      executed_directions: false
     }
 
   }
@@ -91,6 +100,68 @@ class Map extends Component {
   shouldComponentUpdate(nextProps) {
         return true;
     }*/
+
+  componentWillMount() {
+    const directionsService = new google.maps.DirectionsService();
+
+    console.log(this.state.routeStart);
+
+    const origin = this.state.routeStart;
+    const destination = this.state.routeEnd;
+
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          this.setState({
+            directions: result
+          });
+        } else {
+          console.error(`error fetching directions ${result}`);
+        }
+      }
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+
+
+    //check if the new props are the same current coords
+    if(this.props.origin.lat == prevProps.origin.lat && this.props.origin.lng == prevProps.origin.lng &&
+       this.props.destination.lat == prevProps.destination.lat && this.props.destination.lng == prevProps.destination.lng){
+      console.log('avoided')
+      console.log(this.props)
+      return; //avoid infinite loop
+    }
+
+    console.log(this.state.routeStart);
+
+    const directionsService = new google.maps.DirectionsService();
+
+    const origin = this.state.routeStart;
+    const destination = this.state.routeEnd;
+
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          this.setState({
+            directions: result
+          });
+        } else {
+          console.error(`error fetching directions ${result}`);
+        }
+      }
+    );
+  }
 
   handleStart(){
     this.setState({showStart :true})
@@ -105,6 +176,8 @@ class Map extends Component {
   componentWillReceiveProps(props) {
     this.setState({ showStart: props.showStart })
     this.setState({ showEnd: props.showEnd })
+    this.setState({ routeStart: props.origin })
+    this.setState({ routeEnd: props.destination })
   }
 
   handleStartMarkerChange(e){
@@ -124,11 +197,13 @@ class Map extends Component {
     this.props.onEndSelected(newPos)
   }
 
+
+
   render() {
 
-    
+
     return (
-      <div id="Hello">
+      <div>
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
@@ -139,10 +214,11 @@ class Map extends Component {
           endMarkerPos = {this.state.positionEnd}
           onStartMarkerChange={(e)=>this.handleStartMarkerChange(e)}
           onEndMarkerChange={(e)=>this.handleEndMarkerChange(e)}
+          direction = {this.state.directions}
         />
       </div>
     );
   }
 }
 
-export default Map;
+export default HaulageMap;

@@ -8,11 +8,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
 import Log from '../../log.js';
 
+// IMPORT STYLES REACT-BOOTSTRAP
+import {Container, Row, Col, Nav } from 'react-bootstrap';
+
 import classNames from "classnames";
 
 // Import Logger
 const URL = 'http://localhost:3001'
 const file = "registerForm"
+
+const style_navtabs = {
+  backgroundColor: 'black',
+  color: 'white',
+  width:  '100%'
+}
+
+const style_navitems = {
+  width: '50%',
+  textAlign: 'center'
+}
 
 interface Props{
   isDriver :  boolean;
@@ -323,240 +337,249 @@ check_fields = async (data) => {
   render() {
     const {isDriver, isHome} = this.props;
     const {goToDriver, vehicle, goToUser} = this.state;
-
-
     return (
-
-      <div className={styles.container}>
-      <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
-
-       {isHome ?
-       <div className = {styles.container_options}>
-          <button className = {goToDriver ?  classNames(styles.button_driver) : classNames(styles.button_driver_active)} onClick = {() => this.driverLogin()}>
-            CONDUCTOR
-          </button>
-          <button className = {goToUser ?  classNames(styles.button_user) : classNames(styles.button_user_active)} onClick = {() => this.clientLogin()}>
-            USUARIO
-        </button>
-      </div> : null}
-
-      {!isHome?
-        <form>
-          {vehicle?
-          <div>
-          <div class="form-group">
-              <label  className = {styles.input}>Marca:</label>
-              <input  type="text"
-                      name="marca"
+      <Container fluid style={{paddingTop: '50px'}}>
+        <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
+        <Row className="justify-content-center" style= {{paddingBottom: '100px'}}>
+          <Col md={6} lg={6} xl={5}>
+            <Row className="justify-content-center" style={{border: "1px solid black"}}>
+              {isHome ?
+                <ul className="nav nav-tabs" style={style_navtabs}>
+                  <li class="nav-item" style={style_navitems}>
+                    {goToDriver ? 
+                      <a class="nav-link active">CONDUCTOR</a>
+                    : 
+                      <a class="nav-link" onClick= {() => this.driverLogin()}>CONDUCTOR</a>
+                    }
+                  </li>
+                  <li class="nav-item" style={style_navitems}>
+                    {goToUser ? 
+                      <a class="nav-link active"> USUARIO </a>
+                    : 
+                      <a class="nav-link" onClick= {() => this.clientLogin()}>USUARIO</a>
+                    }
+                  </li>
+                </ul>
+              : null}
+              {!isHome?
+                <form>
+                  {vehicle?
+                    <div>
+                      <div class="form-group" style={{marginTop: '20px'}}>
+                        <label  className = {styles.input}>Marca:</label>
+                        <input  
+                          type="text"
+                          name="marca"
+                          class="form-control"
+                          placeholder = "MARCA"
+                          value={this.state.marca}
+                          id='marca'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label  className = {styles.input}>Modelo:</label>
+                        <input  
+                          type="text"
+                          name="modelo"
+                          class="form-control"
+                          placeholder = "MODELO"
+                          value={this.state.modelo}
+                          id='modelo'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label  className = {styles.input}>Placa:</label>
+                        <input  
+                          type="text"
+                          name="placa"
+                          class="form-control"
+                          placeholder = "PLACA"
+                          value={this.state.placa}
+                          id='placa'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label  className = {styles.input}>Capacidad:</label>
+                        <input  
+                          type="text"
+                          name="capacidad"
+                          class="form-control"
+                          placeholder = "CAPACIDAD APROXIMADA (Kg)"
+                          value={this.state.capacidad}
+                          id='capacidad'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
+                      <div class="col-md-12 text-center" style={{marginBottom: '20px'}}>
+                          <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
+                      </div>
+                    </div> 
+                  :
+                    <div>
+                      <div class="form-group" style={{marginTop: '20px'}}>
+                        <label  className = {styles.input}>Nombre:</label>
+                        <input  
+                          type="text"
+                          name="name"
+                          class="form-control"
+                          placeholder = "NOMBRE"
+                          value={this.state.nombre}
+                          id='nombre'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group" >
+                        <label  className = {styles.input}>Apellido:</label>
+                        <input  
+                          type="text"
+                          name="lastname"
+                          class="form-control"
+                          placeholder = "APELLIDO"
+                          value={this.state.apellido}
+                          id='apellido'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      {isDriver ?
+                        <div class="form-group" >
+                          <label  className = {styles.input}>Cedula:</label>
+                          <input  
+                            type="text"
+                            name="cedula"
+                            class="form-control"
+                            placeholder = "CEDULA"
+                            value={this.state.cedula}
+                            id='cedula'
+                            onChange={this.handleChange}
+                          />
+                        </div>  
+                      : null}
+                      {isDriver ?
+                        <div class="form-group">
+                          <label  className = {styles.input}>Telefono:</label>
+                          <input  
+                            type="text"
+                            name="phone"
+                            class="form-control"
+                            placeholder = "TELEFONO"
+                            value={this.state.phone}
+                            id='phone'
+                            onChange={this.handleChange}
+                          />
+                        </div>  
+                      : null}
+                      <div class="form-group">
+                        <label  className = {styles.input}>E-Mail:</label>
+                        <input  
+                          type="text"
+                          name="e-mail"
+                          class="form-control"
+                          placeholder = "E-MAIL"
+                          value={this.state.email}
+                          id='email'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label  className = {styles.input}>Direccion:</label>
+                        <input  
+                          type="text"
+                          name="address"
+                          class="form-control"
+                          placeholder = "DIRECCION"
+                          value={this.state.direccion}
+                          id='direccion'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-group">
+                      <label  className = {styles.input}>Contraseña:</label>
+                      <input  
+                        type="password"
+                        name="password"
+                        class="form-control"
+                        placeholder = "CONTRASEÑA"
+                        value={this.state.contraseña}
+                        id='contraseña'
+                        onChange={this.handleChange}
+                      />
+                      </div>
+                      <div class="form-group">
+                        <label  className = {styles.input}>Confirmar Contraseña:</label>
+                        <input  
+                          type="password"
+                          name="password"
+                          class="form-control"
+                          placeholder = "CONFIRMAR CONTRASEÑA"
+                          value={this.state.confirmar_contraseña}
+                          id='confirmar_contraseña'
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()}/>
+                        <label className = {styles.input_check} for="exampleCheck1"> Acepto los terminos y condiciones</label>
+                      </div>
+                      {!isDriver ?
+                        <div class="col-md-12 text-center">
+                          <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()} style={{marginBottom: '20px'}}>REGISTRARSE</button> 
+                        </div>
+                      :
+                        <div>
+                          <div class="form-group">
+                            <input type="file" name="photo" onChange= {this.selectPhoto} />
+                          </div>
+                          <div class="col-md-12 text-center">
+                            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()} style={{marginBottom: '20px'}}>CONTINUAR REGISTRO</button>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+                </form> 
+              :
+                <form>
+                  <div class="form-group" style={{marginTop: '30px'}}>
+                    <label  className = {styles.input}>E-Mail:</label>
+                    <input  
+                      type="text"
+                      name="e-mail"
                       class="form-control"
-                      placeholder = "MARCA"
-                      value={this.state.marca}
-                      id='marca'
+                      placeholder = "E-MAIL"
+                      value = {this.state.email}
+                      id='email'
                       onChange={this.handleChange}
-              />
-          </div>
-          <div class="form-group">
-                <label  className = {styles.input}>Modelo:</label>
-                <input  type="text"
-                        name="modelo"
-                        class="form-control"
-                        placeholder = "MODELO"
-                        value={this.state.modelo}
-                        id='modelo'
-                        onChange={this.handleChange}
-                />
-            </div>
-            <div class="form-group">
-                <label  className = {styles.input}>Placa:</label>
-                <input  type="text"
-                        name="placa"
-                        class="form-control"
-                        placeholder = "PLACA"
-                        value={this.state.placa}
-                        id='placa'
-                        onChange={this.handleChange}
-                />
-            </div>
-            <div class="form-group">
-                <label  className = {styles.input}>Capacidad:</label>
-                <input  type="text"
-                        name="capacidad"
-                        class="form-control"
-                        placeholder = "CAPACIDAD APROXIMADA (Kg)"
-                        value={this.state.capacidad}
-                        id='capacidad'
-                        onChange={this.handleChange}
-                />
-            </div>
-              <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()}/>
-                <label className = {styles.input_check} for="exampleCheck1">Acepto los terminos y condiciones</label>
-            </div>
-            <div class="col-md-12 text-center">
-                <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
-            </div>
-          </div> :
-          <div>
-          <div class="form-group" >
-            <label  className = {styles.input}>Nombre:</label>
-            <input  type="text"
-                    name="name"
-                    class="form-control"
-                    placeholder = "NOMBRE"
-                    value={this.state.nombre}
-                    id='nombre'
-                    onChange={this.handleChange}
-
-            />
-          </div>
-
-          <div class="form-group" >
-            <label  className = {styles.input}>Apellido:</label>
-            <input  type="text"
-                    name="lastname"
-                    class="form-control"
-                    placeholder = "APELLIDO"
-                    value={this.state.apellido}
-                    id='apellido'
-                    onChange={this.handleChange}
-            />
-          </div>
-
-
-          {isDriver ?
-          <div class="form-group" >
-            <label  className = {styles.input}>Cedula:</label>
-            <input  type="text"
-                    name="cedula"
-                    class="form-control"
-                    placeholder = "CEDULA"
-                    value={this.state.cedula}
-                    id='cedula'
-                    onChange={this.handleChange}
-
-            />
-          </div>  : null}
-
-          {isDriver ?
-          <div class="form-group" >
-            <label  className = {styles.input}>Telefono:</label>
-            <input  type="text"
-                    name="phone"
-                    class="form-control"
-                    placeholder = "TELEFONO"
-                    value={this.state.phone}
-                    id='phone'
-                    onChange={this.handleChange}
-
-            />
-          </div>  : null}
-
-
-          <div class="form-group">
-            <label  className = {styles.input}>E-Mail:</label>
-            <input  type="text"
-                    name="e-mail"
-                    class="form-control"
-                    placeholder = "E-MAIL"
-                    value={this.state.email}
-                    id='email'
-                    onChange={this.handleChange}
-            />
-          </div>
-
-          <div class="form-group">
-            <label  className = {styles.input}>Direccion:</label>
-            <input  type="text"
-                    name="address"
-                    class="form-control"
-                    placeholder = "DIRECCION"
-                    value={this.state.direccion}
-                    id='direccion'
-                    onChange={this.handleChange}
-            />
-          </div>
-
-          <div class="form-group">
-          <label  className = {styles.input}>Contraseña:</label>
-          <input  type="password"
-                  name="password"
-                  class="form-control"
-                  placeholder = "CONTRASEÑA"
-                  value={this.state.contraseña}
-                  id='contraseña'
-                  onChange={this.handleChange}
-          />
-          </div>
-
-          <div class="form-group">
-          <label  className = {styles.input}>Confirmar Contraseña:</label>
-          <input  type="password"
-                  name="password"
-                  class="form-control"
-                  placeholder = "CONFIRMAR CONTRASEÑA"
-                  value={this.state.confirmar_contraseña}
-                  id='confirmar_contraseña'
-                  onChange={this.handleChange}
-          />
-          </div>
-
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()}/>
-            <label className = {styles.input_check} for="exampleCheck1"> Acepto los terminos y condiciones</label>
-          </div>
-          {!isDriver ?<button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>REGISTRARSE</button> :
-            <div>
-            <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
-            <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()}>CONTINUAR REGISTRO</button>
-            </div>}
-            </div>}
-      </form> :
-
-        <form>
-
-          <div class="form-group">
-            <label  className = {styles.input}>E-Mail:</label>
-            <input  type="text"
-                    name="e-mail"
-                    class="form-control"
-                    placeholder = "E-MAIL"
-                    value = {this.state.email}
-                    id='email'
-                    onChange={this.handleChange}
-            />
-          </div>
-
-          <div class="form-group">
-          <label  className = {styles.input}>Contraseña:</label>
-          <input  type="password"
-                  name="password"
-                  class="form-control"
-                  placeholder = "CONTRASEÑA"
-                  value={this.state.contraseña}
-                  id='contraseña'
-                  onChange={this.handleChange}
-          />
-          </div>
-
-          <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button>
-          </div>
-
-          <label className = {styles.label}>
-
-            No tienes una cuenta? Registrate! :
-
-          </label>
-
-          <div class="col-md-12 text-center">
-
-            <a {...goToDriver ? {href:"driver/signup"} : {href:"/user/signup"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
-          </div>
-
-      </form>
-        }
-      </div>
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label  className = {styles.input}>Contraseña:</label>
+                    <input  
+                      type="password"
+                      name="password"
+                      class="form-control"
+                      placeholder = "CONTRASEÑA"
+                      value={this.state.contraseña}
+                      id='contraseña'
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button>
+                  </div>
+                  <label className = {styles.label}>No tienes una cuenta? Registrate! :</label>
+                  <div class="col-md-12 text-center" style={{paddingBottom: '20px'}}>
+                    <a {...goToDriver ? {href:"driver/signup"} : {href:"/user/signup"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
+                  </div>
+                </form>
+              }
+            </Row>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }

@@ -16,6 +16,7 @@ import ProfileUser from "../../scenes/profileUser/index.jsx";
 import ProfileDriver from "../../scenes/profileDriver/index.jsx";
 import StartUser from "../../scenes/startUser/index.jsx";
 import StartDriver from "../../scenes/startDriver/index.jsx";
+import UserHaulages from "../../scenes/userHaulages/index.jsx";
 
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
             <Route exact path="/driver/profile" component={ProfileDriver}/>
             <Route exact path="/user/start" component={StartUser}/>
             <Route exact path="/driver/start" component={StartDriver}/>
+            <Route exact path="/user/haulages" component={UserHaulages}/>
           </Switch>
 
        </div>
