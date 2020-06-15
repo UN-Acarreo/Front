@@ -254,6 +254,16 @@ class HomeUser extends Component {
       return;
     }
 
+    // Casting
+    request.Date.Year = parseInt(request.Date.Year)
+    request.Date.Month = parseInt(request.Date.Month)
+    request.Date.Day = parseInt(request.Date.Day)
+    request.Date.Hour = parseInt(request.Date.Hour)
+    request.Date.Minute = parseInt(request.Date.Minute)
+    request.Weight = parseInt(request.Weight)
+    request.Duration = parseInt(request.Duration)
+    request.Id_user = parseInt(request.Id_user)
+
     axios.post(url, {request})
         .then(res =>{
             if(res.data.status == 1){
