@@ -23,6 +23,15 @@ interface State {
 
 
     haulagesList : [];
+    statusList : [];
+
+    inProgressList : [];
+    reservedList : [];
+    cancelledList : [];
+    doneList : [];
+    waitingList : [];
+
+    activeList : [];
 
     id_Haulage : string;
     haulage_state : string;
@@ -37,6 +46,8 @@ interface State {
     startDate : string;
     endDate : string;
 
+    currentIndex : number;
+
 }
 
 class HomeDriver extends Component {
@@ -46,6 +57,13 @@ class HomeDriver extends Component {
 
     this.state = {
       haulagesList : [],
+      statusList : ["In progress", "Reserved", "Cancelled", "Done", "Waiting for driver"],
+      inProgressList : [],
+      reservedList : [],
+      cancelledList : [],
+      doneList : [],
+      waitingList : [],
+      activeList : [],
       id_Haulage : "",
       haulage_state : "",
       description : "",
@@ -57,11 +75,15 @@ class HomeDriver extends Component {
       userName : "",
       weight : "",
       startDate : "",
-      endDate : ""
+      endDate : "",
+      currentIndex : 0
       
     }
 
   }
+
+  notifySuccess = (text) => toast.success(text, {containerId: 'notification'});
+  notifyError = (text) => toast.error(text, {containerId: 'notification'});
 
   componentWillMount(){
     this.getHaulages();
@@ -74,18 +96,22 @@ class HomeDriver extends Component {
 
     var url = URL+'/api/haulage/driver/list/'+ info.Id_driver;
 
-    
-
     axios.get(url)
       .then( (response) => {
         console.log(response);
 
-        var initial = response.data.haulages[0];
+        var haulagesList = response.data.haulages;
+
+        this.getFilterLists(haulagesList);
+
+        this.setCurrentList();
+
+        var initial = this.state.activeList[0];
 
         var startDate = this.formatDate(new Date(initial.haulage.Date));
 
         var endDate = this.formatDate(new Date(initial.haulage.End_date));
-
+ 
         this.setState({ haulagesList : response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
                         originLng : initial.route.Origin_coord.split(',')[1],
@@ -112,16 +138,22 @@ class HomeDriver extends Component {
   }
 
   handleClick(index){
-    console.log( this.state.haulagesList);
+    console.log( this.state.activeList);
 
-    var actualHaulage = this.state.haulagesList[index];
+    if(this.state.activeList.length == 0){
+      this.notifyError('No existen servicios del estado seleccionado.');
+      return;
+    }
+
+    var actualHaulage = this.state.activeList[index];
 
     var startDate = this.formatDate(new Date(actualHaulage.haulage.Date));
 
     var endDate = this.formatDate(new Date(actualHaulage.haulage.End_date));
 
     this.setState({
-      
+
+      currentIndex : index,
       originLat : actualHaulage.route.Origin_coord.split(',')[0],
       originLng : actualHaulage.route.Origin_coord.split(',')[1],
       destinationLat : actualHaulage.route.Destination_coord.split(',')[0],
@@ -137,13 +169,107 @@ class HomeDriver extends Component {
 
   }
 
+  handleStatusClick(index){
+
+    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
+
+    if(index == 0){
+      this.setState({activeList : inProgressList}, function () {this.handleClick(0)});
+      return;
+    } else if(index == 1){
+      this.setState({activeList : reservedList},function () {this.handleClick(0)});
+      
+      return;
+    } else if(index == 2){
+      this.setState({activeList : cancelledList},  function () {this.handleClick(0)});
+      
+      return;
+    } else if(index == 3){
+      this.setState({activeList : doneList},  function () {this.handleClick(0)});
+      
+      return;
+    } else {
+      this.setState({activeList : waitingList},  function () {this.handleClick(0)});
+      
+      return;
+    }
+  }
+
+  getFilterLists(list){
+    
+    const inProgressList = list.filter(haulage => haulage.status.Status_description == "In progress");
+    const reservedList = list.filter(haulage => haulage.status.Status_description == "Reserved");
+    const cancelledList = list.filter(haulage => haulage.status.Status_description == "Cancelled");
+    const doneList = list.filter(haulage => haulage.status.Status_description == "Done");
+    const waitingList = list.filter(haulage => haulage.status.Status_description == "Waiting for driver");
+
+    this.setState({
+      inProgressList : inProgressList,
+      reservedList : reservedList,
+      cancelledList : cancelledList,
+      doneList : doneList,
+      waitingList : waitingList
+    });
+  }
+
+  setCurrentList(){
+
+    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
+    console.log(inProgressList);
+    
+    if(inProgressList.length !== 0){
+      console.log(1);
+      
+      this.setState({activeList : inProgressList});
+      return;
+    }else if(reservedList.length !== 0){
+      console.log(2);
+      this.setState({activeList : reservedList});
+      return;
+    }else if(cancelledList.length !== 0){
+      console.log(3);
+      this.setState({activeList : cancelledList});
+      return;
+    }else if(doneList.length !== 0){
+      console.log(4);
+      this.setState({activeList : doneList});
+      return;
+    } else {
+      console.log(5);
+      this.setState({activeList : waitingList});
+      return;
+    }
+
+  }
+
   formatDate(date){
     return moment(date).format('YYYY MM DD hh:mm');
   }
 
+  async completeService(){
+
+    var url = URL+'/api/haulage/finish';
+
+    var request = {Id_haulage: this.state.id_Haulage}
+
+    axios.post(url,{request})
+      .then( (response) => {
+
+        console.log(response);
+        this.notifySuccess('El servicio se ha completado correctamente.');
+        this.getHaulages();
+
+    })
+      .catch(function (error) {
+        console.log(error);
+    })
+      
+  }
+
   render() {
 
-    const {haulagesList, originLat, originLng, destinationLat, destinationLnt, id_Haulage, haulage_state, userName, description, weight, startDate, endDate} = this.state;
+    const { haulagesList, originLat, originLng, destinationLat, destinationLnt, id_Haulage, haulage_state, userName, description, weight, startDate, endDate, 
+            statusList, activeList, currentIndex} = this.state;
 
      return(
       <div>
@@ -151,14 +277,23 @@ class HomeDriver extends Component {
              isUser = {false}
              isDriver = {true}/>
 
+        <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
             
         <Container fluid>
           <Row className={styles.row2}>
-            <DropdownButton variant="secondary" title="Servicios" style={{width: '100%'}}>
-              {haulagesList.map((row,index) => (
+
+            <DropdownButton variant="secondary" title="Servicios">
+              {activeList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"SERVICIO " + (index+1)}</Dropdown.Item>
               ))}
             </DropdownButton>
+            
+            <DropdownButton variant="secondary" title="Estado"className={styles.drop}>
+              {statusList.map((row,index) => (
+                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{row}</Dropdown.Item>
+              ))}
+            </DropdownButton>
+            
           </Row>
 
           <Row>
@@ -203,6 +338,20 @@ class HomeDriver extends Component {
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{endDate}</span>
               </div>
+              {(haulage_state == "Done") ? 
+
+                null
+
+              :
+
+                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+                  <Button variant="success" onClick={()=>this.completeService()}>
+                    COMPLETAR SERVICIO
+                  </Button>
+                </div>
+              
+              }
+              
             </Col>
 
           </Row>
