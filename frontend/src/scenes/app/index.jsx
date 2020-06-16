@@ -11,7 +11,7 @@ import RegisterUser from "../../scenes/registerUser/index.jsx";
 import RegisterDriver from "../../scenes/registerDriver/index.jsx";
 import Home from "../../scenes/home/index.jsx";
 import HomeUser from "../../scenes/homeUser/index.jsx";
-import HomeDriver from "../../scenes/homeDriver/index.jsx";
+import HomeDriver from "../../scenes/driverHaulages/index.jsx";
 import ProfileUser from "../../scenes/profileUser/index.jsx";
 import ProfileDriver from "../../scenes/profileDriver/index.jsx";
 import StartUser from "../../scenes/startUser/index.jsx";
