@@ -53,7 +53,7 @@ class Top extends Component<Props, State> {
       }
       var info = JSON.parse(sessionStorage.login_info);
       if(this.props.isUser){
-        var url = URL+'/api/cient/notification/check/'+ info.Id_user;
+        var url = URL+'/api/client/notification/check/'+ info.Id_user;
       }else{
         var url = URL+'/api/driver/notification/check/'+ info.Id_driver;
       }
@@ -75,8 +75,8 @@ class Top extends Component<Props, State> {
 
   deleteNotification(data){
     if(this.props.isUser){
-      var urlDelete = URL+'/api/cient/notification/delete/'+ data.Id_Notification_Type +  '/' + data.Id_user + '/' + data.Id_haulage;
-      var urlGet = URL+'/api/cient/notification/check/'+ data.Id_user;
+      var urlDelete = URL+'/api/client/notification/delete/'+ data.Id_Notification_Type +  '/' + data.Id_user + '/' + data.Id_haulage;
+      var urlGet = URL+'/api/client/notification/check/'+ data.Id_user;
     }else{
       var urlDelete = URL+'/api/driver/notification/delete/'+ data.Id_Notification_Type + '/' + data.Id_driver + '/' + data.Id_haulage;
       var urlGet = URL+'/api/driver/notification/check/'+ data.Id_driver;
