@@ -14,6 +14,7 @@ import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton}
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from 'react-toastify';
+import moment from 'moment';
 
 const URL = 'http://localhost:3001'
 
@@ -93,8 +94,10 @@ class UserHaulages extends Component {
 
         //Sort the array so it stays consistent since rated haulages are returned last by database
         response.data.haulages.sort((a, b) => a.Id_haulage - b.Id_haulage);
+        
 
         var initial = response.data.haulages[0];
+
         var name = response.data.haulages[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],

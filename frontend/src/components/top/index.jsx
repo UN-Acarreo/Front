@@ -6,7 +6,7 @@ import classNames from "classnames";
 import {Container, Row, Col, Nav, Navbar, NavDropdown} from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBell, faTruck, faCircle, faUser, faSignOutAlt, faTrash} from '@fortawesome/free-solid-svg-icons'
+import { faBell, faHome, faTruck, faCircle, faUser, faSignOutAlt, faTrash} from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import Log from '../../log.js';
 
@@ -122,12 +122,14 @@ class Top extends Component<Props, State> {
           <Nav className="mr-auto">
             {isUser?
               <>
-              <Nav.Link href="/user/start" style={{fontSize: '1.5rem'}} ><FontAwesomeIcon icon={faTruck} /></Nav.Link>
+              <Nav.Link href="/user/start" style={{fontSize: '1.5rem'}} ><FontAwesomeIcon icon={faHome} /></Nav.Link>
+              <Nav.Link href="/user/haulages" style={{fontSize: '1.5rem'}} ><FontAwesomeIcon icon={faTruck} /></Nav.Link>
               <Nav.Link href="/user/profile" style={{fontSize: '1.5rem'}}><FontAwesomeIcon icon={faUser} /></Nav.Link>
               </>
             :
               <>
-              <Nav.Link href="/driver/start" style={{fontSize: '1.5rem'}}><FontAwesomeIcon icon={faTruck} /></Nav.Link>
+              <Nav.Link href="/driver/start" style={{fontSize: '1.5rem'}} ><FontAwesomeIcon icon={faHome} /></Nav.Link>
+              <Nav.Link href="/driver/home" style={{fontSize: '1.5rem'}}><FontAwesomeIcon icon={faTruck} /></Nav.Link>
               <Nav.Link href="/driver/profile" style={{fontSize: '1.5rem'}}><FontAwesomeIcon icon={faUser} /></Nav.Link>
               </>
             }
