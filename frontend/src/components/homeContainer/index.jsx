@@ -16,6 +16,7 @@ const row_style = {
   paddingTop: "40px",
   paddingBottom: "100px"
 }
+
 class HomeContainer extends Component {
 
   constructor(props){
