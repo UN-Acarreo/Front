@@ -243,7 +243,8 @@ class HomeUser extends Component {
                     Comments: "",
                     Weight: this.state.weight,
                     Duration: time,
-                    Id_user: info.Id_user.toString()
+                    Id_user: info.Id_user.toString(),
+                    Id_haulage: -1
                   }
 
     console.log(request);
