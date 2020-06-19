@@ -94,7 +94,7 @@ class UserHaulages extends Component {
 
         //Sort the array so it stays consistent since rated haulages are returned last by database
         response.data.haulages.sort((a, b) => a.Id_haulage - b.Id_haulage);
-        
+
 
         var initial = response.data.haulages[0];
 
@@ -215,7 +215,7 @@ class UserHaulages extends Component {
           isDriver = {false}/>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Container fluid>
-          <Row className={styles.row2}>
+          <Row className={styles.row2} style={{margin: '2em', marginLeft: '0em'}}>
             <DropdownButton variant="secondary" title="Reservas" style={{width: '100%'}}>
               {haulagesList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
@@ -224,7 +224,7 @@ class UserHaulages extends Component {
           </Row>
           <Row>
             <Col sm={8} md={8} lg={8} xl={8}>
-              <div className = {styles.test}>
+              <div className = {styles.test} style={{ boxShadow: '-2px 2px 13px -7px rgba(0,0,0,0.75)', borderRadius: '20px'}}>
               <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
                           destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
               </div>

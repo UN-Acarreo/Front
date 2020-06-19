@@ -60,7 +60,7 @@ class Top extends Component<Props, State> {
       axios.get(url)
         .then( (response) => {
           console.log(response)
-          this.setState({ 
+          this.setState({
             notifications: response.data.data
           })
       })
@@ -86,7 +86,7 @@ class Top extends Component<Props, State> {
         axios.get(urlGet)
           .then( (response) => {
             console.log(response)
-            this.setState({ 
+            this.setState({
               notifications: response.data.data
             })
         })
@@ -107,10 +107,11 @@ class Top extends Component<Props, State> {
 
   render() {
     const messages = [
-      'Se ha asignado un nuevo acarreo!',
-      'El acarreo ha finalizado!',
-      'El acarreo se ha cancelado!',
-      'El acarreo ha iniciado!'
+      //'Se ha asignado un nuevo acarreo!',
+      'El acarreo  le ha sido asignado',
+      'El acarreo  ha finalizado!',
+      'El acarreo  se ha cancelado!',
+      'El acarreo  ha iniciado!'
     ];
     const {message, isUser, isDriver} = this.props;
     const {notifications} = this.state;
@@ -133,17 +134,20 @@ class Top extends Component<Props, State> {
               <Nav.Link href="/driver/profile" style={{fontSize: '1.5rem'}}><FontAwesomeIcon icon={faUser} /></Nav.Link>
               </>
             }
-            
-            
+
+
               {notifications=="No tiene nuevas notificaciones" || notifications.length == 0?
-                <NavDropdown style={{fontSize: '1.5rem'}} title=<FontAwesomeIcon icon={faBell} /> id="collasible-nav-dropdown">
+                <NavDropdown style={{fontSize: '1.5rem'}} title=<FontAwesomeIcon icon={faBell} /> id="collapsible-nav-dropdown">
                   <NavDropdown.Item style={{fontSize: '1.2rem'}}>No tiene notificaciones</NavDropdown.Item>
                 </NavDropdown>
               :
-                <NavDropdown style={{fontSize: '1.5rem'}} title={<><FontAwesomeIcon icon={faBell}/><FontAwesomeIcon style={faCircleStyle} icon={faCircle}/></>} id="collasible-nav-dropdown">
+                <NavDropdown style={{fontSize: '1.5rem'}} title={<><FontAwesomeIcon icon={faBell}/><FontAwesomeIcon style={faCircleStyle} icon={faCircle}/></>} id="collapsible-nav-dropdown">
                 {notifications.map((value, index) => {
+                  var notif_text = messages[value.Id_Notification_Type-1]
                   return (<>
-                    <NavDropdown.Item style={{fontSize: '1.2rem'}}>{messages[value.Id_Notification_Type-1]}<FontAwesomeIcon onClick={() => this.deleteNotification(value)} style={faTrashStyle}icon={faTrash} /></NavDropdown.Item>
+                    <NavDropdown.Item style={{fontSize: '1.2rem'}}>
+                    {notif_text.slice(0,10)+"  #"+value.Id_haulage+notif_text.slice(10) }
+                    <FontAwesomeIcon onClick={() => this.deleteNotification(value)} style={faTrashStyle}icon={faTrash} /></NavDropdown.Item>
                     <NavDropdown.Divider/></>
                   )
                 })}
