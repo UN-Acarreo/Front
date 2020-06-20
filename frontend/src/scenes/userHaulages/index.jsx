@@ -65,6 +65,8 @@ class UserHaulages extends Component {
       //used to show bill
       show_bill_modal: false,
       amount_bill: 100000,
+      date: "",
+      weight: 1.0,
 
       //used to set the rating
       show_rating_modal : false,
@@ -97,14 +99,13 @@ class UserHaulages extends Component {
     var url = URL+'/api/haulage/user/list/'+ info.Id_user;
     axios.get(url)
       .then( (response) => {
-        console.log(response)
-
         //Sort the array so it stays consistent since rated haulages are returned last by database
         response.data.haulages.sort((a, b) => a.Id_haulage - b.Id_haulage);
 
 
         var initial = response.data.haulages[0];
-
+        console.log("Hello");
+        console.log(initial);
         var name = response.data.haulages[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
@@ -115,6 +116,9 @@ class UserHaulages extends Component {
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name,
+                        amount_bill: initial.bill.Amount,
+                        date: initial.date,
+                        weight: initial.cargo.Weight,
                         rating : initial.rating,
                         vehicles:  initial.vehicles
 
@@ -149,6 +153,9 @@ class UserHaulages extends Component {
       show_assigned_rating: false,
       show_rating_modal: false,
       show_bill_modal: false,
+      amount_bill: actualHaulage.bill.Amount,
+      date: actualHaulage.date,
+      weight: actualHaulage.cargo.Weight,
       vehicles: actualHaulage.vehicles
     })
 
@@ -159,8 +166,7 @@ class UserHaulages extends Component {
   }
 
   openBillModal(){ //opens the bill modal
-    //Peticion para recibir el precio de la factura
-    this.setState({show_bill_modal: true, amount_bill: 100000})
+    this.setState({show_bill_modal: true})
   }
   openRatingModal(){ //opens the rating modal
     this.setState({show_rating_modal: true})
@@ -242,9 +248,6 @@ class UserHaulages extends Component {
 
   render() {
     const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
-    console.log("Hello");
-    console.log(haulage_state == 'Done');
-    console.log("Hello");
     return (
       <>
         <Top message = {"UNAcarreo"}
@@ -387,12 +390,14 @@ class UserHaulages extends Component {
                   <Modal.Title>Factura</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{margin: '1em'}}>
-                  <div style={{marginBottom: '1em'}}>Resumen de servicio: COP ${this.state.amount_bill}</div>
+                  <div style={{marginBottom: '1em'}}>A continuación encontrara un resumen del acarreo realizado, gracias por preferir nuestros servicios. </div>
+                  <div>Fecha:  {this.state.date.substring(0,10)}</div>
+                  <div>Hora:  {this.state.date.substring(11,16)}</div>
+                  <div>Peso:  {this.state.weight} Kg</div>
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button variant="primary" onClick={()=>this.handleClose()}>
-                    Cerrar
-                  </Button>
+                      <div>Precio:</div>
+                      <div style={{textAlign: 'right', fontWeight: 'bold'}}>COP ${this.state.amount_bill}</div>
                 </Modal.Footer>
               </Modal>
             </Col>
