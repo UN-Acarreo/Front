@@ -10,11 +10,13 @@ import {ButtonGroup , Button} from "react-bootstrap";
 import HaulageMap from '../../components/haulageMap/index.jsx';
 import RatingModal from '../../components/RatingModal/RatingModal.js';
 import axios from 'axios';
-import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton, Card,Badge,ListGroup  } from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton, Card,Badge,ListGroup, OverlayTrigger, Tooltip  } from 'react-bootstrap';
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMoneyBillWave} from '@fortawesome/free-solid-svg-icons'
 
 const URL = 'http://localhost:3001'
 
@@ -60,6 +62,9 @@ class UserHaulages extends Component {
       rating: null,
       vehicles: null,
 
+      //used to show bill
+      show_bill_modal: false,
+      amount_bill: 100000,
 
       //used to set the rating
       show_rating_modal : false,
@@ -143,15 +148,20 @@ class UserHaulages extends Component {
       rating: actualHaulage.rating,
       show_assigned_rating: false,
       show_rating_modal: false,
+      show_bill_modal: false,
       vehicles: actualHaulage.vehicles
     })
 
   }
 
   handleClose(){ //closes the rating modal
-    this.setState({show_rating_modal: false})
+    this.setState({show_rating_modal: false, show_bill_modal: false})
   }
 
+  openBillModal(){ //opens the bill modal
+    //Peticion para recibir el precio de la factura
+    this.setState({show_bill_modal: true, amount_bill: 100000})
+  }
   openRatingModal(){ //opens the rating modal
     this.setState({show_rating_modal: true})
   }
@@ -213,7 +223,7 @@ class UserHaulages extends Component {
         var actualHaulage = this.state.haulagesList[this.state.current_index];
         actualHaulage.rating = response.data.info; //upadte the haulage with the new rating
         //upadte the haulage with the new rating and reset the rating state
-        this.setState({show_rating_modal: false, show_assigned_rating: false,
+        this.setState({show_rating_modal: false, show_assigned_rating: false, show_bill_modal: false,
                        rating: response.data.info, Puntuality: 0,
                        Cargo_state: 0, Customer_support: 0, Comments: ""})
 
@@ -231,9 +241,10 @@ class UserHaulages extends Component {
 
 
   render() {
-
-
     const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
+    console.log("Hello");
+    console.log(haulage_state == 'Done');
+    console.log("Hello");
     return (
       <>
         <Top message = {"UNAcarreo"}
@@ -251,139 +262,142 @@ class UserHaulages extends Component {
           <Row>
             <Col sm={7} md={7} lg={7} xl={7}>
               <div className = {styles.test} style={{ boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 17px -5px', borderRadius: '20px', maxWidth: '95%'}}>
-              <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
-                          destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
+                <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
+                            destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
               </div>
             </Col>
             <Col sm={5} md={5} lg={5} xl={5}>
+              <Card
+                bg={'dark'}
+                text={'white'}
+                style={{ width: '100%', marginRight: '3em', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px'}}
+                className="mb-2"
+              >
+                <Card.Header style={{fontSize: '26px',fontWeight: '500'}}>Información del servicio </Card.Header>
+                <Card.Body>
+                  <Row>
+                  <Col sm={9} md={8} lg={7} xl={97}>
+                    <div className= {classNames(styles.cont)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
+                      {" #"+id_Haulage}
+                    </div>
+                    <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>ESTADO:</span>
+                      {"  "}{haulage_state}
+                    </div>
+                    <div className= {classNames(styles.cont)} style={{marginBottom: '1em'}} ><span style={{color:'white'}}>DESCRIPCION:</span>
+                    {"  "}{description}
+                    </div>
+                  </Col>
+                  
+                  {(haulage_state == "Done") ? 
+                    <Col sm={3} md={3} lg={3} xl={3}>
+                      <div style={{fontSize: '50px'}}>
+                        <OverlayTrigger
+                          key='bottom'
+                          placement='bottom'
+                          overlay={
+                            <Tooltip id={`tooltip-factura`}>
+                              Ver Factura
+                            </Tooltip>
+                          }
+                        >
+                          <FontAwesomeIcon onClick={()=>this.openBillModal()} icon={faMoneyBillWave} style={{cursor: 'pointer', }}/>
+                          </OverlayTrigger>
+                      </div>
+                    </Col>
+                  : null }
+                  </Row>
+                  {this.state.vehicles ? this.state.vehicles.map((vehicle,index) => (
+                    <div className= {classNames(styles.cont)} >
+                    <hr/>
+                    <div  style={{marginBottom: '0.5em'}}>
+                    <span style={{color:'#2196F3'}}>CONDUCTOR ASIGNADO {index+1}: </span>
+                    {" "+vehicle.driver.Driver_name}
+                    </div>
+                    <p>Teléfono: {vehicle.driver.Driver_phone}</p>
+                      <p>
+                      <img  style={{marginRight: '1em'}} key={vehicle.vehicle.Photo}
+                            src={URL+vehicle.vehicle.Photo} width='20%'  height='20%' />
+                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Placa: {vehicle.vehicle.Plate}</Badge>
+                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Marca: {vehicle.vehicle.Brand}</Badge>
+                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Modelo: {vehicle.vehicle.Model}</Badge>
+                      </p>
+                    </div>
+                  )) : null
+                  }
+                  <Card.Footer style={{display: 'flex', padding: '0.5em'}}>
+                    {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" ?
+                      <>
+                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
+                        <Button variant="primary" onClick={()=>this.openRatingModal()}>
+                          Calificar el servicio
+                        </Button>
+                      </div>
+                      </>
+                    :
+                      <>
+                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
+                        <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
+                          Ver calificación asignada
+                        </Button>
+                      </div>
+                      <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
+                      </>
+                    }
+                    <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
+                      <Button variant="secondary" onClick={()=>this.cancelService()}>
+                        Cancelar el servicio
+                      </Button>
+                    </div>
+                  </Card.Footer>
+                </Card.Body>
+              </Card>
+              <Modal show={this.state.show_rating_modal} onHide={()=>this.handleClose()}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Calificar el servicio</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{margin: '1em'}}>
+                  <div   style={{marginBottom: '1em'}}>Puntualidad:
+                  <ReactStars count={5}  onChange={this.PuntualityChanged} value={this.state.Puntuality} size={24} half={false} color2={'#ffd700'} />
+                  </div>
 
-            <Card
-              bg={'dark'}
-              text={'white'}
-              style={{ width: '100%', marginRight: '3em', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px'}}
-              className="mb-2"
-            >
-            <Card.Header style={{fontSize: '26px',fontWeight: '500'}}>Información del servicio </Card.Header>
-             <Card.Body>
-              <div className= {classNames(styles.cont)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
-              {" #"+id_Haulage}
-              </div>
+                  <div  style={{marginBottom: '1em'}}>Estado de los paquetes:
+                  <ReactStars count={5}  onChange={this.Cargo_stateChanged}  value={this.state.Cargo_state} size={24} half={false} color2={'#ffd700'} />
+                  </div>
 
-                {/*<div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-              </Badge>
-              <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{id_Haulage}</span>
-              </div>*/}
+                  <div  style={{marginBottom: '1em'}}>Atención al cliente:
+                  <ReactStars count={5}  onChange={this.Customer_supportChanged}  value={this.state.Customer_support} size={24} half={false} color2={'#ffd700'} />
+                  </div>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>ESTADO:</span>
-              {"  "}{haulage_state}
-              </div>
-              {/*
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{haulage_state}</span>
-              </div>*/}
+                  <div  style={{marginBottom: '1em'}}>Comentarios adicionales:
+                  <div><textarea  type="text" name="name" style={{width: '70%'}} rows={2} value={this.state.Comments} onChange={this.handleCommentsChange}/></div>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={()=>this.handleClose()}>
+                    Cerrar
+                  </Button>
+                  <Button variant="primary" onClick={()=>this.send_rating()}>
+                    Enviar calificación
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
-              <div className= {classNames(styles.cont)} style={{marginBottom: '1em'}} ><span style={{color:'white'}}>DESCRIPCION:</span>
-               {"  "}{description}
-              </div>
-            {/*  <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{description}</span>
-              </div>*/}
-
-
-              {this.state.vehicles ? this.state.vehicles.map((vehicle,index) => (
-                <div className= {classNames(styles.cont)} >
-                <hr/>
-                <div  style={{marginBottom: '0.5em'}}>
-                <span style={{color:'#2196F3'}}>CONDUCTOR ASIGNADO {index+1}: </span>
-                 {" "+vehicle.driver.Driver_name}
-                </div>
-                <p>Teléfono: {vehicle.driver.Driver_phone}</p>
-                {/* <img key={index} src={URL+vehicle.driver.Driver_photo} width='20%'  height='20%' />*/}
-                  <p>
-                  <img  style={{marginRight: '1em'}} key={vehicle.vehicle.Photo}
-                        src={URL+vehicle.vehicle.Photo} width='20%'  height='20%' />
-                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Placa: {vehicle.vehicle.Plate}</Badge>
-                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Marca: {vehicle.vehicle.Brand}</Badge>
-                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Modelo: {vehicle.vehicle.Model}</Badge>
-                  </p>
-
-
-                 </div>
-              )) : null
-              }
-
-              {/*
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{driver}</span>
-              </div>*/}
-              <Card.Footer style={{display: 'flex', padding: '0.5em'}}>
-              {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" ?
-              <>
-              <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
-                <Button variant="primary" onClick={()=>this.openRatingModal()}>
-                  Calificar el servicio
-                </Button>
-              </div>
-              </>
-               :
-               <>
-               <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
-                 <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
-                   Ver calificación asignada
-                 </Button>
-               </div>
-               <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
-               </>
-             }
-
-             <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
-               <Button variant="secondary" onClick={()=>this.cancelService()}>
-                 Cancelar el servicio
-               </Button>
-             </div>
-          </Card.Footer>
-       </Card.Body>
-     </Card>
-
-
-
-          <Modal show={this.state.show_rating_modal} onHide={()=>this.handleClose()}>
-           <Modal.Header closeButton>
-             <Modal.Title>Calificar el servicio</Modal.Title>
-           </Modal.Header>
-           <Modal.Body style={{margin: '1em'}}>
-          <div   style={{marginBottom: '1em'}}>Puntualidad:
-           <ReactStars count={5}  onChange={this.PuntualityChanged} value={this.state.Puntuality} size={24} half={false} color2={'#ffd700'} />
-          </div>
-
-           <div  style={{marginBottom: '1em'}}>Estado de los paquetes:
-           <ReactStars count={5}  onChange={this.Cargo_stateChanged}  value={this.state.Cargo_state} size={24} half={false} color2={'#ffd700'} />
-           </div>
-
-           <div  style={{marginBottom: '1em'}}>Atención al cliente:
-           <ReactStars count={5}  onChange={this.Customer_supportChanged}  value={this.state.Customer_support} size={24} half={false} color2={'#ffd700'} />
-           </div>
-
-          <div  style={{marginBottom: '1em'}}>Comentarios adicionales:
-          <div><textarea  type="text" name="name" style={{width: '70%'}} rows={2} value={this.state.Comments} onChange={this.handleCommentsChange}/></div>
-           </div>
-
-            </Modal.Body>
-           <Modal.Footer>
-             <Button variant="secondary" onClick={()=>this.handleClose()}>
-               Cerrar
-             </Button>
-             <Button variant="primary" onClick={()=>this.send_rating()}>
-               Enviar calificación
-             </Button>
-           </Modal.Footer>
-         </Modal>
-
+              <Modal show={this.state.show_bill_modal} onHide={()=>this.handleClose()}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Factura</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{margin: '1em'}}>
+                  <div style={{marginBottom: '1em'}}>Resumen de servicio: COP ${this.state.amount_bill}</div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="primary" onClick={()=>this.handleClose()}>
+                    Cerrar
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </Col>
           </Row>
-
         </Container>
-
       </>
     )
   }
