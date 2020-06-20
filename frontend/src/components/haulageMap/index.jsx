@@ -207,7 +207,7 @@ class HaulageMap extends Component {
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
-          mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute' }} /> }
+          mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute',borderRadius:'20px' }} /> }
           showStart = {this.props.showStart}
           showEnd = {this.props.showEnd}
           startMarkerPos = {this.state.positionStart}

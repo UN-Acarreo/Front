@@ -10,7 +10,7 @@ import {ButtonGroup , Button} from "react-bootstrap";
 import HaulageMap from '../../components/haulageMap/index.jsx';
 import RatingModal from '../../components/RatingModal/RatingModal.js';
 import axios from 'axios';
-import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton} from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton, Card,Badge,ListGroup  } from 'react-bootstrap';
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from 'react-toastify';
@@ -58,6 +58,8 @@ class UserHaulages extends Component {
       destinationLat : 4.645812467426614,
       destinationLnt : -74.07539852905275,
       rating: null,
+      vehicles: null,
+
 
       //used to set the rating
       show_rating_modal : false,
@@ -94,7 +96,7 @@ class UserHaulages extends Component {
 
         //Sort the array so it stays consistent since rated haulages are returned last by database
         response.data.haulages.sort((a, b) => a.Id_haulage - b.Id_haulage);
-        
+
 
         var initial = response.data.haulages[0];
 
@@ -108,7 +110,8 @@ class UserHaulages extends Component {
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name,
-                        rating : initial.rating
+                        rating : initial.rating,
+                        vehicles:  initial.vehicles
 
         })
 
@@ -139,7 +142,8 @@ class UserHaulages extends Component {
       destinationLnt : actualHaulage.route.Destination_coord.split(',')[1],
       rating: actualHaulage.rating,
       show_assigned_rating: false,
-      show_rating_modal: false
+      show_rating_modal: false,
+      vehicles: actualHaulage.vehicles
     })
 
   }
@@ -171,6 +175,28 @@ class UserHaulages extends Component {
   handleCommentsChange = (event) => {
       this.setState({Comments:event.target.value})
     };
+
+  cancelService(){
+    var url = URL+'/api/haulage/cancel';
+    var request = {Id_haulage: this.state.id_Haulage,
+                   vehicles: this.state.vehicles,
+                  }
+
+    axios.post(url, {request})
+      .then( (response) => {
+        console.log(response)
+        var actualHaulage = this.state.haulagesList[this.state.current_index];
+        actualHaulage.rating = response.data.info;
+        //upadte the haulage with the new canceled status
+        this.setState({haulage_state: "Cancelado"})
+
+        this.notifySuccess(response.data.message)
+    })
+      .catch(function (error) {
+        console.log(error);
+        this.notifyError("Se ha producido un error al cancelar el servicio");
+    })
+  }
 
   send_rating(){
     console.log(this.state)
@@ -215,7 +241,7 @@ class UserHaulages extends Component {
           isDriver = {false}/>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Container fluid>
-          <Row className={styles.row2}>
+          <Row className={styles.row2} style={{margin: '2em', marginLeft: '0em'}}>
             <DropdownButton variant="secondary" title="Reservas" style={{width: '100%'}}>
               {haulagesList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
@@ -223,37 +249,77 @@ class UserHaulages extends Component {
             </DropdownButton>
           </Row>
           <Row>
-            <Col sm={8} md={8} lg={8} xl={8}>
-              <div className = {styles.test}>
+            <Col sm={7} md={7} lg={7} xl={7}>
+              <div className = {styles.test} style={{ boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 17px -5px', borderRadius: '20px', maxWidth: '95%'}}>
               <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
                           destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
               </div>
             </Col>
-            <Col sm={4} md={4} lg={4} xl={4}>
-              <div className= {classNames(styles.title)} >NUMERO DE LA RESERVA:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{id_Haulage}</span>
+            <Col sm={5} md={5} lg={5} xl={5}>
+
+            <Card
+              bg={'dark'}
+              text={'white'}
+              style={{ width: '100%', marginRight: '3em', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px'}}
+              className="mb-2"
+            >
+            <Card.Header style={{fontSize: '26px',fontWeight: '500'}}>Información del servicio </Card.Header>
+             <Card.Body>
+              <div className= {classNames(styles.cont)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
+              {" #"+id_Haulage}
               </div>
 
-              <div className= {classNames(styles.title)} >ESTADO:</div>
+                {/*<div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              </Badge>
+              <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{id_Haulage}</span>
+              </div>*/}
+
+              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>ESTADO:</span>
+              {"  "}{haulage_state}
+              </div>
+              {/*
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{haulage_state}</span>
-              </div>
+              </div>*/}
 
-              <div className= {classNames(styles.title)} >DESCRIPCION:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              <div className= {classNames(styles.cont)} style={{marginBottom: '1em'}} ><span style={{color:'white'}}>DESCRIPCION:</span>
+               {"  "}{description}
+              </div>
+            {/*  <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{description}</span>
-              </div>
+              </div>*/}
 
-              <div className= {classNames(styles.title)} >CONDUCTOR:</div>
+
+              {this.state.vehicles ? this.state.vehicles.map((vehicle,index) => (
+                <div className= {classNames(styles.cont)} >
+                <hr/>
+                <div  style={{marginBottom: '0.5em'}}>
+                <span style={{color:'#2196F3'}}>CONDUCTOR ASIGNADO {index+1}: </span>
+                 {" "+vehicle.driver.Driver_name}
+                </div>
+                <p>Teléfono: {vehicle.driver.Driver_phone}</p>
+                {/* <img key={index} src={URL+vehicle.driver.Driver_photo} width='20%'  height='20%' />*/}
+                  <p>
+                  <img  style={{marginRight: '1em'}} key={vehicle.vehicle.Photo}
+                        src={URL+vehicle.vehicle.Photo} width='20%'  height='20%' />
+                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Placa: {vehicle.vehicle.Plate}</Badge>
+                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Marca: {vehicle.vehicle.Brand}</Badge>
+                  <Badge variant="secondary" style={{marginLeft: '1em'}}>Modelo: {vehicle.vehicle.Model}</Badge>
+                  </p>
+
+
+                 </div>
+              )) : null
+              }
+
+              {/*
               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{driver}</span>
-              </div>
-
+              </div>*/}
+              <Card.Footer style={{display: 'flex', padding: '0.5em'}}>
               {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" ?
               <>
-              <div className= {classNames(styles.title)} ></div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
+              <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
                 <Button variant="primary" onClick={()=>this.openRatingModal()}>
                   Calificar el servicio
                 </Button>
@@ -261,15 +327,25 @@ class UserHaulages extends Component {
               </>
                :
                <>
-               <div className= {classNames(styles.title)} ></div>
-               <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                 <Button variant="success" onClick={()=>this.openAssignedRatingModal()}>
+               <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
+                 <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
                    Ver calificación asignada
                  </Button>
                </div>
                <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
                </>
              }
+
+             <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
+               <Button variant="secondary" onClick={()=>this.cancelService()}>
+                 Cancelar el servicio
+               </Button>
+             </div>
+          </Card.Footer>
+       </Card.Body>
+     </Card>
+
+
 
           <Modal show={this.state.show_rating_modal} onHide={()=>this.handleClose()}>
            <Modal.Header closeButton>

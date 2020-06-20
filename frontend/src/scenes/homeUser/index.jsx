@@ -336,7 +336,7 @@ class HomeUser extends Component {
           </Col>
         </Row>
       </Container>
-      <div className = {styles.test}>
+      <div className = {styles.test} >
         <MapContainer
                       ref = {this.mapElement}
                       showStart = {showStart}
