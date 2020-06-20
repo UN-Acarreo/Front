@@ -27,8 +27,16 @@ interface Props {
 
 interface State {
 
-
     haulagesList : [];
+    statusList : [];
+
+    inProgressList : [];
+    reservedList : [];
+    cancelledList : [];
+    doneList : [];
+    waitingList : [];
+
+    activeList : [];
 
     id_Haulage : string;
     haulage_state : string;
@@ -49,6 +57,13 @@ class UserHaulages extends Component {
 
     this.state = {
       haulagesList : [],
+      statusList : ["In progress", "Reserved", "Cancelled", "Done", "Waiting for driver"],
+      inProgressList : [],
+      reservedList : [],
+      cancelledList : [],
+      doneList : [],
+      waitingList : [],
+      activeList : [],
       id_Haulage : "",
       haulage_state : "",
       description : "",
@@ -97,10 +112,15 @@ class UserHaulages extends Component {
         //Sort the array so it stays consistent since rated haulages are returned last by database
         response.data.haulages.sort((a, b) => a.Id_haulage - b.Id_haulage);
 
+        var haulagesList = response.data.haulages;
 
-        var initial = response.data.haulages[0];
+        this.getFilterLists(haulagesList);
+        this.setCurrentList();
 
-        var name = response.data.haulages[0].vehicles[0].driver.Driver_name;
+
+        var initial = this.state.activeList[0];
+
+        var name = this.state.activeList[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
                         originLng : initial.route.Origin_coord.split(',')[1],
@@ -128,7 +148,12 @@ class UserHaulages extends Component {
   handleClick(index){
     console.log( this.state.haulagesList);
 
-    var actualHaulage = this.state.haulagesList[index];
+    if(this.state.activeList.length == 0){
+      this.notifyError('No existen servicios del estado seleccionado.');
+      return;
+    }
+
+    var actualHaulage = this.state.activeList[index];
 
     this.setState({
       current_index: index,
@@ -190,7 +215,8 @@ class UserHaulages extends Component {
         //upadte the haulage with the new canceled status
         this.setState({haulage_state: "Cancelado"})
 
-        this.notifySuccess(response.data.message)
+        this.notifySuccess(response.data.message);
+        this.getHaulages();
     })
       .catch(function (error) {
         console.log(error);
@@ -228,12 +254,85 @@ class UserHaulages extends Component {
     });
   }
 
+  getFilterLists(list){
+
+    const inProgressList = list.filter(haulage => haulage.status.Status_description == "In progress");
+    const reservedList = list.filter(haulage => haulage.status.Status_description == "Reserved");
+    const cancelledList = list.filter(haulage => haulage.status.Status_description == "Cancelled");
+    const doneList = list.filter(haulage => haulage.status.Status_description == "Done");
+    const waitingList = list.filter(haulage => haulage.status.Status_description == "Waiting for driver");
+
+    this.setState({
+      inProgressList : inProgressList,
+      reservedList : reservedList,
+      cancelledList : cancelledList,
+      doneList : doneList,
+      waitingList : waitingList
+    });
+  }
+
+  setCurrentList(){
+
+    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
+    console.log(inProgressList);
+
+    if(inProgressList.length !== 0){
+      console.log(1);
+
+      this.setState({activeList : inProgressList});
+      return;
+    }else if(reservedList.length !== 0){
+      console.log(2);
+      this.setState({activeList : reservedList});
+      return;
+    }else if(cancelledList.length !== 0){
+      console.log(3);
+      this.setState({activeList : cancelledList});
+      return;
+    }else if(doneList.length !== 0){
+      console.log(4);
+      this.setState({activeList : doneList});
+      return;
+    } else {
+      console.log(5);
+      this.setState({activeList : waitingList});
+      return;
+    }
+
+  }
+
+  handleStatusClick(index){
+
+    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
+
+    if(index == 0){
+      this.setState({activeList : inProgressList}, function () {this.handleClick(0)});
+      return;
+    } else if(index == 1){
+      this.setState({activeList : reservedList},function () {this.handleClick(0)});
+
+      return;
+    } else if(index == 2){
+      this.setState({activeList : cancelledList},  function () {this.handleClick(0)});
+
+      return;
+    } else if(index == 3){
+      this.setState({activeList : doneList},  function () {this.handleClick(0)});
+
+      return;
+    } else {
+      this.setState({activeList : waitingList},  function () {this.handleClick(0)});
+
+      return;
+    }
+  }
+
 
 
   render() {
 
 
-    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt} = this.state;
+    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt, statusList, activeList,} = this.state;
     return (
       <>
         <Top message = {"UNAcarreo"}
@@ -242,9 +341,15 @@ class UserHaulages extends Component {
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Container fluid>
           <Row className={styles.row2} style={{margin: '2em', marginLeft: '0em'}}>
-            <DropdownButton variant="secondary" title="Reservas" style={{width: '100%'}}>
-              {haulagesList.map((row,index) => (
+            <DropdownButton variant="secondary" title="Reservas" >
+              {activeList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
+              ))}
+            </DropdownButton>
+
+            <DropdownButton variant="secondary" title="Estado"className={styles.drop}>
+              {statusList.map((row,index) => (
+                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{row}</Dropdown.Item>
               ))}
             </DropdownButton>
           </Row>
@@ -317,7 +422,7 @@ class UserHaulages extends Component {
                 <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{driver}</span>
               </div>*/}
               <Card.Footer style={{display: 'flex', padding: '0.5em'}}>
-              {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" ?
+              {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" && haulage_state == "Done" ?
               <>
               <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
                 <Button variant="primary" onClick={()=>this.openRatingModal()}>
@@ -325,7 +430,7 @@ class UserHaulages extends Component {
                 </Button>
               </div>
               </>
-               :
+               :haulage_state == "Done" ?
                <>
                <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
                  <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
@@ -334,13 +439,25 @@ class UserHaulages extends Component {
                </div>
                <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
                </>
+
+               :
+
+               null
              }
 
-             <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
-               <Button variant="secondary" onClick={()=>this.cancelService()}>
-                 Cancelar el servicio
-               </Button>
-             </div>
+             {haulage_state =="Reserved" ?
+             
+              <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
+                <Button variant="secondary" onClick={()=>this.cancelService()}>
+                  Cancelar el servicio
+                </Button>
+              </div> : 
+
+              null
+             
+             }
+
+             
           </Card.Footer>
        </Card.Body>
      </Card>
