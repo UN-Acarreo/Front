@@ -434,29 +434,31 @@ class UserHaulages extends Component {
                   )) : null
                   }
                   <Card.Footer style={{display: 'flex', padding: '0.5em'}}>
-                    {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" ?
+                    {this.state.rating == null || this.state.rating == "El servicio no ha sido calificado" && haulage_state == "Done" ?
                       <>
-                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
-                        <Button variant="primary" onClick={()=>this.openRatingModal()}>
-                          Calificar el servicio
+                        <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
+                          <Button variant="primary" onClick={()=>this.openRatingModal()}>
+                            Calificar el servicio
+                          </Button>
+                        </div>
+                      </>
+                    :haulage_state == "Done" ?
+                      <>
+                        <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
+                          <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
+                            Ver calificación asignada
+                          </Button>
+                        </div>
+                        <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
+                      </>
+                    :null}
+                    {haulage_state =="Reserved" ?
+                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
+                        <Button variant="secondary" onClick={()=>this.cancelService()}>
+                          Cancelar el servicio
                         </Button>
                       </div>
-                      </>
-                    :
-                      <>
-                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em', marginLeft: '0'}}>
-                        <Button variant="primary" onClick={()=>this.openAssignedRatingModal()}>
-                          Ver calificación asignada
-                        </Button>
-                      </div>
-                      <RatingModal show={this.state.show_assigned_rating} rating={this.state.rating} />
-                      </>
-                    }
-                    <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
-                      <Button variant="secondary" onClick={()=>this.cancelService()}>
-                        Cancelar el servicio
-                      </Button>
-                    </div>
+                    : null}
                   </Card.Footer>
                 </Card.Body>
               </Card>
