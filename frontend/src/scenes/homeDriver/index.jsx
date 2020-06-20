@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-//import classNames from 'classnames';
+import classNames from 'classnames';
 
 import styles from './styles.module.css';
 
