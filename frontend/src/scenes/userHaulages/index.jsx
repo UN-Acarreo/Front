@@ -28,15 +28,15 @@ interface Props {
 interface State {
 
     haulagesList : [];
-    statusList : [];
+    userStatusList : [];
 
-    inProgressList : [];
-    reservedList : [];
-    cancelledList : [];
-    doneList : [];
-    waitingList : [];
+    userInProgressList : [];
+    userReservedList : [];
+    userCancelledList : [];
+    userDoneList : [];
+    userWaitingList : [];
 
-    activeList : [];
+    userActiveList : [];
 
     id_Haulage : string;
     haulage_state : string;
@@ -57,13 +57,13 @@ class UserHaulages extends Component {
 
     this.state = {
       haulagesList : [],
-      statusList : ["In progress", "Reserved", "Cancelled", "Done", "Waiting for driver"],
-      inProgressList : [],
-      reservedList : [],
-      cancelledList : [],
-      doneList : [],
-      waitingList : [],
-      activeList : [],
+      userStatusList : ["In progress", "Reserved", "Cancelled", "Done", "Waiting for driver"],
+      userInProgressList : [],
+      userReservedList : [],
+      userCancelledList : [],
+      userDoneList : [],
+      userWaitingList : [],
+      userActiveList : [],
       id_Haulage : "",
       haulage_state : "",
       description : "",
@@ -118,9 +118,9 @@ class UserHaulages extends Component {
         this.setCurrentList();
 
 
-        var initial = this.state.activeList[0];
+        var initial = this.state.userActiveList[0];
 
-        var name = this.state.activeList[0].vehicles[0].driver.Driver_name;
+        var name = this.state.userActiveList[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
                         originLng : initial.route.Origin_coord.split(',')[1],
@@ -148,12 +148,12 @@ class UserHaulages extends Component {
   handleClick(index){
     console.log( this.state.haulagesList);
 
-    if(this.state.activeList.length == 0){
+    if(this.state.userActiveList.length == 0){
       this.notifyError('No existen servicios del estado seleccionado.');
       return;
     }
 
-    var actualHaulage = this.state.activeList[index];
+    var actualHaulage = this.state.userActiveList[index];
 
     this.setState({
       current_index: index,
@@ -256,46 +256,46 @@ class UserHaulages extends Component {
 
   getFilterLists(list){
 
-    const inProgressList = list.filter(haulage => haulage.status.Status_description == "In progress");
-    const reservedList = list.filter(haulage => haulage.status.Status_description == "Reserved");
-    const cancelledList = list.filter(haulage => haulage.status.Status_description == "Cancelled");
-    const doneList = list.filter(haulage => haulage.status.Status_description == "Done");
-    const waitingList = list.filter(haulage => haulage.status.Status_description == "Waiting for driver");
+    const userInProgressList = list.filter(haulage => haulage.status.Status_description == "In progress");
+    const userReservedList = list.filter(haulage => haulage.status.Status_description == "Reserved");
+    const userCancelledList = list.filter(haulage => haulage.status.Status_description == "Cancelled");
+    const userDoneList = list.filter(haulage => haulage.status.Status_description == "Done");
+    const userWaitingList = list.filter(haulage => haulage.status.Status_description == "Waiting for driver");
 
     this.setState({
-      inProgressList : inProgressList,
-      reservedList : reservedList,
-      cancelledList : cancelledList,
-      doneList : doneList,
-      waitingList : waitingList
+      userInProgressList : userInProgressList,
+      userReservedList : userReservedList,
+      userCancelledList : userCancelledList,
+      userDoneList : userDoneList,
+      userWaitingList : userWaitingList
     });
   }
 
   setCurrentList(){
 
-    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
-    console.log(inProgressList);
+    const {userInProgressList, userReservedList, userCancelledList, userDoneList, userWaitingList} = this.state;
+    console.log(userInProgressList);
 
-    if(inProgressList.length !== 0){
+    if(userInProgressList.length !== 0){
       console.log(1);
 
-      this.setState({activeList : inProgressList});
+      this.setState({userActiveList : userInProgressList});
       return;
-    }else if(reservedList.length !== 0){
+    }else if(userReservedList.length !== 0){
       console.log(2);
-      this.setState({activeList : reservedList});
+      this.setState({userActiveList : userReservedList});
       return;
-    }else if(cancelledList.length !== 0){
+    }else if(userCancelledList.length !== 0){
       console.log(3);
-      this.setState({activeList : cancelledList});
+      this.setState({userActiveList : userCancelledList});
       return;
-    }else if(doneList.length !== 0){
+    }else if(userDoneList.length !== 0){
       console.log(4);
-      this.setState({activeList : doneList});
+      this.setState({userActiveList : userDoneList});
       return;
     } else {
       console.log(5);
-      this.setState({activeList : waitingList});
+      this.setState({userActiveList : userWaitingList});
       return;
     }
 
@@ -303,25 +303,25 @@ class UserHaulages extends Component {
 
   handleStatusClick(index){
 
-    const {inProgressList, reservedList, cancelledList, doneList, waitingList} = this.state;
+    const {userInProgressList, userReservedList, userCancelledList, userDoneList, userWaitingList} = this.state;
 
     if(index == 0){
-      this.setState({activeList : inProgressList}, function () {this.handleClick(0)});
+      this.setState({userActiveList : userInProgressList}, function () {this.handleClick(0)});
       return;
     } else if(index == 1){
-      this.setState({activeList : reservedList},function () {this.handleClick(0)});
+      this.setState({userActiveList : userReservedList},function () {this.handleClick(0)});
 
       return;
     } else if(index == 2){
-      this.setState({activeList : cancelledList},  function () {this.handleClick(0)});
+      this.setState({userActiveList : userCancelledList},  function () {this.handleClick(0)});
 
       return;
     } else if(index == 3){
-      this.setState({activeList : doneList},  function () {this.handleClick(0)});
+      this.setState({userActiveList : userDoneList},  function () {this.handleClick(0)});
 
       return;
     } else {
-      this.setState({activeList : waitingList},  function () {this.handleClick(0)});
+      this.setState({userActiveList : userWaitingList},  function () {this.handleClick(0)});
 
       return;
     }
@@ -332,7 +332,7 @@ class UserHaulages extends Component {
   render() {
 
 
-    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt, statusList, activeList,} = this.state;
+    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt, userStatusList, userActiveList,} = this.state;
     return (
       <>
         <Top message = {"UNAcarreo"}
@@ -342,13 +342,13 @@ class UserHaulages extends Component {
         <Container fluid>
           <Row className={styles.row2} style={{margin: '2em', marginLeft: '0em'}}>
             <DropdownButton variant="secondary" title="Reservas" >
-              {activeList.map((row,index) => (
+              {userActiveList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
               ))}
             </DropdownButton>
 
             <DropdownButton variant="secondary" title="Estado"className={styles.drop}>
-              {statusList.map((row,index) => (
+              {userStatusList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{row}</Dropdown.Item>
               ))}
             </DropdownButton>
