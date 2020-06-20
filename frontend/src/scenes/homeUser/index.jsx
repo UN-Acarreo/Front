@@ -243,7 +243,8 @@ class HomeUser extends Component {
                     Comments: "",
                     Weight: this.state.weight,
                     Duration: time,
-                    Id_user: info.Id_user.toString()
+                    Id_user: info.Id_user.toString(),
+                    Id_haulage: -1
                   }
 
     console.log(request);
@@ -335,7 +336,7 @@ class HomeUser extends Component {
           </Col>
         </Row>
       </Container>
-      <div className = {styles.test}>
+      <div className = {styles.test} >
         <MapContainer
                       ref = {this.mapElement}
                       showStart = {showStart}

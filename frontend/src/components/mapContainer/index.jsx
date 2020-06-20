@@ -126,13 +126,13 @@ class Map extends Component {
 
   render() {
 
-    
+
     return (
-      <div id="Hello">
+      <div id="Hello" >
         <GoogleMapExample
           center = { { lat:  4.6097100, lng: -74.0817500 } }
           containerElement={ <div style={{ height: '100%', width: '100%' , overflow: 'hidden'}} /> }
-          mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute' }} /> }
+          mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute'}} /> }
           showStart = {this.props.showStart}
           showEnd = {this.props.showEnd}
           startMarkerPos = {this.state.positionStart}
