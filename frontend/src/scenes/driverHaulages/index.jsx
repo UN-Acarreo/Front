@@ -10,7 +10,7 @@ import {ButtonGroup , Button} from "react-bootstrap";
 import HaulageMap from '../../components/haulageMap/index.jsx';
 import RatingModal from '../../components/RatingModal/RatingModal.js';
 import axios from 'axios';
-import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton} from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Card,Dropdown, DropdownButton} from 'react-bootstrap';
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from 'react-toastify';
@@ -84,6 +84,7 @@ class HomeDriver extends Component {
 
   notifySuccess = (text) => toast.success(text, {containerId: 'notification'});
   notifyError = (text) => toast.error(text, {containerId: 'notification'});
+  notifyWarnings = (text) => toast.warning(text, {containerId: 'notification'});
 
   componentWillMount(){
     this.getHaulages();
@@ -108,9 +109,12 @@ class HomeDriver extends Component {
 
         var initial = this.state.activeList[0];
 
+        var startDate = new Date(initial.haulage.Date).toString()
+        var endDate = new Date(initial.haulage.End_date).toString()
+/*
         var startDate = this.formatDate(new Date(initial.haulage.Date));
 
-        var endDate = this.formatDate(new Date(initial.haulage.End_date));
+        var endDate = this.formatDate(new Date(initial.haulage.End_date));*/
 
         this.setState({ haulagesList : response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
@@ -147,9 +151,14 @@ class HomeDriver extends Component {
 
     var actualHaulage = this.state.activeList[index];
 
+    var startDate = new Date(actualHaulage.haulage.Date).toString()
+    var endDate = new Date(actualHaulage.haulage.End_date).toString()
+    /*
+    console.log("######## "+actualHaulage.haulage.Date)
+
     var startDate = this.formatDate(new Date(actualHaulage.haulage.Date));
 
-    var endDate = this.formatDate(new Date(actualHaulage.haulage.End_date));
+    var endDate = this.formatDate(new Date(actualHaulage.haulage.End_date));*/
 
     this.setState({
 
@@ -243,7 +252,38 @@ class HomeDriver extends Component {
   }
 
   formatDate(date){
-    return moment(date).format('YYYY MM DD hh:mm');
+    return moment(date).format('YYYY/MM/DD hh:mm A');
+  }
+
+  async beginService(){
+    var url = URL+'/api/haulage/begin';
+    console.log(this.state.startDate)
+    var start = new Date(this.state.startDate)
+    var today = new Date();
+
+    console.log(today)
+    console.log(start)
+
+
+    //if(Date.parse(start) > Date.parse(today)){
+    if(start.getTime() > today.getTime()){
+
+       this.notifyWarnings('No es posible iniciar el servicio antes de la hora de reserva');
+       return;
+    }
+
+    var request = {Id_haulage: this.state.id_Haulage}
+
+    axios.post(url, {request} )
+      .then( (response) => {
+        this.notifySuccess('El servicio se ha iniciado correctamente.');
+        this.getHaulages();
+
+    }).catch(function (error) {
+      this.notifyError(error);
+      console.log(error);
+    })
+
   }
 
   async completeService(){
@@ -254,7 +294,6 @@ class HomeDriver extends Component {
 
     axios.post(url,{request})
       .then( (response) => {
-
         console.log(response);
         this.notifySuccess('El servicio se ha completado correctamente.');
         this.getHaulages();
@@ -306,60 +345,81 @@ class HomeDriver extends Component {
           </Row>
 
           <Row>
-            <Col sm={8} md={8} lg={8} xl={8}>
-              <div className = {styles.test}  style={{ boxShadow: '-2px 2px 13px -7px rgba(0,0,0,0.75)', borderRadius: '20px'}}>
+            <Col sm={7} md={7} lg={7} xl={7}>
+              <div className = {styles.test}  style={{ boxShadow: '-2px 2px 13px -7px rgba(0,0,0,0.75)', borderRadius: '20px', maxWidth: '95%'}}>
               <HaulageMap origin = {{lat:  parseFloat(originLat), lng:parseFloat(originLng)}}
                           destination = {{lat:  parseFloat(destinationLat), lng: parseFloat(destinationLnt)}}/>
               </div>
             </Col>
-            <Col sm={4} md={4} lg={4} xl={4}>
-              <div className= {classNames(styles.title)} >NUMERO DE LA RESERVA:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{id_Haulage}</span>
+            <Col sm={5} md={5} lg={5} xl={5}>
+
+            <Card
+              bg={'dark'}
+              text={'white'}
+              style={{ width: '100%', marginRight: '3em', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px'}}
+              className="mb-2"
+            >
+              <Card.Header style={{fontSize: '26px',fontWeight: '500'}}>Información del servicio </Card.Header>
+              <Card.Body>
+
+              <div className= {classNames(styles.contd)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
+                {" #"+id_Haulage}
               </div>
 
-              <div className= {classNames(styles.title)} >ESTADO:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{haulage_state}</span>
+              <div className= {classNames(styles.contd)} > <span style={{color:'#2196F3'}}>ESTADO:</span>
+                {"  "}{haulage_state}
               </div>
 
-              <div className= {classNames(styles.title)} >CLIENTE:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{userName}</span>
+              <img  style={{marginRight: '1em'}}  src="/box.png" width='15%'  height='15%' />
+
+              <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
+
+
+              <div className= {classNames(styles.contd)} > <span >CLIENTE:</span>
+               {userName}
               </div>
 
-              <div className= {classNames(styles.title)} >DESCRIPCION:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{description}</span>
+              <div className= {classNames(styles.contd)} > <span >DESCRIPCION:</span>
+                {description}
               </div>
 
-              <div className= {classNames(styles.title)} >PESO DE LA CARGA:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{weight}</span>
+              <div className= {classNames(styles.contd)} > <span >PESO DE LA CARGA:</span>
+                {weight}
               </div>
 
-              <div className= {classNames(styles.title)} >FECHA DE INICIO:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{startDate}</span>
+              <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
+
+              <div className= {classNames(styles.contd)} > <span >FECHA DE INICIO:</span>
+                {this.formatDate(startDate)}
               </div>
 
-              <div className= {classNames(styles.title)} >FECHA LIMITE:</div>
-              <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                <span className={classNames("input-group-text w-75 p-3", styles.textBox)}>{endDate}</span>
+              <div className= {classNames(styles.contd)} > <span >FECHA LIMITE:</span>
+                {this.formatDate(endDate)}
               </div>
-              {(haulage_state == "Done") ?
+              <div style={{marginBottom: '1em'}}></div>
 
-                null
 
-              :
+            <Card.Footer style={{display: 'flex', padding: '0.5em',borderTop: '1px solid rgb(255, 255, 255)'}}>
+              {
+                this.state.haulage_state == "Reserved" ?
 
-                <div className= {classNames("d-flex justify-content-center", styles.profileText)}>
-                  <Button variant="success" onClick={()=>this.completeService()}>
-                    COMPLETAR SERVICIO
+                  <Button style={{marginTop: '1em', fontWeight: 500}} variant="success" onClick={()=>this.beginService()}>
+                    Inciar el acarreo
                   </Button>
-                </div>
-
+                : null
               }
+
+              {
+                this.state.haulage_state == "In progress" ?
+
+                  <Button style={{marginTop: '1em', fontWeight: 500}} variant="primary" onClick={()=>this.completeService()}>
+                    Completar el servicio
+                  </Button>
+                : null
+              }
+              </Card.Footer>
+              </Card.Body>
+            </Card>
 
             </Col>
 

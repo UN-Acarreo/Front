@@ -36,6 +36,12 @@ interface State {
     end : {};
     formatedDate : {};
     formatedTime : {};
+    edit : boolean;
+    editDate : Date;
+    editTime : Date;
+    editDescription : string;
+    editWeight : string;
+    id_edit : number;
 }
 
 class HomeUser extends Component {
@@ -61,7 +67,13 @@ class HomeUser extends Component {
       start : {},
       end : {},
       formatedDate : {},
-      formatedTime : {}
+      formatedTime : {},
+      edit : false,
+      editDate : {},
+      editTime : {},
+      editDescription : "",
+      editWeight : "",
+      id_edit : 0
       //
     }
 
@@ -203,9 +215,32 @@ class HomeUser extends Component {
     this.setState({end :end})
   }
 
+  componentWillMount(){
+
+    if(sessionStorage.haulage_info!= undefined){
+      this.setState({edit : true});
+      this.changeDefaultValues();
+    }
+    
+  }
+
+  changeDefaultValues(){
+    var editHaulage = JSON.parse(sessionStorage.haulage_info);
+
+    var editDate = new Date(editHaulage.date);
+    console.log(editHaulage);
+    this.setState({ editDate : editDate, 
+                    editTime : editDate,
+                    editDescription : editHaulage.cargo.Description,
+                    editWeight : editHaulage.cargo.Weight,
+                    id_edit : editHaulage.Id_haulage
+                  });
+    
+  }
+
   async search() {
 
-    const {formatedDate , formatedTime} = this.state
+    const {formatedDate , formatedTime, edit, id_edit} = this.state
     console.log(this.state.formatedDate);
 
     url = URL+'/api/haulage/create'
@@ -244,7 +279,7 @@ class HomeUser extends Component {
                     Weight: this.state.weight,
                     Duration: time,
                     Id_user: info.Id_user.toString(),
-                    Id_haulage: -1
+                    Id_haulage: !edit ? -1 : id_edit
                   }
 
     console.log(request);
@@ -270,6 +305,17 @@ class HomeUser extends Component {
             if(res.data.status == 1){
                 //vehicle registered
                 console.log("Registro Exitoso")
+
+                if(edit){
+
+                  sessionStorage.removeItem('haulage_info');
+                  this.notifySuccess('Su reserva se modifico con exito');
+                  this.props.history.push("/user/haulages");
+
+                  return;
+
+                }
+
                 this.notifySuccess('Su reserva ha sido asignada con exito')
                 var vehicles_info = res.data.data;
                 /*
@@ -303,7 +349,7 @@ class HomeUser extends Component {
 
   render() {
 
-    const {show, showStart, showEnd} = this.state;
+    const {show, showStart, showEnd, edit, editDate, editTime, editDescription, editWeight} = this.state;
      return(
       <>
       <Top message = {"UNAcarreo"}
@@ -314,7 +360,12 @@ class HomeUser extends Component {
                       onDateSelected = {this.setDate}
                       onTimeSelected = {this.setTime}
                       onDescriptionSaved = {this.setDescription}
-                      onWeightSaved = {this.setWeight}/>
+                      onWeightSaved = {this.setWeight}
+                      edit = {edit}
+                      editDate = {editDate}
+                      editTime = {editTime}
+                      editDescription = {editDescription}
+                      editWeight = {editWeight}/>
       <Container fluid>
         <Row style={{paddingTop: '10px'}}>
           <Col sm={1} md={2} lg={3} xl={3}>
@@ -343,6 +394,7 @@ class HomeUser extends Component {
                       showEnd = {showEnd}
                       onStartSelected = {this.setStart}
                       onEndSelected = {this.setEnd}
+                      edit = {edit}
         />
       </div>
       </>

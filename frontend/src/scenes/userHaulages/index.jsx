@@ -122,8 +122,12 @@ class UserHaulages extends Component {
         this.getFilterLists(haulagesList);
         this.setCurrentList();
 
-
+        console.log(this.state.userActiveList);
+        
         var initial = this.state.userActiveList[0];
+
+        var startDate = new Date(initial.date).toString()
+
 
         var name = this.state.userActiveList[0].vehicles[0].driver.Driver_name;
         this.setState({ haulagesList :response.data.haulages,
@@ -131,13 +135,15 @@ class UserHaulages extends Component {
                         originLng : initial.route.Origin_coord.split(',')[1],
                         destinationLat : initial.route.Destination_coord.split(',')[0],
                         destinationLnt : initial.route.Destination_coord.split(',')[1],
-                        id_Haulage : response.data.haulages[0].Id_haulage,
+                        id_Haulage : initial.Id_haulage,
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name,
                         amount_bill: initial.bill.Amount,
-                        date: initial.date,
-                        weight: initial.cargo.Weight + "dfsdf",
+
+                        date: startDate,
+                        weight: initial.cargo.Weight,
+
                         rating : initial.rating,
                         vehicles:  initial.vehicles
 
@@ -153,6 +159,10 @@ class UserHaulages extends Component {
 
   }
 
+  formatDate(date){
+    return moment(date).format('YYYY/MM/DD hh:mm A');
+  }
+
   handleClick(index){
     console.log( this.state.haulagesList);
 
@@ -162,6 +172,8 @@ class UserHaulages extends Component {
     }
 
     var actualHaulage = this.state.userActiveList[index];
+    console.log(actualHaulage)
+    var startDate = new Date(actualHaulage.date).toString()
 
     this.setState({
       current_index: index,
@@ -178,7 +190,7 @@ class UserHaulages extends Component {
       show_rating_modal: false,
       show_bill_modal: false,
       amount_bill: actualHaulage.bill.Amount,
-      date: actualHaulage.date,
+      date: startDate,
       weight: actualHaulage.cargo.Weight,
       vehicles: actualHaulage.vehicles
     })
@@ -342,6 +354,22 @@ class UserHaulages extends Component {
     }
   }
 
+  modifyService(){
+
+    const {id_Haulage} = this.state;
+
+    console.log(this.state.haulagesList);
+    let obj = this.state.haulagesList.find(o => o.Id_haulage === id_Haulage);
+
+    sessionStorage.setItem('haulage_info', JSON.stringify(obj));
+
+    console.log(obj);
+
+    this.props.history.push("/user/home");
+    
+    
+  }
+
 
 
   render() {
@@ -405,17 +433,18 @@ class UserHaulages extends Component {
                       {"  "}{description}
                     </div>
                     <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>FECHA:</span>
-                      {"  "}{this.state.date.substring(0, 10)}
+                      {"  "}{this.formatDate(this.state.date)}
                     </div>
+                    {/*
                     <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>HORA:</span>
                       {"  "}{this.state.date.substring(11, 19)}
-                    </div>
+                    </div>*/}
                     <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>PESO:</span>
                       {"  "}{this.state.weight + " kg"}
                     </div>
                   </Col>
-                  
-                  {(haulage_state == "Done") ? 
+
+                  {(haulage_state == "Done") ?
                     <Col sm={3} md={3} lg={3} xl={3}>
                       <div style={{fontSize: '50px'}}>
                         <OverlayTrigger
@@ -475,11 +504,15 @@ class UserHaulages extends Component {
                       </>
                     :null}
                     {haulage_state =="Reserved" ?
+                    <>
                       <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
                         <Button variant="secondary" onClick={()=>this.cancelService()}>
                           Cancelar el servicio
                         </Button>
                       </div>
+                      
+
+                    </>
                     : null}
                   </Card.Footer>
                 </Card.Body>
@@ -521,8 +554,8 @@ class UserHaulages extends Component {
                 </Modal.Header>
                 <Modal.Body style={{margin: '1em'}}>
                   <div style={{marginBottom: '1em'}}>A continuación encontrara un resumen del acarreo realizado, gracias por preferir nuestros servicios. </div>
-                  <div>Fecha:  {this.state.date.substring(0,10)}</div>
-                  <div>Hora:  {this.state.date.substring(11,16)}</div>
+                  <div>Fecha:  {this.formatDate(this.state.date)}</div>
+                {/*   <div>Hora:  {this.state.date.substring(11,16)}</div> */}
                   <div>Peso:  {this.state.weight} Kg</div>
                 </Modal.Body>
                 <Modal.Footer>
