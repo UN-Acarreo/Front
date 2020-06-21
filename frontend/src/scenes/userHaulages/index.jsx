@@ -347,7 +347,7 @@ class UserHaulages extends Component {
   render() {
 
 
-    const {haulagesList, id_Haulage, haulage_state,description,driver, originLat, originLng, destinationLat, destinationLnt, userStatusList, userActiveList,} = this.state;
+    const {haulagesList, id_Haulage, haulage_state, description, driver, originLat, originLng, destinationLat, destinationLnt, userStatusList, userActiveList,} = this.state;
     return (
       <>
         <Top message = {"UNAcarreo"}
@@ -392,8 +392,17 @@ class UserHaulages extends Component {
                     <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>ESTADO:</span>
                       {"  "}{haulage_state}
                     </div>
-                    <div className= {classNames(styles.cont)} style={{marginBottom: '1em'}} ><span style={{color:'white'}}>DESCRIPCION:</span>
-                    {"  "}{description}
+                    <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>DESCRIPCIÓN:</span>
+                      {"  "}{description}
+                    </div>
+                    <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>FECHA:</span>
+                      {"  "}{this.state.date.substring(0, 10)}
+                    </div>
+                    <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>HORA:</span>
+                      {"  "}{this.state.date.substring(11, 19)}
+                    </div>
+                    <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>PESO:</span>
+                      {"  "}{this.state.weight + " kg"}
                     </div>
                   </Col>
                   
@@ -420,16 +429,20 @@ class UserHaulages extends Component {
                     <hr/>
                     <div  style={{marginBottom: '0.5em'}}>
                     <span style={{color:'#2196F3'}}>CONDUCTOR ASIGNADO {index+1}: </span>
-                    {" "+vehicle.driver.Driver_name}
+                    {" "+vehicle.driver.Driver_name + " " + vehicle.driver.Driver_last_name}
                     </div>
-                    <p>Teléfono: {vehicle.driver.Driver_phone}</p>
-                      <p>
-                      <img  style={{marginRight: '1em'}} key={vehicle.vehicle.Photo}
-                            src={URL+vehicle.vehicle.Photo} width='20%'  height='20%' />
-                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Placa: {vehicle.vehicle.Plate}</Badge>
-                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Marca: {vehicle.vehicle.Brand}</Badge>
-                      <Badge variant="secondary" style={{marginLeft: '1em'}}>Modelo: {vehicle.vehicle.Model}</Badge>
-                      </p>
+                    <p>
+                    <img  style={{marginRight: '1em'}} key={vehicle.driver.Driver_photo}
+                          src={URL+vehicle.driver.Driver_photo} width='15%'  height='15%' />
+                    <Badge variant="secondary" style={{marginLeft: '1em'}}>Telefono: {vehicle.driver.Driver_phone}</Badge>
+                    </p>
+                    <p>
+                    <img  style={{marginRight: '1em'}} key={vehicle.vehicle.Photo}
+                          src={URL+vehicle.vehicle.Photo} width='15%'  height='15%' />
+                    <Badge variant="secondary" style={{marginLeft: '1em'}}>Placa: {vehicle.vehicle.Plate}</Badge>
+                    <Badge variant="secondary" style={{marginLeft: '1em'}}>Marca: {vehicle.vehicle.Brand}</Badge>
+                    <Badge variant="secondary" style={{marginLeft: '1em'}}>Modelo: {vehicle.vehicle.Model}</Badge>
+                    </p>
                     </div>
                   )) : null
                   }
