@@ -359,12 +359,12 @@ check_fields = async (data) => {
   render() {
     const {isDriver, isHome} = this.props;
     const {goToDriver, vehicle, goToUser} = this.state;
-    var cond ='white'
+    /*var cond ='white'
     var cond_b = '#343a40'
     if(this.state.url == '/api/driver/login'){
       cond = '#343a40'
       cond_b = 'white'
-    }
+    }*/
     return (
       <Container fluid style={{paddingTop: '50px'}}>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
