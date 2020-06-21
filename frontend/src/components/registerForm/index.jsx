@@ -9,7 +9,7 @@ import validator from 'validator';
 import Log from '../../log.js';
 
 // IMPORT STYLES REACT-BOOTSTRAP
-import {Container, Row, Col, Nav } from 'react-bootstrap';
+import {Container, Row, Col, Nav, Card, Button } from 'react-bootstrap';
 
 import classNames from "classnames";
 
@@ -199,7 +199,7 @@ check_fields = async (data) => {
                   }
 
     const valid_fields = await this.check_fields(request);
-    
+
     if(valid_fields !== true){
       this.notifyWarning(valid_fields)
       return;
@@ -304,7 +304,7 @@ check_fields = async (data) => {
     }
 
     const valid_fields = await this.check_fields(request);
-    
+
     if(valid_fields !== true){
       this.notifyWarning(valid_fields)
       return;
@@ -359,37 +359,53 @@ check_fields = async (data) => {
   render() {
     const {isDriver, isHome} = this.props;
     const {goToDriver, vehicle, goToUser} = this.state;
+    /*var cond ='white'
+    var cond_b = '#343a40'
+    if(this.state.url == '/api/driver/login'){
+      cond = '#343a40'
+      cond_b = 'white'
+    }*/
     return (
       <Container fluid style={{paddingTop: '50px'}}>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Row className="justify-content-center" style= {{paddingBottom: '100px'}}>
           <Col md={6} lg={6} xl={5}>
-            <Row className="justify-content-center" style={{border: "1px solid black"}}>
+            <Row className="justify-content-center" > {/*style={{border: "1px solid black"}}*/}
+            {/*
               {isHome ?
                 <ul className="nav nav-tabs" style={style_navtabs}>
                   <li class="nav-item" style={style_navitems}>
-                    {goToDriver ? 
+                    {goToDriver ?
                       <a class="nav-link active">CONDUCTOR</a>
-                    : 
+                    :
                       <a class="nav-link" onClick= {() => this.driverLogin()}>CONDUCTOR</a>
                     }
                   </li>
                   <li class="nav-item" style={style_navitems}>
-                    {goToUser ? 
+                    {goToUser ?
                       <a class="nav-link active"> USUARIO </a>
-                    : 
+                    :
                       <a class="nav-link" onClick= {() => this.clientLogin()}>USUARIO</a>
                     }
                   </li>
                 </ul>
-              : null}
+              : null}*/}
               {!isHome?
+
+                <Card
+                  bg = "light"
+                  text = "black"
+                  style={{ width: '100%', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px',textAlign: 'center'}}
+                  className="mb-2"
+                >
+                <Card.Body>
+
                 <form>
                   {vehicle?
                     <div>
-                      <div class="form-group" style={{marginTop: '20px'}}>
+                      <div class="form-group" className={styles.nice} style={{marginTop: '20px'}}>
                         <label  className = {styles.input}>Marca:</label>
-                        <input  
+                        <input
                           type="text"
                           name="marca"
                           class="form-control"
@@ -399,9 +415,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Modelo:</label>
-                        <input  
+                        <input
                           type="text"
                           name="modelo"
                           class="form-control"
@@ -411,9 +427,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Placa:</label>
-                        <input  
+                        <input
                           type="text"
                           name="placa"
                           class="form-control"
@@ -423,9 +439,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Capacidad:</label>
-                        <input  
+                        <input
                           type="text"
                           name="capacidad"
                           class="form-control"
@@ -435,16 +451,19 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <input  class="form-group" type="file" name="photo" onChange= {this.selectPhoto} />
+                      <label htmlFor="filePickervehi" style={{padding:"5px 10px", cursor: 'pointer',background: '#2196F3', color: 'white', borderRadius: '15px', marginTop: '2em'}}>
+                        Seleccionar foto del vehiculo
+                        </label>
+                      <input  id="filePickervehi" class="form-group" type="file" name="photo" onChange= {this.selectPhoto} className={styles.nice} style={{visibility:"hidden"}}/>
                       <div class="col-md-12 text-center" style={{marginBottom: '20px'}}>
                           <button type="button" className= {classNames("btn btn-dark")} onClick={()=>this.registerVehicle()}>REGISTRAR VEHICULO</button>
                       </div>
-                    </div> 
+                    </div>
                   :
                     <div>
-                      <div class="form-group" style={{marginTop: '20px'}}>
+                      <div class="form-group" style={{marginTop: '20px'}} className={styles.nice}>
                         <label  className = {styles.input}>Nombre:</label>
-                        <input  
+                        <input
                           type="text"
                           name="name"
                           class="form-control"
@@ -454,9 +473,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group" >
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Apellido:</label>
-                        <input  
+                        <input
                           type="text"
                           name="lastname"
                           class="form-control"
@@ -467,9 +486,9 @@ check_fields = async (data) => {
                         />
                       </div>
                       {isDriver ?
-                        <div class="form-group" >
+                        <div class="form-group" className={styles.nice}>
                           <label  className = {styles.input}>Cedula:</label>
-                          <input  
+                          <input
                             type="text"
                             name="cedula"
                             class="form-control"
@@ -478,12 +497,12 @@ check_fields = async (data) => {
                             id='cedula'
                             onChange={this.handleChange}
                           />
-                        </div>  
+                        </div>
                       : null}
                       {isDriver ?
-                        <div class="form-group">
+                        <div class="form-group" className={styles.nice}>
                           <label  className = {styles.input}>Telefono:</label>
-                          <input  
+                          <input
                             type="text"
                             name="phone"
                             class="form-control"
@@ -492,11 +511,11 @@ check_fields = async (data) => {
                             id='phone'
                             onChange={this.handleChange}
                           />
-                        </div>  
+                        </div>
                       : null}
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>E-Mail:</label>
-                        <input  
+                        <input
                           type="text"
                           name="e-mail"
                           class="form-control"
@@ -506,9 +525,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Direccion:</label>
-                        <input  
+                        <input
                           type="text"
                           name="address"
                           class="form-control"
@@ -518,9 +537,9 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                       <label  className = {styles.input}>Contraseña:</label>
-                      <input  
+                      <input
                         type="password"
                         name="password"
                         class="form-control"
@@ -530,9 +549,9 @@ check_fields = async (data) => {
                         onChange={this.handleChange}
                       />
                       </div>
-                      <div class="form-group">
+                      <div class="form-group" className={styles.nice}>
                         <label  className = {styles.input}>Confirmar Contraseña:</label>
-                        <input  
+                        <input
                           type="password"
                           name="password"
                           class="form-control"
@@ -542,18 +561,21 @@ check_fields = async (data) => {
                           onChange={this.handleChange}
                         />
                       </div>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()}/>
+                      <div class="form-check" style={{marginTop: '1em'}}>
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" onClick={()=>this.verifyTerms()} />
                         <label className = {styles.input_check} for="exampleCheck1"> Acepto los terminos y condiciones</label>
                       </div>
                       {!isDriver ?
                         <div class="col-md-12 text-center">
-                          <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()} style={{marginBottom: '20px'}}>REGISTRARSE</button> 
+                          <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()} style={{marginBottom: '20px'}}>REGISTRARSE</button>
                         </div>
                       :
                         <div>
-                          <div class="form-group">
-                            <input type="file" name="photo" onChange= {this.selectPhoto} />
+                          <div class="form-group" style={{marginTop: '1em', marginBottom: '0em'}}>
+                          <label htmlFor="filePicker" style={{padding:"5px 10px", cursor: 'pointer',background: '#2196F3', color: 'white', borderRadius: '15px'}}>
+                            Seleccionar foto de perfil
+                            </label>
+                            <input id="filePicker" type="file" name="photo" onChange= {this.selectPhoto} style={{visibility:"hidden"}} />
                           </div>
                           <div class="col-md-12 text-center">
                             <button type="button" class="btn btn-dark" onClick={()=>this.sign_up()} style={{marginBottom: '20px'}}>CONTINUAR REGISTRO</button>
@@ -562,12 +584,28 @@ check_fields = async (data) => {
                       }
                     </div>
                   }
-                </form> 
+                </form>
+
+                </Card.Body>
+              </Card>
               :
+
+              <Card
+
+                bg = "light"
+                text = "black"
+                style={{ width: '100%', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px',textAlign: 'center'}}
+                className="mb-2"
+              >
+                <Card.Header style={{fontSize: '26px',fontWeight: '500', textAlign: 'center'}}>
+                Bienvenido - {this.state.url == '/api/driver/login' ? "Conductor" : "Usuario"}
+                </Card.Header>
+                <Card.Body>
+
                 <form>
-                  <div class="form-group" style={{marginTop: '30px'}}>
-                    <label  className = {styles.input}>E-Mail:</label>
-                    <input  
+                  <div class="form-group" style={{marginTop: '30px', margin: '0 auto', width: '60%'}}>
+                    <label  className = {styles.input} >E-Mail:</label>
+                    <input
                       type="text"
                       name="e-mail"
                       class="form-control"
@@ -577,9 +615,9 @@ check_fields = async (data) => {
                       onChange={this.handleChange}
                     />
                   </div>
-                  <div class="form-group">
-                    <label  className = {styles.input}>Contraseña:</label>
-                    <input  
+                  <div class="form-group" style={{margin: '0 auto', marginTop: '30px', marginBottom: '2em',width: '60%'}}>
+                    <label  className = {styles.input} >Contraseña:</label>
+                    <input
                       type="password"
                       name="password"
                       class="form-control"
@@ -590,14 +628,32 @@ check_fields = async (data) => {
                     />
                   </div>
                   <div class="col-md-12 text-center">
-                    <button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button>
+                  {/*<img src='/mov.svg' style={{maxWidth: '100%', position: 'absolute', zIndex: '-1', top: -150, right: -300}}/>*/}
+                    {/*<button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button> */}
+                    <Button style={{fontWeight: 500, marginBottom: '1em'}} variant= "success"
+                      onClick={()=>this.login()}>
+                      INGRESAR
+                    </Button>
+                    { goToUser ?
+                      <p style={{fontSize: '13px', fontWeight: 500, cursor: 'pointer', color: '#098df5'}} onClick= {() => this.driverLogin()}>Ir al inicio de conductor</p>
+                        :
+                      <p style={{fontSize: '13px', fontWeight: 500, cursor: 'pointer', color: '#098df5'}} onClick= {() => this.clientLogin()}>Ir al inicio de usuario</p>
+                    }
+
                   </div>
-                  <label className = {styles.label}>No tienes una cuenta? Registrate! :</label>
-                  <div class="col-md-12 text-center" style={{paddingBottom: '20px'}}>
-                    <a {...goToDriver ? {href:"driver/signup"} : {href:"/user/signup"}} className={classNames("btn btn-dark")}>REGISTRARSE</a>
+                  <hr/>
+                  <label className = {styles.label} style={{marginTop: '0em'}}>¿No tienes una cuenta? Registrate! </label>
+                  <div class="col-md-12 text-center" style={{paddingBottom: '20px', marginTop: '-2em'}}>
+                    <a {...goToDriver ? {href:"driver/signup"} : {href:"/user/signup"}} className={classNames("btn btn-secondary")} style={{ fontWeight: 500}}>
+                    REGISTRARSE
+                    </a>
                   </div>
                 </form>
+                </Card.Body>
+              </Card>
+
               }
+
             </Row>
           </Col>
         </Row>

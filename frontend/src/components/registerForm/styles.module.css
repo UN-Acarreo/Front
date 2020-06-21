@@ -15,6 +15,12 @@
     
 }
 
+.nice{
+margin: 0 auto; 
+width: 60%;
+margin-top: 1em;
+}
+
 .test{
     background-color: #cccccc;
     width: 100%;

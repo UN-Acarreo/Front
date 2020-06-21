@@ -144,11 +144,12 @@ class Top extends Component<Props, State> {
                 <NavDropdown style={{fontSize: '1.5rem'}} title={<><FontAwesomeIcon icon={faBell}/><FontAwesomeIcon style={faCircleStyle} icon={faCircle}/></>} id="collapsible-nav-dropdown">
                 {notifications.map((value, index) => {
                   var notif_text = messages[value.Id_Notification_Type-1]
-                  return (<>
+                  return (<div key={index}>
                     <NavDropdown.Item style={{fontSize: '1.2rem'}}>
                     {notif_text.slice(0,10)+"  #"+value.Id_haulage+notif_text.slice(10) }
                     <FontAwesomeIcon onClick={() => this.deleteNotification(value)} style={faTrashStyle}icon={faTrash} /></NavDropdown.Item>
-                    <NavDropdown.Divider/></>
+                    <NavDropdown.Divider/>
+                    </div>
                   )
                 })}
                 </NavDropdown>
