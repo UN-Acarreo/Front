@@ -130,7 +130,7 @@ constructor(props){
   render() {
     const URL = 'http://localhost:3001'
     const {show, isDate,isTimer, isDescription} = this.state;
-    const {edit,editDate, editTime, editDescription, editWeight} = this.props;
+    
     return (
       <>
         <Modal show={show} onHide={() => this.handleClose()}>

@@ -345,7 +345,7 @@ class UserHaulages extends Component {
 
   modifyService(){
 
-    const {haulagesList, id_Haulage} = this.state;
+    const {id_Haulage} = this.state;
 
     console.log(this.state.haulagesList);
     let obj = this.state.haulagesList.find(o => o.Id_haulage === id_Haulage);
