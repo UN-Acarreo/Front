@@ -322,14 +322,23 @@ class HomeDriver extends Component {
           <Row className={styles.row2}  style={{margin: '2em', marginLeft: '0em'}}>
 
             <DropdownButton variant="secondary" title="Servicios">
-              {activeList.map((row,index) => (
+              {
+              activeList.length != 0 ? activeList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"SERVICIO " + (index+1)}</Dropdown.Item>
-              ))}
+              )) : <Dropdown.Item>{"NO HAY SERVICIOS"}</Dropdown.Item>
+              }
             </DropdownButton>
 
             <DropdownButton variant="secondary" title="Estado"className={styles.drop}>
               {statusList.map((row,index) => (
-                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{row}</Dropdown.Item>
+                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{
+                  row === "In progress" ? "En progreso" : 
+                  row === "Reserved" ? "Reservado" : 
+                  row === "Cancelled" ? "Cancelado" : 
+                  row === "Done" ? "Terminado" : 
+                  row === "Waiting for driver" ? "En espera" : 
+                  "Error"
+                }</Dropdown.Item>
               ))}
             </DropdownButton>
 

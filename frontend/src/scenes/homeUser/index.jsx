@@ -115,7 +115,7 @@ class HomeUser extends Component {
       if(key == 'Destination_coord' && field === undefined ) {
         return "No se ha asignado una coordenada de destino"
       }
-      if(key == 'Description' && validator.isEmpty(field)) {
+      if(key == 'Description' && validator.isEmpty(field.trim())) {
         return "La descripción no puede esta vacia"
       }
       if(key == 'Weight' && (!validator.isNumeric(field) || parseInt(field) <= 0)) {
