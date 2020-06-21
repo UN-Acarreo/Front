@@ -29,12 +29,12 @@ class HomeContainer extends Component {
     return(
       <>
       <Container fluid>
-        <Row style={row_style}>
+        <Row style={row_style} style={{fontWeight: 600}}>
           <Col md={6}>
             {isUser ?
               <>
                 <a href="/user/home">
-                  <img src="/mapImg.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
+                  <img src="/mapImg.png"  className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img>
                 </a>
                 <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                   PROGRAMAR
@@ -66,7 +66,7 @@ class HomeContainer extends Component {
           <Col md={6}>
             <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>
             {/*  <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img> */}
-             <img src="/trucks.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} style={{maxHeight: '14em'}} alt="..."></img> 
+             <img src="/trucks.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} style={{maxHeight: '14em'}} alt="..."></img>
             </a>
             {isUser ?
               <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>

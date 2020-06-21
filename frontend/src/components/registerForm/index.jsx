@@ -369,7 +369,8 @@ background-position-x: 500px;
 background-repeat: repeat-x;
     }*/
     return (
-      <Container fluid style={{paddingTop: '50px', backgroundImage: `url(${'./mov.svg'})` , backgroundSize: '70em', backgroundPositionX: '500px', backgroundRepeat: 'repeat-x'}}>
+      <Container fluid className=""
+       style={{paddingTop: '50px', backgroundImage: `url(${'./mov.svg'})` , backgroundSize: '70em', backgroundPositionX: '500px', backgroundRepeat: 'repeat-x'}}>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Row className="justify-content-center" style= {{paddingBottom: '100px'}}>
           <Col md={6} lg={6} xl={5}>
