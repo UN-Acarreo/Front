@@ -364,9 +364,13 @@ check_fields = async (data) => {
     if(this.state.url == '/api/driver/login'){
       cond = '#343a40'
       cond_b = 'white'
+      background-size: 70em !important;
+background-position-x: 500px;
+background-repeat: repeat-x;
     }*/
     return (
-      <Container fluid style={{paddingTop: '50px'}}>
+      <Container fluid className=""
+       style={{paddingTop: '50px', backgroundImage: `url(${'./mov.svg'})` , backgroundSize: '70em', backgroundPositionX: '500px', backgroundRepeat: 'repeat-x'}}>
         <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
         <Row className="justify-content-center" style= {{paddingBottom: '100px'}}>
           <Col md={6} lg={6} xl={5}>
@@ -628,7 +632,7 @@ check_fields = async (data) => {
                     />
                   </div>
                   <div class="col-md-12 text-center">
-                  {/*<img src='/mov.svg' style={{maxWidth: '100%', position: 'absolute', zIndex: '-1', top: -150, right: -300}}/>*/}
+
                     {/*<button type="button" class="btn btn-dark" onClick={()=>this.login()}>INGRESAR</button> */}
                     <Button style={{fontWeight: 500, marginBottom: '1em'}} variant= "success"
                       onClick={()=>this.login()}>
