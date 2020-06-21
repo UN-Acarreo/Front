@@ -10,7 +10,7 @@ import {ButtonGroup , Button} from "react-bootstrap";
 import HaulageMap from '../../components/haulageMap/index.jsx';
 import RatingModal from '../../components/RatingModal/RatingModal.js';
 import axios from 'axios';
-import {Container, Row, Col, Nav, Navbar, NavDropdown, Dropdown, DropdownButton, Card} from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Card,Dropdown, DropdownButton} from 'react-bootstrap';
 import ReactStars from 'react-rating-stars-component'
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from 'react-toastify';
@@ -84,7 +84,7 @@ class HomeDriver extends Component {
 
   notifySuccess = (text) => toast.success(text, {containerId: 'notification'});
   notifyError = (text) => toast.error(text, {containerId: 'notification'});
-  notifyWarning = (text) => toast.warning(text, {containerId: 'notification'});
+  notifyWarnings = (text) => toast.warning(text, {containerId: 'notification'});
 
   componentWillMount(){
     this.getHaulages();
@@ -257,7 +257,7 @@ class HomeDriver extends Component {
     console.log(start)
 
     if(Date.parse(start) > Date.parse(today)){
-       this.notifyWarning('No es posible iniciar el servicio antes de la hora de reserva');
+       this.notifyWarnings('No es posible iniciar el servicio antes de la hora de reserva');
        return;
     }
 
