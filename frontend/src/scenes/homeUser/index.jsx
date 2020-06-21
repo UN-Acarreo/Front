@@ -11,14 +11,17 @@ import Top from '../../components/top/index.jsx';
 import MapContainer from '../../components/mapContainer/index.jsx';
 import ModalContainer from '../../components/modal/index.jsx';
 import Modal from "react-bootstrap/Modal";
-
+import Stepper from 'react-stepper-horizontal';
 import axios from 'axios';
 
 import { ToastContainer, toast } from 'react-toastify';
 import validator from 'validator';
 
+import DatePicker from "react-datepicker";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight,faArrowLeft, faCheckCircle} from '@fortawesome/free-solid-svg-icons'
 // IMPORT STYLES REACT-BOOTSTRAP
-import {Container, Row, Col, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import {Container, Row, Col, Nav, Navbar, NavDropdown, Card, Button, Form } from 'react-bootstrap';
 
 const URL = 'http://localhost:3001'
 
@@ -66,15 +69,20 @@ class HomeUser extends Component {
       weight: "",
       start : {},
       end : {},
-      formatedDate : {},
-      formatedTime : {},
+      formatedDate : null,
+      formatedTime : null,
       edit : false,
       editDate : {},
       editTime : {},
       editDescription : "",
       editWeight : "",
-      id_edit : 0
+      id_edit : 0,
       //
+      step: 0,
+      startDate: new Date(),
+      formatedTime: null,
+      time_v: new Date(),
+      asignada: false
     }
 
 
@@ -221,7 +229,7 @@ class HomeUser extends Component {
       this.setState({edit : true});
       this.changeDefaultValues();
     }
-    
+
   }
 
   changeDefaultValues(){
@@ -229,13 +237,13 @@ class HomeUser extends Component {
 
     var editDate = new Date(editHaulage.date);
     console.log(editHaulage);
-    this.setState({ editDate : editDate, 
+    this.setState({ editDate : editDate,
                     editTime : editDate,
                     editDescription : editHaulage.cargo.Description,
                     editWeight : editHaulage.cargo.Weight,
                     id_edit : editHaulage.Id_haulage
                   });
-    
+
   }
 
   async search() {
@@ -305,7 +313,6 @@ class HomeUser extends Component {
             if(res.data.status == 1){
                 //vehicle registered
                 console.log("Registro Exitoso")
-
                 if(edit){
 
                   sessionStorage.removeItem('haulage_info');
@@ -317,6 +324,7 @@ class HomeUser extends Component {
                 }
 
                 this.notifySuccess('Su reserva ha sido asignada con exito')
+
                 var vehicles_info = res.data.data;
                 /*
                 info = ""
@@ -330,6 +338,7 @@ class HomeUser extends Component {
                 }*/
                 //alert(info)
                 this.handleInfoModal(vehicles_info)
+                this.setState({asignada: true})
                 console.log(vehicles_info)
             }else{
                 // error management
@@ -347,8 +356,95 @@ class HomeUser extends Component {
 
   }
 
-  render() {
+  ///############
+  handleInputChange(e) {
+    this.setState({
+        [e.target.name]: e.target.value
+    });
+}
+  handleDateChange=(value, e)=>{
+   this.setState({
+      startDate: value
+  })
+  var date = value;
+  var newDate = {
+    day : moment(date).format('DD'),
+    month : (moment(date).month()).toString(),
+    year : moment(date).year().toString()
+  };
 
+  var formatDate = moment(date).format('MMMM DD YYYY');
+
+  this.setState({date : formatDate})
+  this.setState({formatedDate :newDate})
+  console.log("test" ,  newDate);
+}
+
+  handleTimeChange = time => {
+    this.setState({
+      time_v: time
+    });
+
+    var newTime = {
+      hour : moment(time).format('HH'),
+      minute : moment(time).format('mm')
+    };
+
+    var formatTime = moment(time).format('HH mm');
+
+    this.setState({time :formatTime})
+    this.setState({formatedTime :newTime})
+    console.log(newTime);
+
+
+  };
+
+  onClickNext(){
+    if(this.state.step + 1 > 5){
+       return
+    }
+    if(this.state.step + 1 == 1){
+      console.log(this.state.formatedDate)
+      if(this.state.formatedDate == null){
+        return this.notifyWarning("Por favor selecciona una fecha")
+      }
+    }
+    if(this.state.step + 1 == 2){
+      if(this.state.formatedTime == null){
+        return this.notifyWarning("Por favor selecciona una hora")
+      }
+    }
+
+    if(this.state.step + 1 == 2){
+      this.setState({showStart :true})
+    }
+    if(this.state.step + 1 == 3){
+      this.setState({showEnd :true})
+    }
+
+    this.setState({step: this.state.step + 1})
+  }
+  onClickPrev(){
+    if(this.state.step - 1 < 0){
+      return
+    }
+    if(this.state.step - 1 == 2){
+      this.setState({showStart :true})
+    }
+    if(this.state.step - 1 == 3){
+      this.setState({showEnd :true})
+    }
+    this.setState({step: this.state.step - 1})
+  }
+
+  render() {
+    const buttonStyle_a = {background: 'rgb(0, 123, 255)', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
+                          margin: '0 auto', marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
+
+    const buttonStyle_a_s = {background: '#28a745', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
+                          margin: '0 auto', marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
+    const buttonStyle = { background: 'rgb(0, 123, 255)', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
+                          margin: '0 auto', marginTop: 32, display: 'inline-block', cursor: 'pointer', margin: '1em'};
     const {show, showStart, showEnd, edit, editDate, editTime, editDescription, editWeight} = this.state;
      return(
       <>
@@ -367,6 +463,13 @@ class HomeUser extends Component {
                       editDescription = {editDescription}
                       editWeight = {editWeight}/>
       <Container fluid>
+      <div style={{marginTop: '3em', textAlign: 'center', marginBottom: '3em'}}>
+      <Stepper style={{lineHeight: '2em'}}steps={ [{title: 'Elegir fecha'}, {title: 'Elegir hora'}, {title: 'Elegir origen'},
+                        {title: 'Elegir destino'},  {title: 'Descripción y peso'},{title: 'Buscar servicio'}] } activeStep={ this.state.step }
+               completeColor={'rgb(0, 123, 255)'} size={36}  completeBarColor={'rgb(0, 123, 255)'} circleFontSize={18}
+                        />
+      </div>
+      {/*
         <Row style={{paddingTop: '10px'}}>
           <Col sm={1} md={2} lg={3} xl={3}>
           </Col>
@@ -375,6 +478,7 @@ class HomeUser extends Component {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto" style={{align: 'center'}}>
+
                   <Nav.Link onClick = {() => this.handleDate()} style={{color: 'black'}}>FECHA</Nav.Link>
                   <Nav.Link onClick = {() => this.handleTimer()} style={{color: 'black'}}>HORA</Nav.Link>
                   <Nav.Link onClick = {() => this.handleStart()} style={{color: 'black'}}>ORIGEN</Nav.Link>
@@ -386,7 +490,144 @@ class HomeUser extends Component {
             </Navbar>
           </Col>
         </Row>
+        */}
       </Container>
+      {this.state.step == 5 ?
+        this.state.asignada == true ?
+          <div style={{textAlign: 'center', marginTop: '6em'}}>
+          <img src='/completed.svg' style={{height: '20em', border: 0}}/>
+          <p style={{fontWeight: 600, textAlign: 'center', fontSize: 'xx-large', marginTop: '1em'}}>
+          Tu acarreo ha sido reservado con éxito. <a href="/user/haulages" >Ir a tus reservas</a>
+          </p>
+          </div>
+        :
+          <div style={{textAlign: 'center', marginBottom: '3em'}}>
+            <div style={ buttonStyle_a }  onClick={()=> this.onClickPrev() }><FontAwesomeIcon icon={faArrowLeft}  style={{marginRight: '1em'}}/>Atras</div>
+            <div style={ buttonStyle_a_s }  onClick={()=> this.search() }>Solicitar servicio<FontAwesomeIcon icon={faCheckCircle} style={{marginLeft: '1em'}}/></div>
+        </div>
+
+        :
+        <div style={{textAlign: 'center', marginBottom: '3em'}}>
+          <div style={ buttonStyle_a }  onClick={()=> this.onClickPrev() }><FontAwesomeIcon icon={faArrowLeft} style={{marginRight: '1em'}}/>Atras</div>
+          <div style={ buttonStyle } onClick={()=> this.onClickNext() }>Continuar<FontAwesomeIcon icon={faArrowRight} style={{marginLeft: '1em'}}/></div>
+      </div>
+
+      }
+
+    <Row className="justify-content-center" style={{marginBottom: '3em', width: '100%'}}>
+
+      {
+      this.state.step == 0 ?
+      <Col sm={5} md={5} lg={5} xl={5}>
+        <Container fluid >
+        <Card
+          style={{margin: '0 auto', }}
+          bg = "dark"
+          text = "white"
+          style={{ width: '100%', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px',textAlign: 'center'}}
+          className="mb-2"
+        >
+        <Card.Header style={{fontSize: '26px',fontWeight: '500', textAlign: 'center', marginBottom: '2em'}}>
+        Elija una fecha
+        </Card.Header>
+        <Card.Body style={{height: '8em'}}>
+        <DatePicker
+              selected={ this.state.startDate }
+              onChange={(value, e) => this.handleDateChange(value, e)}
+            />
+        </Card.Body>
+        </Card>
+        </Container>
+        </Col>
+        : null
+
+      }
+      {
+      this.state.step == 1 ?
+      <Col sm={5} md={5} lg={5} xl={5}>
+        <Container fluid >
+        <Card
+          style={{margin: '0 auto'}}
+          bg = "dark"
+          text = "white"
+          style={{ width: '100%', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px',textAlign: 'center'}}
+          className="mb-2"
+        >
+        <Card.Header style={{fontSize: '26px',fontWeight: '500', textAlign: 'center', marginBottom: '2em'}}>
+        Elija una hora
+        </Card.Header>
+        <Card.Body style={{height: '8em'}}>
+        <DatePicker
+          selected={this.state.time_v}
+          onChange={(value, e) => this.handleTimeChange(value, e)}
+          showTimeSelect
+          showTimeSelectOnly
+          timeIntervals={15}
+          timeCaption="Time"
+          dateFormat="h:mm aa"
+        />
+
+        </Card.Body>
+        </Card>
+        </Container>
+        </Col>
+        : null
+      }
+      {
+        this.state.step == 2 || this.state.step == 3 ?
+      <div className = {styles.test} style={{width: '70%', height: '75%', margin: '0 auto',  marginBottom: '4em',
+                       boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 17px -5px', borderRadius: '20px',}} >
+        <MapContainer
+                      style={{borderRadius: '20px'}}
+                      ref = {this.mapElement}
+                      showStart = {showStart}
+                      showEnd = {showEnd}
+                      onStartSelected = {this.setStart}
+                      onEndSelected = {this.setEnd}
+                      edit = {edit}
+        />
+          </div>
+        : null
+      }
+
+      {
+        this.state.step == 4 ?
+        <Col sm={5} md={5} lg={5} xl={5}>
+          <Container fluid >
+          <Card
+            style={{margin: '0 auto'}}
+            bg = "dark"
+            text = "white"
+            style={{ width: '100%', borderRadius: '20px',boxShadow: 'rgba(0, 0, 0, 0.75) -2px 2px 13px 0px',textAlign: 'center'}}
+            className="mb-2"
+          >
+          <Card.Header style={{fontSize: '26px',fontWeight: '500', textAlign: 'center'}}>
+         Completa la información
+          </Card.Header>
+          <Card.Body>
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Descripcion</Form.Label>
+            <Form.Control as="textarea" rows="3"  type="text" defaultValue = {this.state.description} name="description"
+                         value={this.state.description} onChange={(e)=>this.handleInputChange(e)}  />
+
+          </Form.Group>
+
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Peso(kg)</Form.Label>
+            <Form.Control as="textarea" rows="3"  type="text" defaultValue = {this.state.weight} name="weight" type="number"
+                          value= {this.state.weight} onChange={(e)=>this.handleInputChange(e)} />
+          </Form.Group>
+
+          </Card.Body>
+          </Card>
+          </Container>
+          </Col>
+        : null
+      }
+
+      </Row>
+
+{/*
       <div className = {styles.test} >
         <MapContainer
                       ref = {this.mapElement}
@@ -396,7 +637,7 @@ class HomeUser extends Component {
                       onEndSelected = {this.setEnd}
                       edit = {edit}
         />
-      </div>
+      </div> */}
       </>
     )
   }
