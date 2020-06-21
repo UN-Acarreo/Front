@@ -117,7 +117,8 @@ class UserHaulages extends Component {
         this.getFilterLists(haulagesList);
         this.setCurrentList();
 
-
+        console.log(this.state.userActiveList);
+        
         var initial = this.state.userActiveList[0];
 
         var name = this.state.userActiveList[0].vehicles[0].driver.Driver_name;
@@ -126,7 +127,7 @@ class UserHaulages extends Component {
                         originLng : initial.route.Origin_coord.split(',')[1],
                         destinationLat : initial.route.Destination_coord.split(',')[0],
                         destinationLnt : initial.route.Destination_coord.split(',')[1],
-                        id_Haulage : response.data.haulages[0].Id_haulage,
+                        id_Haulage : initial.Id_haulage,
                         haulage_state : initial.status.Status_description,
                         description : initial.cargo.Description,
                         driver :name,
@@ -327,6 +328,22 @@ class UserHaulages extends Component {
     }
   }
 
+  modifyService(){
+
+    const {haulagesList, id_Haulage} = this.state;
+
+    console.log(this.state.haulagesList);
+    let obj = this.state.haulagesList.find(o => o.Id_haulage === id_Haulage);
+
+    sessionStorage.setItem('haulage_info', JSON.stringify(obj));
+
+    console.log(obj);
+
+    this.props.history.push("/user/home");
+    
+    
+  }
+
 
 
   render() {
@@ -448,14 +465,27 @@ class UserHaulages extends Component {
              {haulage_state =="Reserved" ?
              
               <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
-                <Button variant="secondary" onClick={()=>this.cancelService()}>
-                  Cancelar el servicio
-                </Button>
+
+                <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
+                  <Button variant="secondary" onClick={()=>this.modifyService()}>
+                    Modificar el servicio
+                  </Button>
+                </div>
+              
+                <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em',marginLeft: '0'}}>
+                  <Button variant="secondary" onClick={()=>this.cancelService()}>
+                    Cancelar el servicio
+                  </Button>
+                </div>
+
+                
               </div> : 
 
               null
              
              }
+
+
 
              
           </Card.Footer>
