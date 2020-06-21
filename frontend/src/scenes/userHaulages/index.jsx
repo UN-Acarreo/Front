@@ -137,7 +137,7 @@ class UserHaulages extends Component {
                         driver :name,
                         amount_bill: initial.bill.Amount,
                         date: initial.date,
-                        weight: initial.cargo.Weight,
+                        weight: initial.cargo.Weight + "dfsdf",
                         rating : initial.rating,
                         vehicles:  initial.vehicles
 
@@ -527,7 +527,7 @@ class UserHaulages extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                       <div>Precio:</div>
-                      <div style={{textAlign: 'right', fontWeight: 'bold'}}>COP ${this.state.amount_bill}</div>
+                      <div style={{textAlign: 'right', fontWeight: 'bold'}}>COP ${Math.abs(this.state.amount_bill)}</div>
                 </Modal.Footer>
               </Modal>
             </Col>
