@@ -357,14 +357,23 @@ class UserHaulages extends Component {
         <Container fluid>
           <Row className={styles.row2} style={{margin: '2em', marginLeft: '0em'}}>
             <DropdownButton variant="secondary" title="Reservas" >
-              {userActiveList.map((row,index) => (
+              {
+              userActiveList.length != 0 ? userActiveList.map((row,index) => (
                 <Dropdown.Item onClick = {() => this.handleClick(index)} key={row+index}>{"RESERVA " + (index+1)}</Dropdown.Item>
-              ))}
+              )) : <Dropdown.Item>{"NO HAY RESERVAS"}</Dropdown.Item>
+              }
             </DropdownButton>
 
             <DropdownButton variant="secondary" title="Estado"className={styles.drop}>
               {userStatusList.map((row,index) => (
-                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{row}</Dropdown.Item>
+                <Dropdown.Item onClick = {() => this.handleStatusClick(index)} key={row+index}>{
+                  row === "In progress" ? "En progreso" : 
+                  row === "Reserved" ? "Reservado" : 
+                  row === "Cancelled" ? "Cancelado" : 
+                  row === "Done" ? "Terminado" : 
+                  row === "Waiting for driver" ? "En espera" : 
+                  "Error"
+                }</Dropdown.Item>
               ))}
             </DropdownButton>
           </Row>
