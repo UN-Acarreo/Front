@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import classNames from "classnames";
 
@@ -16,10 +18,49 @@ const row_style = {
   paddingTop: "40px",
   paddingBottom: "100px"
 }
+
+const URL = 'http://localhost:3001'
+
 class HomeContainer extends Component {
 
   constructor(props){
     super(props);
+  }
+
+  notifyError = (text) => toast.error(text, {containerId: 'notification'});
+
+  async goToHaulages (){
+
+    var info = JSON.parse(sessionStorage.login_info);;
+
+    var url = URL+'/api/haulage/user/list/'+ info.Id_user;
+    axios.get(url)
+      .then( (response) => {
+        //Sort the array so it stays consistent since rated haulages are returned last by database
+
+          this.checkHaulages(response.data.haulages );
+          
+          
+    })
+      .catch(function (error) {
+        console.log(error);
+    })
+      .then(function () {
+        // always executed
+    });
+
+  }
+
+  checkHaulages(list){
+    if(list != null){
+      
+      this.props.history.push("/user/haulages");
+      
+    } else{
+      
+      this.notifyError('No existen reservas, por favor crear una reserva nueva.');
+      
+    }
   }
 
   render() {
@@ -28,6 +69,7 @@ class HomeContainer extends Component {
 
     return(
       <>
+      <ToastContainer enableMultiContainer containerId={'notification'} position={toast.POSITION.TOP_RIGHT} />
       <Container fluid>
         <Row style={row_style} style={{fontWeight: 600}}>
           <Col md={6}>
@@ -64,19 +106,16 @@ class HomeContainer extends Component {
             }
           </Col>
           <Col md={6}>
-            <a {...isDriver ? {href:"/driver/home"} : {href:"/user/haulages"}}>
+            <a  onClick = {() => this.goToHaulages()} className= {classNames(styles.goTo)}>
             {/*  <img src="/reservation.jpg" className= {classNames("rounded mx-auto d-block", styles.imgCon)} alt="..."></img> */}
              <img src="/trucks.png" className= {classNames("rounded mx-auto d-block", styles.imgCon)} style={{maxHeight: '14em'}} alt="..."></img>
             </a>
-            {isUser ?
+            
               <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
                 MIS RESERVAS
               </div>
-            :
-              <div className= {classNames("d-flex justify-content-center mt-5", styles.text)}>
-                MIS SERVICIOS
-              </div>
-            }
+            
+              
           </Col>
         </Row>
       </Container>
