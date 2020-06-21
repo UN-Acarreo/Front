@@ -341,11 +341,11 @@ class HomeDriver extends Component {
               <Card.Header style={{fontSize: '26px',fontWeight: '500'}}>Información del servicio </Card.Header>
               <Card.Body>
 
-              <div className= {classNames(styles.cont)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
+              <div className= {classNames(styles.contd)}><span style={{color:'#2196F3'}}>NUMERO DE LA RESERVA:</span>
                 {" #"+id_Haulage}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'#2196F3'}}>ESTADO:</span>
+              <div className= {classNames(styles.contd)} > <span style={{color:'#2196F3'}}>ESTADO:</span>
                 {"  "}{haulage_state}
               </div>
 
@@ -354,25 +354,25 @@ class HomeDriver extends Component {
               <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
 
 
-              <div className= {classNames(styles.cont)} > <span >CLIENTE:</span>
+              <div className= {classNames(styles.contd)} > <span >CLIENTE:</span>
                {userName}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span >DESCRIPCION:</span>
+              <div className= {classNames(styles.contd)} > <span >DESCRIPCION:</span>
                 {description}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span >PESO DE LA CARGA:</span>
+              <div className= {classNames(styles.contd)} > <span >PESO DE LA CARGA:</span>
                 {weight}
               </div>
 
               <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
 
-              <div className= {classNames(styles.cont)} > <span >FECHA DE INICIO:</span>
+              <div className= {classNames(styles.contd)} > <span >FECHA DE INICIO:</span>
                 {startDate}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span >FECHA LIMITE:</span>
+              <div className= {classNames(styles.contd)} > <span >FECHA LIMITE:</span>
                 {endDate}
               </div>
               <div style={{marginBottom: '1em'}}></div>
