@@ -109,9 +109,12 @@ class HomeDriver extends Component {
 
         var initial = this.state.activeList[0];
 
+        var startDate = new Date(initial.haulage.Date).toString()
+        var endDate = new Date(initial.haulage.End_date).toString()
+/*
         var startDate = this.formatDate(new Date(initial.haulage.Date));
 
-        var endDate = this.formatDate(new Date(initial.haulage.End_date));
+        var endDate = this.formatDate(new Date(initial.haulage.End_date));*/
 
         this.setState({ haulagesList : response.data.haulages,
                         originLat : initial.route.Origin_coord.split(',')[0],
@@ -148,9 +151,14 @@ class HomeDriver extends Component {
 
     var actualHaulage = this.state.activeList[index];
 
+    var startDate = new Date(actualHaulage.haulage.Date).toString()
+    var endDate = new Date(actualHaulage.haulage.End_date).toString()
+    /*
+    console.log("######## "+actualHaulage.haulage.Date)
+
     var startDate = this.formatDate(new Date(actualHaulage.haulage.Date));
 
-    var endDate = this.formatDate(new Date(actualHaulage.haulage.End_date));
+    var endDate = this.formatDate(new Date(actualHaulage.haulage.End_date));*/
 
     this.setState({
 
@@ -244,19 +252,22 @@ class HomeDriver extends Component {
   }
 
   formatDate(date){
-    return moment(date).format('YYYY MM DD hh:mm');
+    return moment(date).format('YYYY/MM/DD hh:mm A');
   }
 
   async beginService(){
     var url = URL+'/api/haulage/begin';
-    //console.log(this.state.startDate)
+    console.log(this.state.startDate)
     var start = new Date(this.state.startDate)
     var today = new Date();
 
-    //console.log(today)
-    //console.log(start)
+    console.log(today)
+    console.log(start)
 
-    if(Date.parse(start) > Date.parse(today)){
+
+    //if(Date.parse(start) > Date.parse(today)){
+    if(start.getTime() > today.getTime()){
+
        this.notifyWarnings('No es posible iniciar el servicio antes de la hora de reserva');
        return;
     }
@@ -370,11 +381,11 @@ class HomeDriver extends Component {
               <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
 
               <div className= {classNames(styles.contd)} > <span >FECHA DE INICIO:</span>
-                {startDate}
+                {this.formatDate(startDate)}
               </div>
 
               <div className= {classNames(styles.contd)} > <span >FECHA LIMITE:</span>
-                {endDate}
+                {this.formatDate(endDate)}
               </div>
               <div style={{marginBottom: '1em'}}></div>
 
