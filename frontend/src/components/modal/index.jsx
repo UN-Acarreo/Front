@@ -23,6 +23,8 @@ interface State {
     isDate : boolean;
     isDescription : Boolean;
     isInfo : Boolean;
+    description : string;
+    weight : string;
 }
 
 class ModalContainer extends Component {
@@ -38,7 +40,9 @@ constructor(props){
       isDate : false,
       isDescription : false,
       isInfo: false,
-      info: null
+      info: null,
+      description : "",
+      weight : ""
     }
 
   }
@@ -117,6 +121,9 @@ constructor(props){
     const value = this.myDescription.value;
     const value2 = this.myWeight.value;
 
+    this.setState({ description : value,
+                    weight : value2});
+
     this.props.onDescriptionSaved(value);
     this.props.onWeightSaved(value2);
 
@@ -129,7 +136,8 @@ constructor(props){
 
   render() {
     const URL = 'http://localhost:3001'
-    const {show, isDate,isTimer, isDescription} = this.state;
+    const {show, isDate,isTimer, isDescription, description, weight} = this.state;
+    
     return (
       <>
         <Modal show={show} onHide={() => this.handleClose()}>
@@ -150,12 +158,20 @@ constructor(props){
           </Modal.Header>
           <Modal.Body>
             {isDate ?
-                <DatePicker
-                  selected={this.state.startDate}
-                  onChange={(value, e) => this.handleDateChange(value, e)}
-                />
+            <>
+            
+              <DatePicker
+                    selected={ this.state.startDate }
+                    onChange={(value, e) => this.handleDateChange(value, e)}
+                  />
+              <Button variant="primary" onClick = {() => this.handleClose()}>Guardar</Button>
+            
+            </>
+                
             :null}
             {isTimer ?
+
+            <>
               <DatePicker
                 selected={this.state.time}
                 onChange={(value, e) => this.handleTimeChange(value, e)}
@@ -165,17 +181,21 @@ constructor(props){
                 timeCaption="Time"
                 dateFormat="h:mm aa"
               />
+              <Button variant="primary" onClick = {() => this.handleClose()}>Guardar</Button>
+
+            </>  
             :null}
             {isDescription ?
               <>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Descripcion</Form.Label>
-                  <Form.Control as="textarea" rows="3" ref={ref => { this.myDescription = ref; }} type="text" />
+                  <Form.Control as="textarea" rows="3" ref={ref => { this.myDescription = ref; }} type="text" defaultValue = {description}/>
+                    
                 </Form.Group>
 
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Peso(kg)</Form.Label>
-                  <Form.Control as="textarea" rows="3" ref={ref => { this.myWeight = ref; }} type="text" />
+                  <Form.Control as="textarea" rows="3" ref={ref => { this.myWeight = ref; }} type="text" defaultValue = {weight}/>
                 </Form.Group>
 
                 <Button variant="primary" onClick = {() => this.save()}>Guardar</Button>
