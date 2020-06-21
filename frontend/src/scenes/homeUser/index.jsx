@@ -80,7 +80,7 @@ class HomeUser extends Component {
       //
       step: 0,
       startDate: new Date(),
-      formatedTime: null,
+      //formatedTime: null,
       time_v: new Date(),
       asignada: false
     }
@@ -439,12 +439,12 @@ class HomeUser extends Component {
 
   render() {
     const buttonStyle_a = {background: 'rgb(0, 123, 255)', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
-                          margin: '0 auto', marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
+                           marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
 
     const buttonStyle_a_s = {background: '#28a745', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
-                          margin: '0 auto', marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
+                           marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
     const buttonStyle = { background: 'rgb(0, 123, 255)', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
-                          margin: '0 auto', marginTop: 32, display: 'inline-block', cursor: 'pointer', margin: '1em'};
+                           marginTop: 32, display: 'inline-block', cursor: 'pointer', margin: '1em'};
     const {show, showStart, showEnd, edit, editDate, editTime, editDescription, editWeight} = this.state;
      return(
       <>
