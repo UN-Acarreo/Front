@@ -249,12 +249,12 @@ class HomeDriver extends Component {
 
   async beginService(){
     var url = URL+'/api/haulage/begin';
-    console.log(this.state.startDate)
+    //console.log(this.state.startDate)
     var start = new Date(this.state.startDate)
     var today = new Date();
 
-    console.log(today)
-    console.log(start)
+    //console.log(today)
+    //console.log(start)
 
     if(Date.parse(start) > Date.parse(today)){
        this.notifyWarnings('No es posible iniciar el servicio antes de la hora de reserva');
@@ -263,17 +263,13 @@ class HomeDriver extends Component {
 
     var request = {Id_haulage: this.state.id_Haulage}
 
-    axios.post(url,{request})
+    axios.post(url, {request} )
       .then( (response) => {
-
         console.log(response);
         this.notifySuccess('El servicio se ha iniciado correctamente.');
         this.getHaulages();
 
-    })
-      .catch(function (error) {
-        console.log(error);
-    })
+    }).catch(function (error) {console.log(error);})
 
   }
 
@@ -358,26 +354,26 @@ class HomeDriver extends Component {
               <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
 
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>CLIENTE:</span>
-                {"  "}{userName}
+              <div className= {classNames(styles.cont)} > <span >CLIENTE:</span>
+               {userName}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>DESCRIPCION:</span>
-                {"  "}{description}
+              <div className= {classNames(styles.cont)} > <span >DESCRIPCION:</span>
+                {description}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>PESO DE LA CARGA:</span>
-                {"  "}{weight}
+              <div className= {classNames(styles.cont)} > <span >PESO DE LA CARGA:</span>
+                {weight}
               </div>
 
               <hr style={{borderTop: '1px solid rgb(255, 255, 255)'}}/>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>FECHA DE INICIO:</span>
-                {"  "}{startDate}
+              <div className= {classNames(styles.cont)} > <span >FECHA DE INICIO:</span>
+                {startDate}
               </div>
 
-              <div className= {classNames(styles.cont)} > <span style={{color:'white'}}>FECHA LIMITE:</span>
-                {"  "}{endDate}
+              <div className= {classNames(styles.cont)} > <span >FECHA LIMITE:</span>
+                {endDate}
               </div>
               <div style={{marginBottom: '1em'}}></div>
 
