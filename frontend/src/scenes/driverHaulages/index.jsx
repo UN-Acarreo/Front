@@ -265,11 +265,13 @@ class HomeDriver extends Component {
 
     axios.post(url, {request} )
       .then( (response) => {
-        console.log(response);
         this.notifySuccess('El servicio se ha iniciado correctamente.');
         this.getHaulages();
 
-    }).catch(function (error) {console.log(error);})
+    }).catch(function (error) {
+      this.notifyError(error);
+      console.log(error);
+    })
 
   }
 
@@ -281,7 +283,6 @@ class HomeDriver extends Component {
 
     axios.post(url,{request})
       .then( (response) => {
-
         console.log(response);
         this.notifySuccess('El servicio se ha completado correctamente.');
         this.getHaulages();
