@@ -476,11 +476,7 @@ class UserHaulages extends Component {
                           Cancelar el servicio
                         </Button>
                       </div>
-                      <div className= {styles.line} style={{margin:'0.5em', marginTop: '1em'}}>
-                        <Button variant="secondary" onClick={()=>this.modifyService()}>
-                          Modificar el servicio
-                        </Button>
-                      </div>
+                      
 
                     </>
                     : null}
