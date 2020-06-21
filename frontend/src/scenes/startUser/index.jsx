@@ -14,7 +14,8 @@ class StartUser extends Component {
              isUser = {true}
              isDriver = {false}/>
         <HomeContainer  isDriver = {false}
-                        isUser ={true}/>
+                        isUser ={true}
+                        {...this.props}/>
       
       
       </div>

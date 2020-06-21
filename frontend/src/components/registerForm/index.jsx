@@ -258,7 +258,7 @@ check_fields = async (data) => {
           if(this.state.goToDriver){
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_driver_id))
             sessionStorage.setItem('vehicle_info', JSON.stringify(res.data.vehicle_data))
-            this.props.history.push("/driver/start")
+            this.props.history.push("/driver/home")
           }else{
             sessionStorage.setItem('login_info', JSON.stringify(res.data.db_user_id))
             this.props.history.push("/user/start")
