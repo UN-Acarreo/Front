@@ -14,7 +14,7 @@ import {Container, Row, Col, Nav, Card, Button } from 'react-bootstrap';
 import classNames from "classnames";
 
 // Import Logger
-const URL = 'http://localhost:3001'
+const URL = 'http://35.222.173.35:3001'
 const file = "registerForm"
 
 const style_navtabs = {

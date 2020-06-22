@@ -135,7 +135,7 @@ constructor(props){
 
 
   render() {
-    const URL = 'http://localhost:3001'
+    const URL = 'http://35.222.173.35:3001'
     const {show, isDate,isTimer, isDescription, description, weight} = this.state;
     
     return (
