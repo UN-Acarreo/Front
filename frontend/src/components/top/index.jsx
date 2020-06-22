@@ -10,7 +10,7 @@ import { faBell, faHome, faTruck, faCircle, faUser, faSignOutAlt, faTrash} from 
 import axios from 'axios';
 import Log from '../../log.js';
 
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 
 interface Props{
   message : string;

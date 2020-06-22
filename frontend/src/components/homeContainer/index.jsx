@@ -19,7 +19,7 @@ const row_style = {
   paddingBottom: "100px"
 }
 
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 
 class HomeContainer extends Component {
 

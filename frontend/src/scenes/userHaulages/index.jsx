@@ -18,7 +18,7 @@ import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBillWave} from '@fortawesome/free-solid-svg-icons'
 
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 
 const lotList = [{number:1} , {number:2} , {number:3}, {number:4} ];
 

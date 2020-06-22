@@ -23,7 +23,7 @@ import { faArrowRight,faArrowLeft, faCheckCircle} from '@fortawesome/free-solid-
 // IMPORT STYLES REACT-BOOTSTRAP
 import {Container, Row, Col, Nav, Navbar, NavDropdown, Card, Button, Form } from 'react-bootstrap';
 
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 
 interface State {
 
