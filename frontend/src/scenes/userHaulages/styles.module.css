@@ -1,0 +1,60 @@
+.test{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    height: 90%;
+    width: 100%;
+}
+
+.row{
+    height: 100% !important;
+}
+
+.btn_group{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.profileText {
+    margin-bottom: 5%;
+    
+}
+.textBox{
+    background-color: white;
+}
+.title{
+    padding-left: 12.5%;
+    padding-bottom: 1%;
+    font-weight: bold;
+}
+
+.line{
+display: inline-block !important;
+}
+
+.cont{
+
+padding-bottom: 1.5%;
+font-weight: bold;
+
+}
+
+.button_haulage{
+    background-color: black;
+}
+
+.row2{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 1%;
+}
+
+.drop{
+    margin-left: 2%;
+}

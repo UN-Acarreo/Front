@@ -1,0 +1,67 @@
+.header {
+    padding: 10px;
+    text-align: center;
+    background: black;
+    color: white;
+    font-size: 5px;
+    font-family: Arial;
+    margin-bottom: 100px;
+    height: 70px;
+
+    &_button{
+      font-size: 1.5rem;
+      text-align: left;
+      float: left;
+      height: 100%;
+      background: black;
+      color: white;
+      font-size: 25px;
+      font-family: Arial;
+      border: none;
+    }
+
+    
+}
+
+.text{
+  font-size: x-large;
+  margin: auto;
+}
+
+.logout{
+  font-size: 1.5rem;
+      text-align: right;
+      float: right;
+      height: 100%;
+      background: black;
+      color: white;
+      font-size: 25px;
+      font-family: Arial;
+      border: none;
+}
+
+.imgCon{
+  margin-top: 6%;
+  margin-left: 15% !important;
+  margin-right: 0 !important;
+}
+
+.imgRight{
+  margin-top: 6%;
+  margin-left: 75% !important;
+  margin-right: 0 !important;
+}
+
+.faTrashStyle{
+  margin-left: 10px;
+  color:  red;
+}
+
+.faBellNoActive{
+  font-size:  1.5rem;
+}
+
+.faBellActive{
+  font-size:  1.5rem;
+  color:  rgb(182, 118, 0);
+}

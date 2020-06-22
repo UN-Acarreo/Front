@@ -1,0 +1,22 @@
+.test{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.row{
+    height: 100% !important;
+}
+
+.btn_group{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    width: 50%;
+    box-sizing: border-box;
+}
