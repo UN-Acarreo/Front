@@ -34,6 +34,17 @@
     font-weight: bold;
 }
 
+.line{
+display: inline-block !important;
+}
+
+.cont{
+
+padding-bottom: 1.5%;
+font-weight: bold;
+
+}
+
 .button_haulage{
     background-color: black;
 }
@@ -42,4 +53,8 @@
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 1%;
+}
+
+.drop{
+    margin-left: 2%;
 }

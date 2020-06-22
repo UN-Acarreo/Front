@@ -6,7 +6,7 @@ import moment from 'moment';
 import { InputGroup, FormGroup, FormControl, Button,Form} from 'react-bootstrap';
 
 
- 
+
 import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -22,10 +22,13 @@ interface State {
     isTimer : boolean;
     isDate : boolean;
     isDescription : Boolean;
+    isInfo : Boolean;
+    description : string;
+    weight : string;
 }
 
 class ModalContainer extends Component {
-  
+
 constructor(props){
     super(props);
 
@@ -35,13 +38,21 @@ constructor(props){
       time: new Date(),
       isTimer : false,
       isDate : false,
-      isDescription : false
+      isDescription : false,
+      isInfo: false,
+      info: null,
+      description : "",
+      weight : ""
     }
-    
+
   }
-  
+
   handleClose(){
-    this.setState({show :false})
+    this.setState({show :false, isInfo: false})
+  }
+
+  openInfoModal(info){
+    this.setState({show :true, isInfo: true, info: info , isDescription: false, isTimer: false, isDate: false})
   }
 
   openDateModal(){
@@ -63,7 +74,7 @@ constructor(props){
   }
 
   openDescriptionModal(){
-    this.setState({isDescription :true})
+    this.setState({isDescription:true})
 
     this.setState({isDate :false})
     this.setState({isTimer :false})
@@ -84,10 +95,10 @@ constructor(props){
       time: time
     });
 
-    
+
   };
 
-  
+
 
   handleDateChange=(value, e)=>{
    this.setState({
@@ -110,40 +121,57 @@ constructor(props){
     const value = this.myDescription.value;
     const value2 = this.myWeight.value;
 
+    this.setState({ description : value,
+                    weight : value2});
+
     this.props.onDescriptionSaved(value);
     this.props.onWeightSaved(value2);
 
     this.handleClose();
   }
 
-  
 
- 
+
+
 
   render() {
-    const {show, isDate,isTimer, isDescription} = this.state;
+    const URL = 'http://localhost:3001'
+    const {show, isDate,isTimer, isDescription, description, weight} = this.state;
+    
     return (
       <>
         <Modal show={show} onHide={() => this.handleClose()}>
           <Modal.Header closeButton>
-            {isDate ? 
+            {isDate ?
               <Modal.Title>Elija una Fecha</Modal.Title>
             :null}
-            {isTimer ? 
+            {isTimer ?
               <Modal.Title>Elija una Hora</Modal.Title>
             :null}
-            {isDescription ? 
+            {isDescription ?
               <Modal.Title>Informacion General</Modal.Title>
             : null}
+            {
+              this.state.isInfo ?
+              <Modal.Title>Informacion de tu acarreo</Modal.Title>
+              :null}
           </Modal.Header>
           <Modal.Body>
             {isDate ?
-                <DatePicker
-                  selected={this.state.startDate}
-                  onChange={(value, e) => this.handleDateChange(value, e)}
-                />
+            <>
+            
+              <DatePicker
+                    selected={ this.state.startDate }
+                    onChange={(value, e) => this.handleDateChange(value, e)}
+                  />
+              <Button variant="primary" onClick = {() => this.handleClose()}>Guardar</Button>
+            
+            </>
+                
             :null}
             {isTimer ?
+
+            <>
               <DatePicker
                 selected={this.state.time}
                 onChange={(value, e) => this.handleTimeChange(value, e)}
@@ -152,23 +180,49 @@ constructor(props){
                 timeIntervals={15}
                 timeCaption="Time"
                 dateFormat="h:mm aa"
-              /> 
+              />
+              <Button variant="primary" onClick = {() => this.handleClose()}>Guardar</Button>
+
+            </>  
             :null}
-            {isDescription ? 
+            {isDescription ?
               <>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Descripcion</Form.Label>
-                  <Form.Control as="textarea" rows="3" ref={ref => { this.myDescription = ref; }} type="text" />
+                  <Form.Control as="textarea" rows="3" ref={ref => { this.myDescription = ref; }} type="text" defaultValue = {description}/>
+                    
                 </Form.Group>
 
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Peso(kg)</Form.Label>
-                  <Form.Control as="textarea" rows="3" ref={ref => { this.myWeight = ref; }} type="text" />
+                  <Form.Control as="textarea" rows="3" ref={ref => { this.myWeight = ref; }} type="text" defaultValue = {weight}/>
                 </Form.Group>
 
                 <Button variant="primary" onClick = {() => this.save()}>Guardar</Button>
               </>
             : null}
+            {
+              this.state.isInfo ?
+              <>
+              {this.state.info.map(function(vehicle, i){
+                let num = parseInt(i+1)
+                return(
+                <div key={i} style={{marginTop: '3em'}}>
+                <img src={URL+vehicle.vehicle_photo} style={{marginRight: '3em', float: 'right', width: '30%'}} />
+                <li >{"Vehículo: "+num}</li>
+                <li >{"Placa: "+vehicle.Plate}</li>
+                <li >{"Marca: "+vehicle.Brand}</li>
+                <li >{"Modelo: "+vehicle.Model}</li>
+                <li >{"Conductor: "+vehicle.Driver_name + " "+ vehicle.Driver_last_name}</li>
+                <li >{"Teléfono: "+vehicle.Driver_phone}</li>
+                </div>
+              )
+              })
+              }
+              <Button variant="primary" onClick = {() => this.handleClose()} style={{marginTop: '3em'}}>Cerrar</Button>
+              </>
+              : null
+            }
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Modal>

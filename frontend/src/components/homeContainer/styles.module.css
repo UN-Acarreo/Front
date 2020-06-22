@@ -17,3 +17,7 @@ img:hover {
 .text{
     font-size: x-large;
 }
+
+.goTo:hover{
+    cursor: pointer;
+}
