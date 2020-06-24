@@ -113,6 +113,8 @@ class Map extends Component {
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionStart: newPos})
     this.props.onStartSelected(newPos)
+    this.props.changeInitialStart(newPos)
+
 
   }
 
@@ -122,6 +124,8 @@ class Map extends Component {
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionEnd: newPos})
     this.props.onEndSelected(newPos)
+    this.props.changeInitialEnd(newPos)
+
   }
 
   render() {
@@ -135,8 +139,8 @@ class Map extends Component {
           mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute'}} /> }
           showStart = {this.props.showStart}
           showEnd = {this.props.showEnd}
-          startMarkerPos = {this.state.positionStart}
-          endMarkerPos = {this.state.positionEnd}
+          startMarkerPos = {this.props.positionStart}
+          endMarkerPos = {this.props.positionEnd}
           onStartMarkerChange={(e)=>this.handleStartMarkerChange(e)}
           onEndMarkerChange={(e)=>this.handleEndMarkerChange(e)}
         />
