@@ -85,6 +85,8 @@ class HomeUser extends Component {
       asignada: false,
       positionStart: {lat: 4.626820403668342, lng: -74.08089169311525},
       positionEnd : {lat: 4.642561609861135 ,  lng: -74.07883175659181},
+      startDrag : false,
+      endDrag : false
     }
 
 
@@ -428,10 +430,14 @@ class HomeUser extends Component {
     }
 
     if(this.state.step + 1 == 2){
-      this.setState({showStart :true})
+      this.setState({ showStart :true,
+                      startDrag : true,
+                      endDrag : false})
     }
     if(this.state.step + 1 == 3){
-      this.setState({showEnd :true})
+      this.setState({ showEnd :true,
+                      startDrag : false,
+                      endDrag : true})
     }
 
     this.setState({step: this.state.step + 1})
@@ -441,10 +447,14 @@ class HomeUser extends Component {
       return
     }
     if(this.state.step - 1 == 2){
-      this.setState({showStart :true})
+      this.setState({ showStart :true,
+                      startDrag : true,
+                      endDrag : false})
     }
     if(this.state.step - 1 == 3){
-      this.setState({showEnd :true})
+      this.setState({ showEnd :true,
+                      startDrag : false,
+                      endDrag : true})
     }
     this.setState({step: this.state.step - 1})
   }
@@ -457,7 +467,7 @@ class HomeUser extends Component {
                            marginTop: 32, marginLeft: 0, display: 'inline-block', cursor: 'pointer', margin: '1em'};
     const buttonStyle = { background: 'rgb(0, 123, 255)', width: 200, padding: 10, textAlign: 'center', color: 'white', fontWeight: 600, borderRadius: '4em',
                            marginTop: 32, display: 'inline-block', cursor: 'pointer', margin: '1em'};
-    const {show, showStart, showEnd, edit, editDate, editTime, editDescription, editWeight, positionStart, positionEnd} = this.state;
+    const {show, showStart, showEnd, edit, editDate, editTime, editDescription, editWeight, positionStart, positionEnd, startDrag, endDrag} = this.state;
      return(
       <>
       <Top message = {"UNAcarreo"}
@@ -601,6 +611,8 @@ class HomeUser extends Component {
                       edit = {edit}
                       positionStart = {positionStart}
                       positionEnd = {positionEnd}
+                      startDrag = {startDrag}
+                      endDrag = {endDrag}
         />
           </div>
         : null
