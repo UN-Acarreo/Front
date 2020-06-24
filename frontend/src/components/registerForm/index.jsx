@@ -320,16 +320,16 @@ check_fields = async (data) => {
     }
 
     if (this.state.contraseña.length < 8) {
-        this.notifyWarning('Las contraseñas es muy corta.')
+        this.notifyWarning('La contraseña es muy corta.')
         return;
     } else if (this.state.contraseña.length > 50) {
-        this.notifyWarning('Las contraseñas es muy larga.')
+        this.notifyWarning('La contraseña es muy larga.')
         return;
     } else if (this.state.contraseña.search(/\d/) == -1) {
-        this.notifyWarning('Las contraseñas debe contener un numero.')
+        this.notifyWarning('La contraseña debe contener un numero.')
         return;
     } else if (this.state.contraseña.search(/[A-Z]/) == -1) {
-        this.notifyWarning('Las contraseñas debe contener una mayuscula.')
+        this.notifyWarning('La contraseña debe contener una mayuscula.')
         return;
     } 
 
