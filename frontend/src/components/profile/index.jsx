@@ -7,7 +7,7 @@ import axios from 'axios';
 import {Container, Row, Col, Nav } from 'react-bootstrap';
 
 import classNames from "classnames";
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 
 interface Props{
   isDriver :  boolean;

@@ -17,7 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment';
 
 
-const URL = 'http://35.222.173.35:3001';
+const URL = 'http://localhost:3001';
 
 interface State {
 

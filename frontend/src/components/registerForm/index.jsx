@@ -14,7 +14,7 @@ import {Container, Row, Col, Nav, Card, Button } from 'react-bootstrap';
 import classNames from "classnames";
 
 // Import Logger
-const URL = 'http://35.222.173.35:3001'
+const URL = 'http://localhost:3001'
 const file = "registerForm"
 
 const style_navtabs = {
@@ -247,6 +247,7 @@ check_fields = async (data) => {
       this.notifyWarning(valid_fields)
       return;
     }
+    
 
     axios.post(URL+this.state.url, {request})
       .then(res=>{
@@ -317,6 +318,20 @@ check_fields = async (data) => {
     if ("Driver_phone" in request) {
       request.Driver_phone = parseInt(request.Driver_phone)
     }
+
+    if (this.state.contraseña.length < 8) {
+        this.notifyWarning('La contraseña es muy corta.')
+        return;
+    } else if (this.state.contraseña.length > 50) {
+        this.notifyWarning('La contraseña es muy larga.')
+        return;
+    } else if (this.state.contraseña.search(/\d/) == -1) {
+        this.notifyWarning('La contraseña debe contener un numero.')
+        return;
+    } else if (this.state.contraseña.search(/[A-Z]/) == -1) {
+        this.notifyWarning('La contraseña debe contener una mayuscula.')
+        return;
+    } 
 
     if(this.state.contraseña != this.state.confirmar_contraseña){
       //show passwords dont match error
