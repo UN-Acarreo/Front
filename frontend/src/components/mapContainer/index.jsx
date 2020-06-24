@@ -45,7 +45,7 @@ interface State {
               name={"ehehe"}
               //position={ {lat: 4.626820403668342, lng: -74.08089169311525}}
               position={{lat: props.startMarkerPos.lat, lng: props.startMarkerPos.lng }}
-              draggable={true}
+              draggable={props.startDrag}
               onDragEnd={(e) => {
                     props.onStartMarkerChange(e)
                     //console.log(e.latLng.lat(), e.latLng.lng());
@@ -63,7 +63,7 @@ interface State {
               name={"eheheb"}
               //position={ {lat: 4.642561609861135 ,lng: -74.07883175659181}}
               position={{lat: props.endMarkerPos.lat, lng: props.endMarkerPos.lng }}
-              draggable={true}
+              draggable={props.endDrag}
               onDragEnd={(e) => {
                 props.onEndMarkerChange(e)
                 }}
@@ -113,6 +113,8 @@ class Map extends Component {
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionStart: newPos})
     this.props.onStartSelected(newPos)
+    this.props.changeInitialStart(newPos)
+
 
   }
 
@@ -122,6 +124,8 @@ class Map extends Component {
     var newPos = {lat: e.latLng.lat(), lng: e.latLng.lng()}
     this.setState({positionEnd: newPos})
     this.props.onEndSelected(newPos)
+    this.props.changeInitialEnd(newPos)
+
   }
 
   render() {
@@ -135,10 +139,12 @@ class Map extends Component {
           mapElement={ <div style={{ height: '100%', width: '100%' , position : 'absolute'}} /> }
           showStart = {this.props.showStart}
           showEnd = {this.props.showEnd}
-          startMarkerPos = {this.state.positionStart}
-          endMarkerPos = {this.state.positionEnd}
+          startMarkerPos = {this.props.positionStart}
+          endMarkerPos = {this.props.positionEnd}
           onStartMarkerChange={(e)=>this.handleStartMarkerChange(e)}
           onEndMarkerChange={(e)=>this.handleEndMarkerChange(e)}
+          startDrag = {this.props.startDrag}
+          endDrag = {this.props.endDrag}
         />
       </div>
     );
